@@ -1,1 +1,355 @@
+/*==================================================
+                MISS NAILS
+==================================================*/
 
+:root{
+
+    --rosa:#E65A92;
+    --rosaOscuro:#C93E77;
+    --rosaClaro:#FCE8F1;
+
+    --blanco:#FFFFFF;
+
+    --gris:#666666;
+
+    --sombra:0 20px 45px rgba(0,0,0,.12);
+
+    --radio:26px;
+
+}
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    font-size:16px;
+
+}
+
+body{
+
+    min-height:100vh;
+
+      overflow:hidden;
+
+    touch-action:none;
+
+    font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+    background:
+    linear-gradient(
+        135deg,
+        #FCE6EF 0%,
+        #F8D3E3 55%,
+        #FCEEF4 100%
+    );
+
+}
+
+/*==================================================
+            CONTENEDOR PRINCIPAL
+==================================================*/
+
+#app{
+
+    width:100%;
+
+    height:100dvh;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:0;
+
+}
+
+/*==================================================
+                LOGIN
+==================================================*/
+
+.contenedor-login{
+
+    width:100%;
+
+    min-height:100dvh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:16px;
+
+}
+
+.tarjeta-login{
+
+    width:min(430px,100%);
+
+      background:#FEF5F6;
+
+    border-radius:var(--radio);
+
+    box-shadow:var(--sombra);
+
+    padding:42px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:28px;
+
+    animation:entrada .45s ease;
+
+}
+
+@keyframes entrada{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
+}
+
+/*==================================================
+                LOGO
+==================================================*/
+
+.logo-contenedor{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.logo-missnails{
+
+    width:100%;
+
+   max-width:300px;
+
+    height:auto;
+
+}
+
+/*==================================================
+                FORMULARIO
+==================================================*/
+
+.formulario{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:15px 18px;
+
+    border-radius:14px;
+
+    border:1px solid #EFD6DF;
+
+    font-size:16px;
+
+    transition:.30s;
+
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--rosa);
+
+    box-shadow:
+    0 0 0 4px rgba(230,90,146,.15);
+
+}
+
+button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        var(--rosa),
+
+        var(--rosaOscuro)
+
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+button:active{
+
+    transform:scale(.98);
+
+}
+
+a{
+
+    text-align:center;
+
+    color:var(--rosaOscuro);
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+a:hover{
+
+    text-decoration:underline;
+
+}
+
+#mensajeSistema{
+
+    min-height:24px;
+
+    text-align:center;
+
+    color:#444;
+
+}
+
+
+/*==================================================
+            CELULAR
+==================================================*/
+
+@media (max-width:600px){
+
+    .tarjeta-login{
+
+        padding:28px;
+
+        border-radius:20px;
+
+    }
+
+    .logo-missnails{
+
+        max-width:220px;
+
+    }
+
+    input{
+
+        padding:14px 16px;
+
+        font-size:15px;
+
+    }
+
+    button{
+
+        padding:15px;
+
+        font-size:16px;
+
+    }
+
+}
+
+/*==================================================
+            TABLET
+==================================================*/
+
+@media(min-width:768px){
+
+    .tarjeta-login{
+
+        padding:55px;
+
+    }
+
+}
+
+/*==================================================
+            ESCRITORIO
+==================================================*/
+
+@media(min-width:1200px){
+
+    .tarjeta-login{
+
+        width:480px;
+
+    }
+
+
+
+    
+}
