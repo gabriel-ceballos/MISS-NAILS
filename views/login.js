@@ -79,6 +79,20 @@ const login = {
             () => this.ingresar()
         );
 
+          const activar =
+        document.getElementById("activarCuenta");
+
+    activar.addEventListener(
+        "click",
+        (e)=>{
+
+            e.preventDefault();
+
+            this.mostrarActivacion();
+
+        }
+    );
+
     },
 
    ingresar(){
@@ -105,5 +119,105 @@ setTimeout(() => {
 
 },2000);
 
+},
+
+mostrarActivacion(){
+
+    const app = document.getElementById("app");
+
+    app.innerHTML = `
+
+<div class="contenedor-login">
+
+    <div class="tarjeta-login">
+
+        <div class="logo-contenedor">
+
+            <img
+                src="img/logo.png"
+                class="logo-missnails"
+                alt="Miss Nails">
+
+        </div>
+
+        <div class="formulario">
+
+            <input
+                type="email"
+                id="correoActivacion"
+                placeholder="Correo">
+
+            <input
+                type="password"
+                id="passwordActivacion"
+                placeholder="Crear contraseña">
+
+            <input
+                type="password"
+                id="confirmarActivacion"
+                placeholder="Confirmar contraseña">
+
+            <button id="btnActivar">
+
+                Activar Cuenta
+
+            </button>
+
+            <a
+                href="#"
+                id="regresarLogin">
+
+                Regresar
+
+            </a>
+
+            <div id="mensajeSistema"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+`;
+
+    this.inicializarActivacion();
+
+},
+
+inicializarActivacion(){
+
+    const boton =
+        document.getElementById("btnActivar");
+
+    boton.addEventListener(
+        "click",
+        () => this.activarCuenta()
+    );
+
+    const regresar =
+        document.getElementById("regresarLogin");
+
+    regresar.addEventListener(
+        "click",
+        (e)=>{
+
+            e.preventDefault();
+
+            this.mostrar();
+
+        }
+    );
+
+},
+
+activarCuenta(){
+
+    console.log("Entré a activarCuenta()");
+
+    toast.mostrar("Activación conectada");
+
 }
+
+
 };
