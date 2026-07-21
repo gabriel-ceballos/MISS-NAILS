@@ -1,20 +1,12 @@
-/*****************************************************************
- * MISS NAILS
- * PUENTE ENTRE GITHUB Y APPS SCRIPT
- *****************************************************************/
+const URL_API = "https://script.google.com/macros/s/AKfycbwVmomGVpO5BmeSctlIR-cacKqPB1w2fFU-iU23_7fqHZYfFeGX50sKThx-LR7TtltZ/exec";
 
-// URL de la Web App de Apps Script
-const URL_API = "AQUI_VA_LA_URL_DE_TU_WEBAPP";
-
-/**
- * Envía una petición al backend.
- * @param {string} accion
- * @param {object} datos
- * @returns {Promise<object>}
- */
 async function puente(accion, datos = {}) {
 
+    console.log("PUENTE: inicio");
+
     try {
+
+        console.log("PUENTE: antes del fetch");
 
         const respuesta = await fetch(URL_API, {
             method: "POST",
@@ -27,19 +19,21 @@ async function puente(accion, datos = {}) {
             })
         });
 
-        if (!respuesta.ok) {
-            throw new Error(`HTTP ${respuesta.status}`);
-        }
+        console.log("PUENTE: fetch terminó", respuesta.status);
 
-        return await respuesta.json();
+        const json = await respuesta.json();
 
-    } catch (error) {
+        console.log("PUENTE: JSON recibido", json);
 
-        console.error("PUENTE:", error);
+        return json;
+
+    } catch (e) {
+
+        console.error("PUENTE ERROR:", e);
 
         return {
             ok: false,
-            mensaje: error.message
+            mensaje: e.message
         };
 
     }
