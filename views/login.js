@@ -95,7 +95,7 @@ const login = {
 
     },
 
-   ingresar(){
+  async ingresar() {
 
     const boton = document.getElementById("btnIngresar");
     const correo = document.getElementById("correo");
@@ -107,17 +107,30 @@ const login = {
     correo.disabled = true;
     password.disabled = true;
 
-setTimeout(() => {
+    try {
 
-    toast.mostrar("Bienvenido a MISS NAILS");
+        const respuesta = await login(
+            correo.value.trim(),
+            password.value
+        );
+
+        console.log("LOGIN →", respuesta);
+
+        toast.mostrar(respuesta.mensaje);
+
+    } catch (error) {
+
+        console.error(error);
+
+        toast.mostrar("Error de comunicación");
+
+    }
 
     boton.disabled = false;
     boton.textContent = "Ingresar";
 
     correo.disabled = false;
     password.disabled = false;
-
-},2000);
 
 },
 
