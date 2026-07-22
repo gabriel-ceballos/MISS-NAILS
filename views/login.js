@@ -109,10 +109,10 @@ const login = {
 
     try {
 
-        const respuesta = await login(
-            correo.value.trim(),
-            password.value
-        );
+const respuesta = await auth.login(
+    correo.value.trim(),
+    password.value
+);
 
         console.log("LOGIN →", respuesta);
 
