@@ -1,12 +1,16 @@
-/******************************************************************
- * AUTENTICACIÓN
- ******************************************************************/
+/*****************************************************************
+ * SERVICIO DE AUTENTICACIÓN
+ *****************************************************************/
 
-async function login(correo, password) {
+const auth = {
 
-    return await api("login", {
-        correo,
-        password
-    });
+    async login(correo, password) {
 
-}
+        return await api("login", {
+            correo,
+            password
+        });
+
+    }
+
+};
