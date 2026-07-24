@@ -66,20 +66,57 @@ const login = {
 `;
 
       this.inicializar();
+      document.getElementById("correo").focus();
 
     },
 
-    inicializar(){
+inicializar(){
 
-        const boton =
-            document.getElementById("btnIngresar");
+    const boton =
+        document.getElementById("btnIngresar");
 
-        boton.addEventListener(
-            "click",
-            () => this.ingresar()
-        );
+    const correo =
+        document.getElementById("correo");
 
-          const activar =
+    const password =
+        document.getElementById("password");
+
+    boton.addEventListener(
+        "click",
+        () => this.ingresar()
+    );
+
+    correo.addEventListener(
+        "keydown",
+        (e)=>{
+
+            if(e.key==="Enter"){
+
+                e.preventDefault();
+
+                password.focus();
+
+            }
+
+        }
+    );
+
+    password.addEventListener(
+        "keydown",
+        (e)=>{
+
+            if(e.key==="Enter"){
+
+                e.preventDefault();
+
+                this.ingresar();
+
+            }
+
+        }
+    );
+
+    const activar =
         document.getElementById("activarCuenta");
 
     activar.addEventListener(
@@ -93,7 +130,7 @@ const login = {
         }
     );
 
-    },
+},
 
   async ingresar() {
 
