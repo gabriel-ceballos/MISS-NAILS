@@ -1,0 +1,5 @@
+const sesion = {
+
+    usuario: null
+
+};
