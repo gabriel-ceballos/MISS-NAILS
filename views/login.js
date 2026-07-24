@@ -114,9 +114,19 @@ const respuesta = await auth.login(
     password.value
 );
 
-        console.log("LOGIN →", respuesta);
+console.log("LOGIN →", respuesta);
 
-        toast.mostrar(respuesta.mensaje);
+toast.mostrar(respuesta.mensaje);
+
+if(respuesta.ok){
+
+    sesion.usuario = respuesta.datos;
+
+    dashboard.mostrar();
+
+    return;
+
+}
 
     } catch (error) {
 
