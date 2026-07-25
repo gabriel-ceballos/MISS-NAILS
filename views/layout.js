@@ -32,11 +32,11 @@ const layout = {
 
     </div>
 
-    <div class="usuario">
+ <div class="usuario">
 
-        Hola ${sesion.usuario.nombre}
+    ${sesion.usuario.nombre}
 
-    </div>
+</div>
 
 </div>
 

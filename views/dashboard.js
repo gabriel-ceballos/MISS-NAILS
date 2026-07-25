@@ -6,89 +6,33 @@ mostrar(){
 
     layout.header();
 
-    layout.contenido(`
+layout.contenido(`
 
 <div class="dashboard">
 
-    <section class="bienvenida">
-
-        <h1>
-
-            Hola ${sesion.usuario.nombre.split(" ")[0]} 👋
-
-        </h1>
-
-        <p>
-
-            ¿Qué deseas hacer hoy?
-
-        </p>
-
-    </section>
-
-    <section class="panel-dashboard">
+    <section class="contenido-dashboard">
 
         <div class="tarjeta" id="btnProductos">
 
-            <div class="icono">
-
-                📦
-
-            </div>
-
-            <h2>
-
-                Productos
-
-            </h2>
+            <h2>Productos</h2>
 
         </div>
 
         <div class="tarjeta" id="btnPedidos">
 
-            <div class="icono">
-
-                🛒
-
-            </div>
-
-            <h2>
-
-                Pedidos
-
-            </h2>
+            <h2>Pedidos</h2>
 
         </div>
 
         <div class="tarjeta" id="btnCuenta">
 
-            <div class="icono">
-
-                ⚙
-
-            </div>
-
-            <h2>
-
-                Mi Cuenta
-
-            </h2>
+            <h2>Mi Cuenta</h2>
 
         </div>
 
         <div class="tarjeta" id="btnSalir">
 
-            <div class="icono">
-
-                🚪
-
-            </div>
-
-            <h2>
-
-                Salir
-
-            </h2>
+            <h2>Salir</h2>
 
         </div>
 
