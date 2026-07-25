@@ -1,33 +1,32 @@
 const dashboard = {
 
-    mostrar(){
+mostrar(){
 
-        const app =
-            document.getElementById("app");
+    layout.mostrar();
 
-        app.innerHTML = `
+    layout.header();
+
+    layout.contenido(`
 
 <div class="dashboard">
 
-    <header class="barra-superior">
+    <section class="bienvenida">
 
-<div class="logo">
+        <h1>
 
-    <img
-        src="img/logo.png"
-        alt="Miss Nails">
+            Hola ${sesion.usuario.nombre.split(" ")[0]} 👋
 
-</div>
+        </h1>
 
-        <div class="usuario">
+        <p>
 
-            ${sesion.usuario.nombre}
+            ¿Qué deseas hacer hoy?
 
-        </div>
+        </p>
 
-    </header>
+    </section>
 
-    <main class="panel-dashboard">
+    <section class="panel-dashboard">
 
         <div class="tarjeta" id="btnProductos">
 
@@ -37,7 +36,11 @@ const dashboard = {
 
             </div>
 
-            <h2>Productos</h2>
+            <h2>
+
+                Productos
+
+            </h2>
 
         </div>
 
@@ -49,7 +52,11 @@ const dashboard = {
 
             </div>
 
-            <h2>Pedidos</h2>
+            <h2>
+
+                Pedidos
+
+            </h2>
 
         </div>
 
@@ -61,7 +68,11 @@ const dashboard = {
 
             </div>
 
-            <h2>Mi Cuenta</h2>
+            <h2>
+
+                Mi Cuenta
+
+            </h2>
 
         </div>
 
@@ -73,20 +84,23 @@ const dashboard = {
 
             </div>
 
-            <h2>Salir</h2>
+            <h2>
+
+                Salir
+
+            </h2>
 
         </div>
 
-    </main>
+    </section>
 
 </div>
 
-`;
+`);
 
-        this.inicializar();
+    this.inicializar();
 
-    },
-
+},
     inicializar(){
 
         document
