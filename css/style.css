@@ -495,34 +495,37 @@ button:disabled{
 
 }
 
-
 /******************************************************************
-    DASHBOARD
+LAYOUT
 ******************************************************************/
 
-.dashboard{
+.layout{
 
+    width:100%;
     min-height:100vh;
 
-    background:var(--rosa);
-
     display:flex;
-
     flex-direction:column;
 
 }
 
+#contenido{
+
+    flex:1;
+
+}
+
 /******************************************************************
-    HEADER
+HEADER
 ******************************************************************/
 
 .barra-superior{
 
-    min-height:90px;
+    height:90px;
 
-    padding:15px 30px;
+    padding:0 40px;
 
-    background:white;
+    background:#fff;
 
     display:flex;
 
@@ -530,28 +533,119 @@ button:disabled{
 
     align-items:center;
 
-    box-shadow:var(--sombra);
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
 
 }
 
 .logo img{
 
-    display:block;
-
-    height:60px;
-
-    width:auto;
+    height:58px;
 
 }
 
 .usuario{
 
-    font-size:18px;
+    font-size:22px;
 
     font-weight:600;
 
-    color:var(--texto);
+}
+
+/******************************************************************
+DASHBOARD
+******************************************************************/
+
+.dashboard{
+
+    height:calc(100vh - 90px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #FCE6EF,
+        #F7D3E5
+    );
 
 }
 
+.panel-dashboard{
+
+    width:min(900px,90%);
+
+}
+
+.grande{
+
+    height:170px;
+
+    margin-bottom:25px;
+
+}
+
+.fila{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:25px;
+
+    margin-bottom:25px;
+
+}
+
+.fila-centro{
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.card{
+
+    background:white;
+
+    border-radius:22px;
+
+    height:170px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.10);
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.card h2{
+
+    font-size:30px;
+
+    letter-spacing:1px;
+
+}
+
+.salir{
+
+    width:280px;
+
+}
 

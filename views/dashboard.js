@@ -10,33 +10,33 @@ layout.contenido(`
 
 <div class="dashboard">
 
-    <section class="contenido-dashboard">
+    <div class="panel-dashboard">
 
-        <div class="tarjeta" id="btnProductos">
+        <div class="card grande" id="btnProductos">
+            <h2>PRODUCTOS</h2>
+        </div>
 
-            <h2>Productos</h2>
+        <div class="fila">
+
+            <div class="card" id="btnPedidos">
+                <h2>PEDIDOS</h2>
+            </div>
+
+            <div class="card" id="btnCuenta">
+                <h2>MI CUENTA</h2>
+            </div>
 
         </div>
 
-        <div class="tarjeta" id="btnPedidos">
+        <div class="fila-centro">
 
-            <h2>Pedidos</h2>
-
-        </div>
-
-        <div class="tarjeta" id="btnCuenta">
-
-            <h2>Mi Cuenta</h2>
+            <div class="card salir" id="btnSalir">
+                <h2>SALIR</h2>
+            </div>
 
         </div>
 
-        <div class="tarjeta" id="btnSalir">
-
-            <h2>Salir</h2>
-
-        </div>
-
-    </section>
+    </div>
 
 </div>
 
