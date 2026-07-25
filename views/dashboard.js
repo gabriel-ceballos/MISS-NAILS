@@ -7,15 +7,129 @@ const dashboard = {
 
         app.innerHTML = `
 
-            <div style="padding:40px">
+<div class="dashboard">
 
-                <h1>MISS NAILS</h1>
+    <header class="barra-superior">
 
-                <h2>Bienvenido ${sesion.usuario.nombre}</h2>
+        <div class="logo">
+
+            MISS NAILS
+
+        </div>
+
+        <div class="usuario">
+
+            ${sesion.usuario.nombre}
+
+        </div>
+
+    </header>
+
+    <main class="panel-dashboard">
+
+        <div class="tarjeta" id="btnProductos">
+
+            <div class="icono">
+
+                📦
 
             </div>
 
-        `;
+            <h2>Productos</h2>
+
+        </div>
+
+        <div class="tarjeta" id="btnPedidos">
+
+            <div class="icono">
+
+                🛒
+
+            </div>
+
+            <h2>Pedidos</h2>
+
+        </div>
+
+        <div class="tarjeta" id="btnCuenta">
+
+            <div class="icono">
+
+                ⚙
+
+            </div>
+
+            <h2>Mi Cuenta</h2>
+
+        </div>
+
+        <div class="tarjeta" id="btnSalir">
+
+            <div class="icono">
+
+                🚪
+
+            </div>
+
+            <h2>Salir</h2>
+
+        </div>
+
+    </main>
+
+</div>
+
+`;
+
+        this.inicializar();
+
+    },
+
+    inicializar(){
+
+        document
+            .getElementById("btnProductos")
+            .addEventListener(
+                "click",
+                ()=>{
+
+                    productos.mostrar();
+
+                }
+            );
+
+        document
+            .getElementById("btnPedidos")
+            .addEventListener(
+                "click",
+                ()=>{
+
+                    alert("Pedidos");
+
+                }
+            );
+
+        document
+            .getElementById("btnCuenta")
+            .addEventListener(
+                "click",
+                ()=>{
+
+                    alert("Mi Cuenta");
+
+                }
+            );
+
+        document
+            .getElementById("btnSalir")
+            .addEventListener(
+                "click",
+                ()=>{
+
+                    location.reload();
+
+                }
+            );
 
     }
 
