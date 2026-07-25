@@ -481,3 +481,58 @@ button:disabled{
 
 
 
+/******************************************************************
+    DASHBOARD
+******************************************************************/
+
+.dashboard{
+
+    min-height:100vh;
+
+    background:var(--rosa);
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+/******************************************************************
+    HEADER
+******************************************************************/
+
+.barra-superior{
+
+    height:80px;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 30px;
+
+    box-shadow:var(--sombra);
+
+}
+
+.logo img{
+
+    height:48px;
+
+}
+
+.usuario{
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:var(--texto);
+
+}
+
+

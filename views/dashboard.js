@@ -11,11 +11,13 @@ const dashboard = {
 
     <header class="barra-superior">
 
-        <div class="logo">
+<div class="logo">
 
-            MISS NAILS
+    <img
+        src="img/logo.png"
+        alt="Miss Nails">
 
-        </div>
+</div>
 
         <div class="usuario">
 
