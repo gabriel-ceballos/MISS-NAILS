@@ -159,7 +159,7 @@ if(respuesta.ok){
 
     sesion.usuario = respuesta.datos;
 
-    dashboard.mostrar();
+  tienda.mostrar();
 
     return;
 
