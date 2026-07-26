@@ -6,35 +6,42 @@ mostrar(){
 
     layout.header();
 
-layout.contenido(`
+    layout.contenido(`
 
-<div class="dashboard">
+<div class="tienda">
 
-    <div class="panel-dashboard">
+    <div class="barra-tienda">
 
-        <div class="card grande" id="btnProductos">
-            <h2>PRODUCTOS</h2>
-        </div>
+        <input
+            type="text"
+            id="buscar"
+            placeholder="Buscar productos...">
 
-        <div class="fila">
+        <button
+            id="btnCarrito"
+            class="btn-carrito">
 
-            <div class="card" id="btnPedidos">
-                <h2>PEDIDOS</h2>
-            </div>
+            🛒
+            <span id="cantidadCarrito">0</span>
 
-            <div class="card" id="btnCuenta">
-                <h2>MI CUENTA</h2>
-            </div>
+        </button>
 
-        </div>
+    </div>
 
-        <div class="fila-centro">
+    <div class="categorias">
 
-            <div class="card salir" id="btnSalir">
-                <h2>SALIR</h2>
-            </div>
+        <button class="categoria activa">Todas</button>
+        <button class="categoria">Geles</button>
+        <button class="categoria">Rubber</button>
+        <button class="categoria">Acrílicos</button>
+        <button class="categoria">Top Coat</button>
+        <button class="categoria">Promociones</button>
 
-        </div>
+    </div>
+
+    <div
+        id="contenedorProductos"
+        class="grid-productos">
 
     </div>
 
@@ -45,52 +52,33 @@ layout.contenido(`
     this.inicializar();
 
 },
-    inicializar(){
 
-        document
-            .getElementById("btnProductos")
-            .addEventListener(
-                "click",
-                ()=>{
+inicializar(){
 
-                    productos.mostrar();
+    productos.mostrar();
 
-                }
-            );
+    document
+        .getElementById("buscar")
+        .addEventListener(
+            "keyup",
+            (e)=>{
 
-        document
-            .getElementById("btnPedidos")
-            .addEventListener(
-                "click",
-                ()=>{
+                productos.buscar(e.target.value);
 
-                    alert("Pedidos");
+            }
+        );
 
-                }
-            );
+    document
+        .getElementById("btnCarrito")
+        .addEventListener(
+            "click",
+            ()=>{
 
-        document
-            .getElementById("btnCuenta")
-            .addEventListener(
-                "click",
-                ()=>{
+                pedidos.mostrar();
 
-                    alert("Mi Cuenta");
+            }
+        );
 
-                }
-            );
-
-        document
-            .getElementById("btnSalir")
-            .addEventListener(
-                "click",
-                ()=>{
-
-                    location.reload();
-
-                }
-            );
-
-    }
+}
 
 };
