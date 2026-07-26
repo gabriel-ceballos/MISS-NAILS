@@ -649,3 +649,168 @@ DASHBOARD
 
 }
 
+
+
+
+/******************************************************************
+                    TIENDA
+******************************************************************/
+
+.tienda{
+
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+
+    padding:25px;
+
+    width:100%;
+    max-width:1600px;
+
+    margin:auto;
+
+}
+
+/******************** BARRA SUPERIOR ********************/
+
+.barra-tienda{
+
+    display:flex;
+    gap:15px;
+    align-items:center;
+
+}
+
+.barra-tienda input{
+
+    flex:1;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:0 20px;
+
+    background:white;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+#btnCarrito{
+
+    width:120px;
+
+    height:50px;
+
+    border-radius:14px;
+
+}
+
+/******************** CATEGORIAS ********************/
+
+.categorias{
+
+    display:flex;
+
+    gap:12px;
+
+    overflow-x:auto;
+
+    padding-bottom:10px;
+
+}
+
+.categorias button{
+
+    width:auto;
+
+    padding:12px 24px;
+
+    border-radius:30px;
+
+    background:white;
+
+    color:#444;
+
+    font-weight:600;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+/******************** PRODUCTOS ********************/
+
+.productos{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+
+    gap:25px;
+
+}
+
+.producto{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    transition:.25s;
+
+}
+
+.producto:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.foto{
+
+    height:220px;
+
+    border-radius:18px;
+
+    background:#f5f5f5;
+
+}
+
+.producto h3{
+
+    font-size:20px;
+
+}
+
+.producto p{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:var(--rosaOscuro);
+
+}
+
+.producto button{
+
+    margin-top:auto;
+
+}
+
+
+
+
