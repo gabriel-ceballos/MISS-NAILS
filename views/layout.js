@@ -22,9 +22,9 @@ const layout = {
 
         document.getElementById("header").innerHTML = `
 
-<div class="barra-superior">
+<header class="mn-header">
 
-    <div class="logo">
+    <div class="mn-logo">
 
         <img
             src="img/logo.png"
@@ -32,13 +32,33 @@ const layout = {
 
     </div>
 
- <div class="usuario">
+    <div class="mn-buscador">
 
-    ${sesion.usuario.nombre}
+        <input
+            type="search"
+            id="buscarGeneral"
+            placeholder="Buscar productos...">
 
-</div>
+    </div>
 
-</div>
+    <button
+        class="mn-carrito"
+        id="btnCarritoSuperior">
+
+        🛒
+        <span id="cantidadCarrito">0</span>
+
+    </button>
+
+    <div class="mn-usuario">
+
+        👤
+        ${sesion.usuario.nombre}
+        ▼
+
+    </div>
+
+</header>
 
 `;
 

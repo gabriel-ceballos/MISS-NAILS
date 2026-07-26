@@ -10,36 +10,23 @@ const tienda = {
 
 <div class="tienda">
 
-    <div class="barra-tienda">
 
-        <input
-            type="search"
-            id="buscarProducto"
-            placeholder="Buscar productos...">
 
-        <button id="btnCarrito">
+<div class="categorias">
 
-            🛒 <span id="cantidadCarrito">0</span>
+    <button class="categoria activa">Todas</button>
 
-        </button>
+    <button class="categoria">Geles</button>
 
-    </div>
+    <button class="categoria">Rubber</button>
 
-    <div class="categorias">
+    <button class="categoria">Acrílicos</button>
 
-        <button>Todas</button>
+    <button class="categoria">Top Coat</button>
 
-        <button>Geles</button>
+    <button class="categoria">Promociones</button>
 
-        <button>Rubber</button>
-
-        <button>Acrílicos</button>
-
-        <button>Top Coat</button>
-
-        <button>Promociones</button>
-
-    </div>
+</div>
 
     <div class="productos">
 
