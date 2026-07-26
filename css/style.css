@@ -172,8 +172,11 @@ body{
     gap:18px;
 
 }
+/******************************************************************
+LOGIN
+******************************************************************/
 
-input{
+.formulario input{
 
     width:100%;
 
@@ -189,18 +192,17 @@ input{
 
 }
 
-input:focus{
+.formulario input:focus{
 
     outline:none;
 
     border-color:var(--rosa);
 
-    box-shadow:
-    0 0 0 4px rgba(230,90,146,.15);
+    box-shadow:0 0 0 4px rgba(230,90,146,.15);
 
 }
 
-button{
+.formulario button{
 
     width:100%;
 
@@ -210,19 +212,13 @@ button{
 
     border-radius:14px;
 
-    background:
-
-    linear-gradient(
-
+    background:linear-gradient(
         90deg,
-
         var(--rosa),
-
         var(--rosaOscuro)
-
     );
 
-    color:white;
+    color:#fff;
 
     font-size:16px;
 
@@ -230,23 +226,23 @@ button{
 
     cursor:pointer;
 
-    transition:.30s;
+    transition:.25s;
 
 }
 
-button:hover{
+.formulario button:hover{
 
     transform:translateY(-2px);
 
 }
 
-button:active{
+.formulario button:active{
 
     transform:scale(.98);
 
 }
 
-a{
+.formulario a{
 
     text-align:center;
 
@@ -258,11 +254,12 @@ a{
 
 }
 
-a:hover{
+.formulario a:hover{
 
     text-decoration:underline;
 
 }
+
 
 #mensajeSistema{
 
