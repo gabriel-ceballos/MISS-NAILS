@@ -1,56 +1,155 @@
 const tienda = {
 
-    async mostrar() {
+async mostrar() {
 
-        layout.mostrar();
+    layout.mostrar();
 
-        layout.header();
+    layout.header();
 
-        const lista = await productosService.obtener();
+    const lista = await productosService.obtener();
 
-        let htmlProductos = "";
+    let htmlProductos = "";
 
-        lista.forEach(producto => {
+    lista.forEach(producto => {
 
-            htmlProductos += this.crearTarjeta(producto);
+        htmlProductos += this.crearTarjeta(producto);
 
-        });
+    });
 
-        layout.contenido(`
+    layout.contenido(`
 
 <div class="tienda">
 
-<div class="mn-search">
+    <!-- BUSCADOR -->
 
-    <input
-        type="search"
-        id="buscarProducto"
-        placeholder="🔍 Buscar productos...">
+    <section class="mn-search">
 
-</div>
+        <input
+            type="search"
+            id="buscarProducto"
+            placeholder="🔍 Buscar productos...">
 
-    <div class="categorias">
+    </section>
 
-        <button class="categoria activa">Todas</button>
-        <button class="categoria">Geles</button>
-        <button class="categoria">Rubber</button>
-        <button class="categoria">Acrílicos</button>
-        <button class="categoria">Top Coat</button>
-        <button class="categoria">Promociones</button>
 
-    </div>
+    <!-- ACCESOS RAPIDOS -->
 
-    <div class="productos">
+    <section class="quick-menu">
+
+        <div class="quick-item">
+
+            💅
+
+            <span>Novedades</span>
+
+        </div>
+
+        <div class="quick-item">
+
+            🔥
+
+            <span>Ofertas</span>
+
+        </div>
+
+        <div class="quick-item">
+
+            ⭐
+
+            <span>Favoritos</span>
+
+        </div>
+
+        <div class="quick-item">
+
+            📦
+
+            <span>Categorías</span>
+
+        </div>
+
+    </section>
+
+
+    <!-- CATEGORIAS -->
+
+    <section class="categorias">
+
+        <button class="categoria activa">
+
+            Todas
+
+        </button>
+
+        <button class="categoria">
+
+            Gel
+
+        </button>
+
+        <button class="categoria">
+
+            Rubber
+
+        </button>
+
+        <button class="categoria">
+
+            Acrílicos
+
+        </button>
+
+        <button class="categoria">
+
+            Top Coat
+
+        </button>
+
+        <button class="categoria">
+
+            Promociones
+
+        </button>
+
+    </section>
+
+
+    <!-- BANNER -->
+
+    <section class="banner-home">
+
+        <div class="banner-card">
+
+            <h2>
+
+                MISS NAILS
+
+            </h2>
+
+            <p>
+
+                Productos Profesionales
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTOS -->
+
+    <section class="productos">
 
         ${htmlProductos}
 
-    </div>
+    </section>
 
 </div>
 
 `);
 
-    },
+},
 
     crearTarjeta(producto){
 
