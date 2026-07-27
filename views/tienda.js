@@ -36,10 +36,13 @@ const tienda = {
 
             <h3>Gel Pink</h3>
 
-            <p>$250</p>
+            <p class="precio">$250 MXN</p>
 
-            <button>Agregar</button>
+    <button class="btnAgregar">
 
+        🛒 Agregar
+
+    </button>
         </div>
 
         <div class="producto">
@@ -48,9 +51,13 @@ const tienda = {
 
             <h3>Rubber Base</h3>
 
-            <p>$180</p>
+            <p class="precio">$180 MXN</p>
 
-            <button>Agregar</button>
+    <button class="btnAgregar">
+
+        🛒 Agregar
+
+    </button>
 
         </div>
 
@@ -60,9 +67,13 @@ const tienda = {
 
             <h3>Top Coat</h3>
 
-            <p>$150</p>
+             <p class="precio">$150 MXN</p>
 
-            <button>Agregar</button>
+    <button class="btnAgregar">
+
+        🛒 Agregar
+
+    </button>
 
         </div>
 
@@ -72,9 +83,13 @@ const tienda = {
 
             <h3>Acrílico Cover</h3>
 
-            <p>$320</p>
+  <p class="precio">$320 MXN</p>
 
-            <button>Agregar</button>
+    <button class="btnAgregar">
+
+        🛒 Agregar
+
+    </button>
 
         </div>
 
