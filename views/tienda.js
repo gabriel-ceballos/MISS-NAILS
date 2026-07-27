@@ -6,7 +6,7 @@ const tienda = {
 
         layout.header();
 
-        const lista = await productos.obtener();
+        const lista = await productosService.obtener();
 
         let htmlProductos = "";
 
