@@ -1,28 +1,28 @@
 const tienda = {
 
-async mostrar() {
+    async mostrar() {
 
-    layout.mostrar();
+        layout.mostrar();
 
-    layout.header();
+        layout.header();
 
-    const lista = await productosService.obtener();
+        const lista = await productosService.obtener();
 
-    let htmlProductos = "";
+        let htmlProductos = "";
 
-    lista.forEach(producto => {
+        lista.forEach(producto => {
 
-        htmlProductos += this.crearTarjeta(producto);
+            htmlProductos += this.crearTarjeta(producto);
 
-    });
+        });
 
-    layout.contenido(`
+        layout.contenido(`
 
 <div class="tienda">
 
     <!-- BUSCADOR -->
 
-    <section class="mn-search">
+    <section class="buscador">
 
         <input
             type="search"
@@ -31,47 +31,7 @@ async mostrar() {
 
     </section>
 
-
-    <!-- ACCESOS RAPIDOS -->
-
-    <section class="quick-menu">
-
-        <div class="quick-item">
-
-            💅
-
-            <span>Novedades</span>
-
-        </div>
-
-        <div class="quick-item">
-
-            🔥
-
-            <span>Ofertas</span>
-
-        </div>
-
-        <div class="quick-item">
-
-            ⭐
-
-            <span>Favoritos</span>
-
-        </div>
-
-        <div class="quick-item">
-
-            📦
-
-            <span>Categorías</span>
-
-        </div>
-
-    </section>
-
-
-    <!-- CATEGORIAS -->
+    <!-- CATEGORÍAS -->
 
     <section class="categorias">
 
@@ -113,30 +73,6 @@ async mostrar() {
 
     </section>
 
-
-    <!-- BANNER -->
-
-    <section class="banner-home">
-
-        <div class="banner-card">
-
-            <h2>
-
-                MISS NAILS
-
-            </h2>
-
-            <p>
-
-                Productos Profesionales
-
-            </p>
-
-        </div>
-
-    </section>
-
-
     <!-- PRODUCTOS -->
 
     <section class="productos">
@@ -149,7 +85,7 @@ async mostrar() {
 
 `);
 
-},
+    },
 
     crearTarjeta(producto){
 

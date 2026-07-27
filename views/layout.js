@@ -33,34 +33,14 @@ header() {
     </div>
 
     <button
-        class="mn-cart"
-        id="btnCarritoSuperior">
+        class="mn-notificaciones"
+        id="btnNotificaciones">
 
-        <span class="cart-icon">🛒</span>
+        🔔
 
-        <span
-            class="cart-count"
-            id="cantidadCarrito">
+        <span class="badge">
 
             0
-
-        </span>
-
-    </button>
-
-    <button
-        class="mn-user"
-        id="btnUsuario">
-
-        <span class="user-icon">
-
-            👤
-
-        </span>
-
-        <span class="user-name">
-
-            ${sesion.usuario.nombre}
 
         </span>
 
