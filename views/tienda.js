@@ -20,6 +20,15 @@ const tienda = {
 
 <div class="tienda">
 
+<div class="mn-search">
+
+    <input
+        type="search"
+        id="buscarProducto"
+        placeholder="🔍 Buscar productos...">
+
+</div>
+
     <div class="categorias">
 
         <button class="categoria activa">Todas</button>

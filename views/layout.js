@@ -18,9 +18,9 @@ const layout = {
 
     },
 
-    header() {
+header() {
 
-        document.getElementById("header").innerHTML = `
+    document.getElementById("header").innerHTML = `
 
 <header class="mn-header">
 
@@ -28,41 +28,49 @@ const layout = {
 
         <img
             src="img/logo.png"
-            alt="Miss Nails">
-
-    </div>
-
-    <div class="mn-buscador">
-
-        <input
-            type="search"
-            id="buscarGeneral"
-            placeholder="Buscar productos...">
+            alt="MISS NAILS">
 
     </div>
 
     <button
-        class="mn-carrito"
+        class="mn-cart"
         id="btnCarritoSuperior">
 
-        🛒
-        <span id="cantidadCarrito">0</span>
+        <span class="cart-icon">🛒</span>
+
+        <span
+            class="cart-count"
+            id="cantidadCarrito">
+
+            0
+
+        </span>
 
     </button>
 
-    <div class="mn-usuario">
+    <button
+        class="mn-user"
+        id="btnUsuario">
 
-        👤
-        ${sesion.usuario.nombre}
-        ▼
+        <span class="user-icon">
 
-    </div>
+            👤
+
+        </span>
+
+        <span class="user-name">
+
+            ${sesion.usuario.nombre}
+
+        </span>
+
+    </button>
 
 </header>
 
 `;
 
-    },
+},
 
     contenido(html){
 
