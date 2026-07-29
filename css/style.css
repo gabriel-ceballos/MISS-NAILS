@@ -36,9 +36,11 @@ body{
 
     min-height:100vh;
 
-      overflow:hidden;
+    overflow-x:hidden;
 
-    touch-action:none;
+    overflow-y:auto;
+
+    touch-action:pan-y;
 
     font-family:
     "Segoe UI",
@@ -478,9 +480,17 @@ button:disabled{
 
     min-height:100dvh;
 
-    display:flex;
+    display:grid;
 
-    flex-direction:column;
+    grid-template-rows:
+
+        auto
+
+        auto
+
+        1fr
+
+        auto;
 
     background:#F7F7F7;
 
@@ -510,15 +520,13 @@ button:disabled{
 
 #contenido{
 
-    flex:1;
-
     width:100%;
 
-    overflow-y:auto;
-
-    overflow-x:hidden;
+    padding-bottom:90px;
 
 }
+
+
 
 #bottomBar{
 
@@ -652,6 +660,87 @@ button:disabled{
 
 
 
+/******************************************************************
+                RESPONSIVE ENGINE
+******************************************************************/
+
+/***********************
+MÓVIL (Base)
+************************/
+
+.tienda{
+
+    width:100%;
+
+    max-width:100%;
+
+    margin:0 auto;
+
+    display:grid;
+
+    grid-template-areas:
+
+        "buscar"
+
+        "categorias"
+
+        "productos";
+
+}
+
+#header{
+
+    grid-area:header;
+
+}
+
+.buscador{
+
+    grid-area:buscar;
+
+}
+
+.categorias{
+
+    grid-area:categorias;
+
+}
+
+.productos{
+
+    display:grid;
+
+    gap:16px;
+
+    padding:16px;
+
+}
+
+
+/******************************************************************
+            CLASES DEL LAYOUT
+******************************************************************/
+
+body.mobile .productos{
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+}
+
+body.tablet .productos{
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+}
+
+body.desktop .productos{
+
+    grid-template-columns:
+        repeat(auto-fill,minmax(220px,1fr));
+
+}
 
 
 

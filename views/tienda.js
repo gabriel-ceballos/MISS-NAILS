@@ -2,10 +2,6 @@ const tienda = {
 
     async mostrar() {
 
-        layout.mostrar();
-
-        layout.header();
-
         const lista = await productosService.obtener();
 
         let htmlProductos = "";
@@ -16,22 +12,17 @@ const tienda = {
 
         });
 
-        layout.contenido(`
+        layout.render({
+
+            header: true,
+
+            buscador: true,
+
+            bottomBar: true,
+
+            contenido: `
 
 <div class="tienda">
-
-    <!-- BUSCADOR -->
-
-    <section class="buscador">
-
-        <input
-            type="search"
-            id="buscarProducto"
-            placeholder="🔍 Buscar productos...">
-
-    </section>
-
-    <!-- CATEGORÍAS -->
 
     <section class="categorias">
 
@@ -73,8 +64,6 @@ const tienda = {
 
     </section>
 
-    <!-- PRODUCTOS -->
-
     <section class="productos">
 
         ${htmlProductos}
@@ -83,7 +72,9 @@ const tienda = {
 
 </div>
 
-`);
+`
+
+        });
 
     },
 
