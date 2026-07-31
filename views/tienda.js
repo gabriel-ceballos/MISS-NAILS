@@ -81,20 +81,7 @@ const tienda = {
 
     </section>
 
-    <section class="encabezado-productos">
-
-        <div>
-
-            <span class="etiqueta-oferta">Catalogo</span>
-
-            <h2>Productos</h2>
-
-        </div>
-
-  
-
-    </section>
-
+    
     <section
         class="productos"
         id="productosTienda">
@@ -111,9 +98,9 @@ const tienda = {
 
     },
 
-    crearTarjeta(producto){
+crearTarjeta(producto){
 
-        return `
+    return `
 
 <article class="producto">
 
@@ -124,31 +111,11 @@ const tienda = {
             class="fotoProducto"
             alt="${producto.nombre || 'Producto MISS NAILS'}">
 
-        <span class="producto-badge">Oferta</span>
-
     </div>
 
     <div class="producto__contenido">
 
-        <h3>
-
-            ${producto.nombre}
-
-        </h3>
-
-        <p class="producto__detalle">
-
-            Producto seleccionado para salon y uso profesional.
-
-        </p>
-
-        <div class="producto__meta">
-
-            <span>4.8</span>
-
-            <span>Envio disponible</span>
-
-        </div>
+        <h3>${producto.nombre}</h3>
 
         <p class="precio">
 
@@ -171,6 +138,6 @@ const tienda = {
 
 `;
 
-    }
+}
 
 };
