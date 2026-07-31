@@ -3,7 +3,7 @@ Frontend de Miss Nails
 
 
 git add .
-git commit -m "v1.0 Frontend estable tienda"
+git commit -m "refactor(css): elimina reglas duplicadas sin cambios visuales"
 git push
 
 
