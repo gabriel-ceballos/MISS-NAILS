@@ -117,20 +117,16 @@ crearTarjeta(producto){
 
         <h3>${producto.nombre}</h3>
 
-        <p class="precio">
+        <p class="precio">${producto.precio}</p>
 
-            ${producto.precio}
+<button
+    class="btnAgregar"
+    data-id="${producto.id}"
+    type="button">
 
-        </p>
+    Agregar
 
-        <button
-            class="btnAgregar"
-            data-id="${producto.id}"
-            type="button">
-
-            Agregar
-
-        </button>
+</button>
 
     </div>
 
