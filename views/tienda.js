@@ -40,69 +40,6 @@ const tienda = {
 
 <div class="tienda">
 
-    <section class="hero-tienda">
-
-        <div class="hero-tienda__contenido">
-
-            <span class="etiqueta-oferta">Venta especial MISS NAILS</span>
-
-            <h1>Todo para tus unas en un solo lugar</h1>
-
-            <p>
-
-                Compra geles, acrilicos, herramientas y decoracion con una experiencia rapida, moderna y lista para celular.
-
-            </p>
-
-            <div class="hero-tienda__acciones">
-
-                <a href="#productosTienda">Ver productos</a>
-
-                <span>Ofertas por tiempo limitado</span>
-
-            </div>
-
-        </div>
-
-        <div class="hero-tienda__panel">
-
-            <span>Hasta</span>
-
-            <strong>45%</strong>
-
-            <small>menos en kits seleccionados</small>
-
-        </div>
-
-    </section>
-
-    <section class="beneficios-tienda" aria-label="Beneficios de compra">
-
-        <article>
-
-            <strong>Envio nacional</strong>
-
-            <span>Seguimiento de pedido</span>
-
-        </article>
-
-        <article>
-
-            <strong>Compra protegida</strong>
-
-            <span>Atencion personalizada</span>
-
-        </article>
-
-        <article>
-
-            <strong>Precio salon</strong>
-
-            <span>Ideal para profesionales</span>
-
-        </article>
-
-    </section>
 
     <section class="categorias" aria-label="Categorias">
 
@@ -150,11 +87,11 @@ const tienda = {
 
             <span class="etiqueta-oferta">Catalogo</span>
 
-            <h2>Productos destacados</h2>
+            <h2>Productos</h2>
 
         </div>
 
-        <p>Orden visual tipo marketplace, conservando los datos reales del backend.</p>
+  
 
     </section>
 
