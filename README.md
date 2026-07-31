@@ -3,7 +3,7 @@ Frontend de Miss Nails
 
 
 git add .
-git commit -m "refactor(css): elimina reglas duplicadas sin cambios visuales"
+git commit -m "eliminacion de @media(min-width:1024px)"
 git push
 
 

@@ -342,45 +342,6 @@ NOTIFICACIONES
 
 }
 
-/*************************************************
-ESCRITORIO
-*************************************************/
-
-@media(min-width:1024px){
-
-    .mn-header{
-
-        padding:14px 32px;
-
-    }
-
-    .mn-logo img{
-
-        height:50px;
-
-    }
-
-    .buscador{
-
-        padding:16px 32px;
-
-    }
-
-    .buscador input{
-
-        max-width:900px;
-
-        display:block;
-
-        margin:0 auto;
-
-        font-size:16px;
-
-        height:54px;
-
-    }
-
-}
 
 
 /*==========================================================
@@ -400,52 +361,6 @@ ESCRITORIO
 }
 
 
-
-/*************************************************
-ESCRITORIO
-*************************************************/
-
-@media(min-width:1024px){
-
-    .tienda{
-
-        max-width:1400px;
-
-        padding:20px 28px 40px;
-
-    }
-
-    .categorias{
-
-        gap:12px;
-
-        padding-bottom:18px;
-
-    }
-
-    .categoria{
-
-        height:40px;
-
-        padding:0 22px;
-
-        font-size:14px;
-
-    }
-
-    .encabezado-productos{
-
-        margin-bottom:18px;
-
-    }
-
-    .encabezado-productos h2{
-
-        font-size:30px;
-
-    }
-
-}
 
 
 
