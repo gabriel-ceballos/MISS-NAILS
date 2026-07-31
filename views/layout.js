@@ -30,17 +30,6 @@ const layout = {
 
         document.getElementById("header").innerHTML = `
 
-<div class="top-strip">
-
-    <div class="top-strip__inner">
-
-        <span>Envios a todo Mexico</span>
-
-        <span>Compra segura para profesionales de unas</span>
-
-    </div>
-
-</div>
 
 <header class="mn-header">
 
@@ -55,14 +44,7 @@ const layout = {
 
     </a>
 
-    <div class="mn-header__promesa">
-
-        <strong>Precios tipo marketplace</strong>
-
-        <span>Kits, geles y herramientas para salon</span>
-
-    </div>
-
+   
     <button
         class="mn-notificaciones"
         id="btnNotificaciones"
@@ -87,18 +69,11 @@ const layout = {
 
 <section class="buscador" aria-label="Buscador de productos">
 
-    <label
-        class="sr-only"
-        for="buscarProducto">
-
-        Buscar productos
-
-    </label>
+    
 
     <div class="buscador__campo">
 
-        <span aria-hidden="true">Buscar</span>
-
+    
         <input
             type="search"
             id="buscarProducto"
