@@ -3,7 +3,7 @@ Frontend de Miss Nails
 
 
 git add .
-git commit -m "Migrar puente a api"
+git commit -m "v1.0 Frontend estable tienda"
 git push
 
 
