@@ -19,6 +19,34 @@ async function iniciar() {
 
     }
 
+const ancho = window.innerWidth;
+
+const alto = window.innerHeight;
+
+let pantalla = "";
+
+if (ancho < 768) {
+
+    pantalla = "MOBILE";
+
+} else if (ancho < 1200) {
+
+    pantalla = "TABLET";
+
+} else {
+
+    pantalla = "DESKTOP";
+
+}
+
+console.log("================================");
+console.log("PANTALLA :", pantalla);
+console.log("ANCHO    :", ancho);
+console.log("ALTO     :", alto);
+console.log("================================");
+
+    console.log("PANTALLA:", pantalla);
+
     console.log("3. Voy a mostrar el login");
 
     login.mostrar();

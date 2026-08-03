@@ -153,13 +153,14 @@ const respuesta = await auth.login(
 
 console.log("LOGIN →", respuesta);
 
-toast.mostrar(respuesta.mensaje);
+
+
 
 if(respuesta.ok){
 
     sesion.usuario = respuesta.datos;
 
-  tienda.mostrar();
+ 
 
     return;
 
@@ -169,7 +170,7 @@ if(respuesta.ok){
 
         console.error(error);
 
-        toast.mostrar("Error de comunicación");
+        
 
     }
 
@@ -275,7 +276,7 @@ activarCuenta(){
 
     console.log("Entré a activarCuenta()");
 
-    toast.mostrar("Activación conectada");
+    
 
 }
 
