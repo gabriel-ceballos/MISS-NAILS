@@ -1,6 +1,24 @@
 console.log("VERSION NUEVA APP");
 console.log("APP cargada");
 
+/*************************************************
+SISTEMA
+*************************************************/
+
+const sistema = {
+
+    pantalla: "",
+
+    ancho: 0,
+
+    alto: 0
+
+};
+
+/*************************************************
+APP
+*************************************************/
+
 async function iniciar() {
 
     console.log("1. Antes de llamar a la API");
@@ -19,33 +37,29 @@ async function iniciar() {
 
     }
 
-const ancho = window.innerWidth;
+    sistema.ancho = window.innerWidth;
 
-const alto = window.innerHeight;
+    sistema.alto = window.innerHeight;
 
-let pantalla = "";
+    if (sistema.ancho < 768) {
 
-if (ancho < 768) {
+        sistema.pantalla = "MOBILE";
 
-    pantalla = "MOBILE";
+    } else if (sistema.ancho < 1200) {
 
-} else if (ancho < 1200) {
+        sistema.pantalla = "TABLET";
 
-    pantalla = "TABLET";
+    } else {
 
-} else {
+        sistema.pantalla = "DESKTOP";
 
-    pantalla = "DESKTOP";
+    }
 
-}
-
-console.log("================================");
-console.log("PANTALLA :", pantalla);
-console.log("ANCHO    :", ancho);
-console.log("ALTO     :", alto);
-console.log("================================");
-
-    console.log("PANTALLA:", pantalla);
+    console.log("================================");
+    console.log("PANTALLA :", sistema.pantalla);
+    console.log("ANCHO    :", sistema.ancho);
+    console.log("ALTO     :", sistema.alto);
+    console.log("================================");
 
     console.log("3. Voy a mostrar el login");
 

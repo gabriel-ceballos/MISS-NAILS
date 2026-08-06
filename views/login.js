@@ -160,11 +160,12 @@ if(respuesta.ok){
 
     sesion.usuario = respuesta.datos;
 
- 
+    vista.mostrar();
 
     return;
 
 }
+
 
     } catch (error) {
 
