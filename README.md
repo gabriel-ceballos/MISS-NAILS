@@ -14,4 +14,6 @@ git branch
 
 git status
 
+git add .
+
 git branch --show-current

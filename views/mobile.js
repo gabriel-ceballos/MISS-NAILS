@@ -6,6 +6,8 @@ const mobile = {
 
     textoBusqueda: "",
 
+    intervaloInventario: null,
+
 
     /*************************************************
      * MOSTRAR ESTRUCTURA MOBILE
@@ -218,6 +220,8 @@ const mobile = {
 
             this.renderizar();
 
+             this.iniciarSincronizacion();
+
 
         } catch (error) {
 
@@ -236,9 +240,116 @@ const mobile = {
 
 
     /*************************************************
+     * SINCRONIZACIÓN AUTOMÁTICA DE INVENTARIO
+     *************************************************/
+
+    iniciarSincronizacion() {
+
+        /*
+         * Evita crear más de un intervalo.
+         */
+
+        if (this.intervaloInventario) {
+
+            clearInterval(
+                this.intervaloInventario
+            );
+
+        }
+
+        /*
+         * Actualizar productos cada 10 segundos.
+         */
+
+        this.intervaloInventario =
+            setInterval(
+                () => this.sincronizarProductos(),
+                10000
+            );
+
+        console.log(
+            "MOBILE → sincronización automática iniciada"
+        );
+
+    },
+
+
+    /*************************************************
+     * CONSULTAR PRODUCTOS ACTUALIZADOS
+     *************************************************/
+
+    async sincronizarProductos() {
+
+        try {
+
+            const respuesta =
+                await api("productos");
+
+
+            if (!respuesta || !respuesta.ok) {
+
+                console.warn(
+                    "MOBILE → sincronización sin respuesta válida"
+                );
+
+                return;
+
+            }
+
+
+            const nuevosProductos =
+                Array.isArray(respuesta.datos)
+                    ? respuesta.datos
+                    : [];
+
+
+            /*
+             * Reemplazar la información local
+             * por la información actual del backend.
+             */
+
+            this.productos =
+                nuevosProductos;
+
+
+            /*
+             * Volver a aplicar búsqueda/categoría
+             * y actualizar solamente la zona
+             * de productos.
+             */
+
+            this.renderizar();
+
+
+            console.log(
+                "MOBILE → inventario sincronizado:",
+                nuevosProductos.length
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "MOBILE → error de sincronización:",
+                error
+            );
+
+        }
+
+    },
+
+
+
+
+
+
+
+
+    /*************************************************
      * EVENTOS
      *************************************************/
 
+    
     inicializarEventos() {
 
         const buscador =
