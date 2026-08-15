@@ -8,7 +8,7 @@ const login = {
 
         console.log(app);
 
-       app.innerHTML = `
+        app.innerHTML = `
 
 <div class="contenedor-login">
 
@@ -23,41 +23,35 @@ const login = {
 
         </div>
 
+        <div class="formulario">
 
-           <div class="formulario">
+            <input
+                type="email"
+                id="correo"
+                placeholder="Correo">
 
-        <input
-            type="email"
-            id="correo"
-            placeholder="Correo">
+            <input
+                type="password"
+                id="password"
+                placeholder="Contraseña">
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Contraseña">
+            <button id="btnIngresar">
 
-             <button id="btnIngresar">
+                Ingresar
 
-        Ingresar
+            </button>
 
-    </button>
+            <a
+                href="#"
+                id="activarCuenta">
 
+                Activar cuenta
 
-     <a
-        href="#"
-        id="activarCuenta">
+            </a>
 
-        Activar cuenta
+            <div id="mensajeSistema"></div>
 
-    </a>
-
-    <div id="mensajeSistema"></div>
-
-
-
-    </div>
-
-
+        </div>
 
     </div>
 
@@ -65,129 +59,152 @@ const login = {
 
 `;
 
-      this.inicializar();
-      document.getElementById("correo").focus();
+        this.inicializar();
+        document.getElementById("correo").focus();
 
     },
 
-inicializar(){
 
-    const boton =
-        document.getElementById("btnIngresar");
+    inicializar() {
 
-    const correo =
-        document.getElementById("correo");
+        const boton =
+            document.getElementById("btnIngresar");
 
-    const password =
-        document.getElementById("password");
+        const correo =
+            document.getElementById("correo");
 
-    boton.addEventListener(
-        "click",
-        () => this.ingresar()
-    );
+        const password =
+            document.getElementById("password");
 
-    correo.addEventListener(
-        "keydown",
-        (e)=>{
 
-            if(e.key==="Enter"){
+        boton.addEventListener(
+            "click",
+            () => this.ingresar()
+        );
+
+
+        correo.addEventListener(
+            "keydown",
+            (e) => {
+
+                if (e.key === "Enter") {
+
+                    e.preventDefault();
+
+                    password.focus();
+
+                }
+
+            }
+        );
+
+
+        password.addEventListener(
+            "keydown",
+            (e) => {
+
+                if (e.key === "Enter") {
+
+                    e.preventDefault();
+
+                    this.ingresar();
+
+                }
+
+            }
+        );
+
+
+        const activar =
+            document.getElementById("activarCuenta");
+
+
+        activar.addEventListener(
+            "click",
+            (e) => {
 
                 e.preventDefault();
 
-                password.focus();
+                this.mostrarActivacion();
+
+            }
+        );
+
+    },
+
+
+    async ingresar() {
+
+        const boton =
+            document.getElementById("btnIngresar");
+
+        const correo =
+            document.getElementById("correo");
+
+        const password =
+            document.getElementById("password");
+
+
+        boton.disabled = true;
+        boton.textContent = "Ingresando...";
+
+        correo.disabled = true;
+        password.disabled = true;
+
+
+        try {
+
+            const respuesta = await auth.login(
+                correo.value.trim(),
+                password.value
+            );
+
+
+            console.log("LOGIN →", respuesta);
+
+
+            if (respuesta.ok) {
+
+                sesion.usuario = respuesta.datos;
+
+                /*
+                 * La pantalla ya fue identificada
+                 * desde el inicio de la aplicación.
+                 *
+                 * Aquí solamente se muestra
+                 * la distribución correspondiente.
+                 */
+
+                mostrarPantalla();
+
+                return;
 
             }
 
-        }
-    );
 
-    password.addEventListener(
-        "keydown",
-        (e)=>{
+        } catch (error) {
 
-            if(e.key==="Enter"){
-
-                e.preventDefault();
-
-                this.ingresar();
-
-            }
+            console.error(error);
 
         }
-    );
-
-    const activar =
-        document.getElementById("activarCuenta");
-
-    activar.addEventListener(
-        "click",
-        (e)=>{
-
-            e.preventDefault();
-
-            this.mostrarActivacion();
-
-        }
-    );
-
-},
-
-  async ingresar() {
-
-    const boton = document.getElementById("btnIngresar");
-    const correo = document.getElementById("correo");
-    const password = document.getElementById("password");
-
-    boton.disabled = true;
-    boton.textContent = "Ingresando...";
-
-    correo.disabled = true;
-    password.disabled = true;
-
-    try {
-
-const respuesta = await auth.login(
-    correo.value.trim(),
-    password.value
-);
-
-console.log("LOGIN →", respuesta);
 
 
+        boton.disabled = false;
+        boton.textContent = "Ingresar";
+
+        correo.disabled = false;
+        password.disabled = false;
+
+    },
 
 
-if(respuesta.ok){
+    mostrarActivacion() {
 
-    sesion.usuario = respuesta.datos;
-
-    vista.mostrar();
-
-    return;
-
-}
+        const app =
+            document.getElementById("app");
 
 
-    } catch (error) {
-
-        console.error(error);
-
-        
-
-    }
-
-    boton.disabled = false;
-    boton.textContent = "Ingresar";
-
-    correo.disabled = false;
-    password.disabled = false;
-
-},
-
-mostrarActivacion(){
-
-    const app = document.getElementById("app");
-
-    app.innerHTML = `
+        app.innerHTML = `
 
 <div class="contenedor-login">
 
@@ -243,43 +260,45 @@ mostrarActivacion(){
 
 `;
 
-    this.inicializarActivacion();
+        this.inicializarActivacion();
 
-},
+    },
 
-inicializarActivacion(){
 
-    const boton =
-        document.getElementById("btnActivar");
+    inicializarActivacion() {
 
-    boton.addEventListener(
-        "click",
-        () => this.activarCuenta()
-    );
+        const boton =
+            document.getElementById("btnActivar");
 
-    const regresar =
-        document.getElementById("regresarLogin");
 
-    regresar.addEventListener(
-        "click",
-        (e)=>{
+        boton.addEventListener(
+            "click",
+            () => this.activarCuenta()
+        );
 
-            e.preventDefault();
 
-            this.mostrar();
+        const regresar =
+            document.getElementById("regresarLogin");
 
-        }
-    );
 
-},
+        regresar.addEventListener(
+            "click",
+            (e) => {
 
-activarCuenta(){
+                e.preventDefault();
 
-    console.log("Entré a activarCuenta()");
+                this.mostrar();
 
-    
+            }
+        );
 
-}
+    },
 
+
+    activarCuenta() {
+
+        console.log("Entré a activarCuenta()");
+
+    }
 
 };

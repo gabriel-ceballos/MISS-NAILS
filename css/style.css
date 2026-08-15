@@ -27,55 +27,6 @@
 
 
 
-/*************************************************
-FRAME
-*************************************************/
-
-.frame{
-
-    width:100%;
-
-    min-height:100dvh;
-
-    display:flex;
-
-    flex-direction:column;
-
-    background:#F5F6F8;
-
-}
-
-.frame #header{
-
-    background:#FFFFFF;
-
-}
-
-.frame #buscador{
-
-    background:#FFFFFF;
-
-}
-
-.frame #categorias{
-
-    background:#FFFFFF;
-
-}
-
-.frame #contenido{
-
-    flex:1;
-
-    background:#F5F6F8;
-
-}
-
-
-
-
-
-
 
 
 /*************************************************
@@ -126,197 +77,9 @@ APP
 
 }
 
-/*************************************************
-LAYOUT
-*************************************************/
 
-.layout{
 
-    width:100%;
 
-    height:100dvh;
-
-    display:grid;
-
-    grid-template-rows:
-
-        auto
-
-        auto
-
-        1fr
-
-        auto;
-
-    background:#F5F6F8;
-
-}
-
-/*
-
-#header{
-
-    position:sticky;
-
-    top:0;
-
-    z-index:900;
-
-    background:white;
-
-}
-
-#buscador{
-
-    position:sticky;
-
-    top:64px;
-
-    z-index:850;
-
-    background:white;
-
-}
-
-#contenido{
-
-    overflow-y:auto;
-
-    overflow-x:hidden;
-
-    padding-bottom:90px;
-
-}
-
-#bottomBar{
-
-    position:fixed;
-
-    bottom:0;
-
-    left:0;
-
-    right:0;
-
-    z-index:950;
-
-}
-
-*/
-
-
-
-/*==========================================================
-                    HEADER
-==========================================================*/
-
-.mn-header{
-
-    width:100%;
-
-    min-height:64px;
-
-    background:#FFFFFF;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:12px 16px;
-
-    border-bottom:1px solid #ECECEC;
-
-}
-
-.mn-logo{
-
-    display:flex;
-
-    align-items:center;
-
-}
-
-.mn-logo img{
-
-    height:42px;
-
-    width:auto;
-
-    display:block;
-
-}
-
-/*************************************************
-NOTIFICACIONES
-*************************************************/
-
-.mn-notificaciones{
-
-    width:46px;
-
-    height:46px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:#FFFFFF;
-
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    cursor:pointer;
-
-    position:relative;
-
-    transition:.20s;
-
-    font-size:26px;
-
-}
-
-.mn-notificaciones:hover{
-
-    transform:translateY(-1px);
-
-}
-
-.badge{
-
-    position:absolute;
-
-    top:3px;
-
-    right:3px;
-
-    width:18px;
-
-    height:18px;
-
-    border-radius:50%;
-
-    background:#FF3158;
-
-    color:#FFF;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:11px;
-
-    font-weight:700;
-
-}
 
 /*==========================================================
                     BUSCADOR
@@ -397,26 +160,6 @@ NOTIFICACIONES
     pointer-events:none;
 
 }
-
-
-
-/*==========================================================
-                    TIENDA
-==========================================================*/
-
-.tienda{
-
-    width:100%;
-
-    max-width:100%;
-
-    margin:0 auto;
-
-    padding:10px 12px 20px;
-
-}
-
-
 
 
 
@@ -551,150 +294,372 @@ NOTIFICACIONES
 
 }
 
-/*==========================================================
-                    PRODUCTOS
-==========================================================*/
+/* =========================================
+   MISS NAILS - MOBILE
+   ESTRUCTURA REAL
+========================================= */
 
-.productos{
-
-    display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-    gap:8px;
+.mobile{
 
     width:100%;
 
-}
-
-/*==========================================================
-                    TARJETA
-==========================================================*/
-
-.producto{
-
-    background:#FFFFFF;
-
-    border-radius:10px;
-
-    overflow:hidden;
-
-    border:1px solid #ECECEC;
-
-    transition:.20s;
-
-}
-
-.producto:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-
-}
-
-.foto{
-
-    width:100%;
-
-    aspect-ratio:1;
-
-    background:#F3F3F3;
-
-    overflow:hidden;
-
-    position:relative;
-
-}
-
-.fotoProducto{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-}
-
-
-/*==========================================================
-                CONTENIDO TARJETA
-==========================================================*/
-
-.producto-badge{
-
-    position:absolute;
-
-    top:6px;
-
-    left:6px;
-
-    background:#ff4747;
-
-    color:#fff;
-
-    font-size:9px;
-
-    font-weight:700;
-
-    padding:3px 6px;
-
-    border-radius:5px;
-
-}
-
-.producto__contenido{
+    height:100dvh;
 
     display:flex;
 
     flex-direction:column;
 
-    gap:4px;
+    overflow:hidden;
 
-    padding:8px;
+    background:#F5F6F8;
 
 }
 
-.producto h3{
 
-    font-size:11px;
+/* =========================================
+   FILA 1 — CABECERA
+========================================= */
 
-    font-weight:600;
+.mobile-header{
 
-    line-height:1.30;
+    width:100%;
 
-    color:#222;
+    height:72px;
 
-    height:30px;
+    min-height:72px;
+
+    flex:0 0 72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:8px 14px;
+
+    background:#FFFFFF;
+
+    border-bottom:1px solid #DDDDDD;
+
+}
+
+
+.mobile-logo{
+
+    width:154px;
+
+    height:52px;
+
+    display:flex;
+
+    align-items:center;
 
     overflow:hidden;
 
 }
 
-.producto__detalle{
+
+.mobile-logo img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+}
+
+
+.mobile-notificaciones{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#FFFFFF;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+
+/* =========================================
+   FILA 2 — BUSCADOR
+========================================= */
+
+.mobile-buscador{
+
+    width:100%;
+
+    height:68px;
+
+    min-height:68px;
+
+    flex:0 0 68px;
+
+    padding:10px 12px;
+
+    background:#FFFFFF;
+
+    border-bottom:1px solid #DDDDDD;
+
+}
+
+
+.mobile-buscador input{
+
+    width:100%;
+
+    height:48px;
+
+    border:2px solid #222222;
+
+    border-radius:25px;
+
+    background:#FFFFFF;
+
+    padding:0 18px;
+
+    font-size:15px;
+
+    outline:none;
+
+    box-sizing:border-box;
+
+}
+
+
+/* =========================================
+   FILA 3 — CATEGORÍAS
+========================================= */
+
+.mobile-categorias{
+
+    width:100%;
+
+    height:58px;
+
+    min-height:58px;
+
+    flex:0 0 58px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px 12px;
+
+    background:#FFFFFF;
+
+    border-bottom:1px solid #DDDDDD;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    scrollbar-width:none;
+
+}
+
+
+.mobile-categorias::-webkit-scrollbar{
 
     display:none;
 
 }
 
-.producto__meta{
+
+.mobile-categoria{
+
+    flex:0 0 auto;
+
+    height:40px;
+
+    padding:0 16px;
+
+    border:1px solid #AAAAAA;
+
+    border-radius:8px;
+
+    background:#FFFFFF;
+
+    font-size:13px;
+
+    white-space:nowrap;
+
+}
+
+
+.mobile-categoria.activa{
+
+    background:#111111;
+
+    color:#FFFFFF;
+
+    border-color:#111111;
+
+}
+
+
+/* =========================================
+   FILA 4 — PRODUCTOS
+   ÚNICA ZONA CON SCROLL
+========================================= */
+
+.mobile-productos{
+
+    width:100%;
+
+    flex:1 1 auto;
+
+    min-height:0;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    padding:10px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    grid-auto-rows:max-content;
+
+    align-content:start;
+
+    gap:8px;
+
+    background:#F5F6F8;
+
+    box-sizing:border-box;
+
+    -webkit-overflow-scrolling:touch;
+
+}
+
+
+/* =========================================
+   TARJETA
+========================================= */
+
+.mobile-productos .producto{
+
+    width:100%;
+
+    min-width:0;
+
+    background:#FFFFFF;
+
+    border:1px solid #D9D9D9;
+
+    border-radius:9px;
+
+    overflow:hidden;
+
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+
+    box-sizing:border-box;
+
+}
+
+
+.mobile-productos .foto{
+
+    width:100%;
+
+    aspect-ratio:1 / 1;
+
+    background:#EEEEEE;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+.mobile-producto-sin-imagen,
+.producto-sin-imagen{
+
+    font-size:8px;
+
+    color:#AAAAAA;
+
+    font-weight:700;
+
+}
+
+
+.mobile-productos .producto__contenido{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:3px;
+
+    padding:6px;
+
+    box-sizing:border-box;
+
+}
+
+
+.mobile-productos .producto h3{
+
+    margin:0;
+
+    height:28px;
+
+    overflow:hidden;
+
+    font-size:9px;
+
+    line-height:13px;
+
+    font-weight:700;
+
+    color:#222222;
+
+}
+
+
+.mobile-productos .producto__detalle{
 
     display:none;
 
 }
 
-/*==========================================================
-                    PRECIO
-==========================================================*/
 
-.precio{
+.mobile-productos .producto__meta{
 
-    margin-top:4px;
+    display:none;
+
+}
+
+
+.mobile-productos .precio{
+
+    margin-top:3px;
 
     color:#FF4D2D;
 
-    font-size:16px;
+    font-size:11px;
 
     font-weight:800;
 
@@ -702,53 +667,39 @@ NOTIFICACIONES
 
 }
 
-/*==========================================================
-                BOTON AGREGAR
-==========================================================*/
 
-.btnAgregar{
+.mobile-productos .btnAgregar{
 
     width:100%;
 
-    height:32px;
+    height:23px;
 
-    margin-top:6px;
+    margin-top:5px;
 
     border:none;
 
-    border-radius:8px;
+    border-radius:5px;
 
     background:#111111;
 
     color:#FFFFFF;
 
-    font-size:11px;
+    font-size:8px;
 
     font-weight:700;
 
-    transition:.20s;
-
 }
 
-.btnAgregar:hover{
 
-    background:#FF4D2D;
+/* =========================================
+   ESTADO VACÍO / ERROR
+========================================= */
 
-}
-
-.btnAgregar:active{
-
-    transform:scale(.98);
-
-}
-
-/*==========================================================
-                ESTADO VACIO
-==========================================================*/
-
-.estado-vacio{
+.mobile-productos .estado-vacio{
 
     grid-column:1 / -1;
+
+    min-height:180px;
 
     display:flex;
 
@@ -758,361 +709,109 @@ NOTIFICACIONES
 
     align-items:center;
 
-    gap:10px;
-
-    min-height:180px;
+    gap:8px;
 
     background:#FFFFFF;
 
-    border-radius:12px;
+    border:1px dashed #CCCCCC;
 
-    border:1px dashed #D8D8D8;
+    border-radius:10px;
 
     text-align:center;
 
-    padding:30px;
+    padding:20px;
 
 }
 
-.estado-vacio strong{
 
-    font-size:18px;
+.mobile-productos .estado-vacio strong{
+
+    font-size:15px;
 
 }
 
-.estado-vacio span{
+
+.mobile-productos .estado-vacio span{
+
+    font-size:12px;
+
+    color:#777777;
+
+}
+
+
+.mobile-productos .estado-cargando{
+
+    grid-column:1 / -1;
+
+    min-height:180px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#FFFFFF;
+
+    border-radius:10px;
+
+    color:#777777;
 
     font-size:14px;
 
-    color:#777;
+}
+
+
+/* =========================================
+   FILA 5 — FOOTER FIJO
+========================================= */
+
+.mobile-footer{
+
+    width:100%;
+
+    height:64px;
+
+    min-height:64px;
+
+    flex:0 0 64px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:8px;
+
+    padding:8px 10px;
+
+    background:#FFFFFF;
+
+    border-top:1px solid #DDDDDD;
+
+    box-sizing:border-box;
 
 }
 
 
+.mobile-footer button{
 
+    width:100%;
 
-/*==========================================================
-                MOBILE FIRST
-==========================================================*/
+    height:46px;
 
-@media (max-width:480px){
+    border:1px solid #CCCCCC;
 
-    .mn-header{
+    border-radius:8px;
 
-        min-height:58px;
+    background:#FFFFFF;
 
-        padding:10px 12px;
+    font-size:13px;
 
-    }
-
-    .mn-logo img{
-
-        height:34px;
-
-    }
-
-    .mn-notificaciones{
-
-        width:42px;
-
-        height:42px;
-
-        font-size:22px;
-
-    }
-
-    .buscador{
-
-        padding:10px 12px;
-
-    }
-
-    .buscador input{
-
-        height:44px;
-
-        font-size:14px;
-
-    }
-
-    .tienda{
-
-        padding:10px;
-
-    }
-
-    .productos{
-
-        grid-template-columns:repeat(4,1fr);
-
-        gap:6px;
-
-    }
-
-    .producto{
-
-        border-radius:8px;
-
-    }
-
-    .foto{
-
-        aspect-ratio:1;
-
-    }
-
-    .producto__contenido{
-
-        padding:5px;
-
-        gap:3px;
-
-    }
-
-    .producto h3{
-
-        font-size:9px;
-
-        line-height:1.2;
-
-        height:22px;
-
-    }
-
-    .precio{
-
-        font-size:11px;
-
-    }
-
-    .btnAgregar{
-
-        height:24px;
-
-        font-size:8px;
-
-        border-radius:5px;
-
-    }
-
-    .producto-badge{
-
-        font-size:7px;
-
-        padding:2px 4px;
-
-    }
+    font-weight:600;
 
 }
-
-/*==========================================================
-                TABLET
-==========================================================*/
-
-@media (min-width:481px) and (max-width:991px){
-
-    .productos{
-
-        grid-template-columns:repeat(4,1fr);
-
-        gap:10px;
-
-    }
-
-    .producto h3{
-
-        font-size:12px;
-
-    }
-
-    .precio{
-
-        font-size:16px;
-
-    }
-
-    .btnAgregar{
-
-        height:32px;
-
-        font-size:11px;
-
-    }
-
-}
-
-/*==========================================================
-                    DESKTOP
-==========================================================*/
-
-@media (min-width:992px){
-
-    .layout{
-
-        grid-template-rows:
-
-            auto
-
-            auto
-
-            1fr;
-
-    }
-
-    #bottomBar{
-
-        display:none;
-
-    }
-
-    .mn-header{
-
-        max-width:1400px;
-
-        margin:0 auto;
-
-        padding:14px 24px;
-
-    }
-
-    .mn-logo img{
-
-        height:46px;
-
-    }
-
-    .buscador{
-
-        max-width:1400px;
-
-        margin:0 auto;
-
-        padding:14px 24px;
-
-    }
-
-    .buscador input{
-
-        max-width:900px;
-
-        margin:0 auto;
-
-        display:block;
-
-        height:52px;
-
-        font-size:16px;
-
-    }
-
-    .tienda{
-
-        max-width:1400px;
-
-        margin:auto;
-
-        padding:20px;
-
-    }
-
-    .categorias{
-
-        gap:12px;
-
-        padding-bottom:18px;
-
-    }
-
-    .categoria{
-
-        height:42px;
-
-        padding:0 22px;
-
-        font-size:14px;
-
-    }
-
-    .encabezado-productos{
-
-        margin-bottom:20px;
-
-    }
-
-    .encabezado-productos h2{
-
-        font-size:30px;
-
-    }
-
-    .productos{
-
-        grid-template-columns:
-
-            repeat(auto-fill,minmax(220px,1fr));
-
-        gap:18px;
-
-    }
-
-    .producto{
-
-        border-radius:12px;
-
-    }
-
-    .producto__contenido{
-
-        padding:12px;
-
-    }
-
-    .producto h3{
-
-        font-size:15px;
-
-        height:42px;
-
-    }
-
-    .precio{
-
-        font-size:24px;
-
-    }
-
-    .btnAgregar{
-
-        height:42px;
-
-        font-size:14px;
-
-    }
-
-}
-
-/*==========================================================
-            PANTALLAS GRANDES
-==========================================================*/
-
-@media (min-width:1600px){
-
-    .tienda{
-
-        max-width:1700px;
-
-    }
-
-    .productos{
-
-        grid-template-columns:
-
-            repeat(auto-fill,minmax(230px,1fr));
-
-    }
-
-}
-
 
 
 
@@ -1419,25 +1118,6 @@ NOTIFICACIONES
 
 }
 
-.scroll-x{
-
-    overflow-x:auto;
-
-    overflow-y:hidden;
-
-}
-
-.scroll-y{
-
-    overflow-y:auto;
-
-}
-
-.sin-scroll{
-
-    overflow:hidden;
-
-}
 
 .sombra{
 
@@ -1549,143 +1229,6 @@ button:active{
 
 
 
-/*==========================================================
-                AJUSTES FINALES
-==========================================================*/
-
-@media (max-width:360px){
-
-    .mn-header{
-
-        padding:8px 10px;
-
-    }
-
-    .mn-logo img{
-
-        height:30px;
-
-    }
-
-    .buscador{
-
-        padding:8px 10px;
-
-    }
-
-    .buscador input{
-
-        height:40px;
-
-        font-size:13px;
-
-    }
-
-    .categorias{
-
-        gap:6px;
-
-    }
-
-    .categoria{
-
-        height:32px;
-
-        padding:0 12px;
-
-        font-size:11px;
-
-    }
-
-    .productos{
-
-        gap:4px;
-
-    }
-
-    .producto{
-
-        border-radius:6px;
-
-    }
-
-    .producto__contenido{
-
-        padding:4px;
-
-    }
-
-    .producto h3{
-
-        font-size:8px;
-
-        height:20px;
-
-    }
-
-    .precio{
-
-        font-size:10px;
-
-    }
-
-    .btnAgregar{
-
-        height:22px;
-
-        font-size:7px;
-
-    }
-
-}
-
-@media (min-width:1440px){
-
-    .layout{
-
-        width:100%;
-
-    }
-
-    .mn-header{
-
-        max-width:1600px;
-
-    }
-
-    .buscador{
-
-        max-width:1600px;
-
-    }
-
-    .tienda{
-
-        max-width:1600px;
-
-    }
-
-    .productos{
-
-        grid-template-columns:
-
-            repeat(auto-fill,minmax(230px,1fr));
-
-        gap:20px;
-
-    }
-
-}
-
-@media (min-width:1920px){
-
-    .tienda{
-
-        max-width:1800px;
-
-    }
-
-}
 
 /*==========================================================
                 ACCESIBILIDAD
@@ -1716,9 +1259,621 @@ body{
 
 }
 
-/*==========================================================
-                FIN DEL ARCHIVO
-==========================================================*/
 
 
 
+
+
+/* ==========================================================
+   VISTA MOBILE — ESTRUCTURA REAL DE vista.js
+   ========================================================== */
+
+@media (max-width: 480px){
+
+    /* La vista completa ocupa exactamente la pantalla */
+    #app{
+        width:100%;
+        height:100dvh;
+        min-height:100dvh;
+
+        display:grid;
+
+        grid-template-rows:
+            auto
+            auto
+            auto
+            1fr
+            auto;
+
+        overflow:hidden;
+    }
+
+
+    /* ======================================================
+       FILA 1 — LOGO + CAMPANA
+       ====================================================== */
+
+    .header-mobile{
+
+        width:100%;
+
+        min-height:64px;
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:space-between;
+
+        padding:8px 14px;
+
+        background:#FFFFFF;
+
+        border-bottom:1px solid #ECECEC;
+
+        flex-shrink:0;
+    }
+
+
+    .header-mobile .logo{
+
+        display:block;
+
+        width:auto;
+
+        height:42px;
+
+        max-width:calc(100% - 60px);
+
+        object-fit:contain;
+    }
+
+
+    .header-mobile .btn-icono{
+
+        width:42px;
+
+        height:42px;
+
+        flex-shrink:0;
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        border:none;
+
+        border-radius:50%;
+
+        background:#FFFFFF;
+
+        box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+        font-size:22px;
+
+        cursor:pointer;
+    }
+
+
+    /* ======================================================
+       FILA 2 — BARRA DE BÚSQUEDA
+       ====================================================== */
+
+    .buscador{
+
+        width:100%;
+
+        padding:10px 12px;
+
+        background:#FFFFFF;
+
+        border-bottom:1px solid #ECECEC;
+
+        flex-shrink:0;
+    }
+
+
+    .buscador input{
+
+        width:100%;
+
+        height:46px;
+
+        border:2px solid #111111;
+
+        border-radius:28px;
+
+        background:#FFFFFF;
+
+        padding:0 52px 0 18px;
+
+        font-size:15px;
+
+        outline:none;
+    }
+
+
+    /* ======================================================
+       FILA 3 — CATEGORÍAS
+       ====================================================== */
+
+    #categorias{
+
+        width:100%;
+
+        min-height:46px;
+
+        padding:8px 12px;
+
+        background:#FFFFFF;
+
+        overflow-x:auto;
+
+        overflow-y:hidden;
+
+        flex-shrink:0;
+
+        scrollbar-width:none;
+    }
+
+
+    #categorias::-webkit-scrollbar{
+
+        display:none;
+    }
+
+
+    /* ======================================================
+       FILA 4 — CONTENIDO / PRODUCTOS
+       ====================================================== */
+
+    #productos{
+
+        width:100%;
+
+        min-height:0;
+
+        overflow-y:auto;
+
+        overflow-x:hidden;
+
+        padding:10px 12px;
+
+        background:#F5F6F8;
+    }
+
+
+    /* ======================================================
+       PIE — INICIO / CARRITO / CUENTA
+       ====================================================== */
+
+    .footer-mobile{
+
+        width:100%;
+
+        height:64px;
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:space-around;
+
+        gap:8px;
+
+        padding:8px 12px;
+
+        background:#FFFFFF;
+
+        border-top:1px solid #ECECEC;
+
+        flex-shrink:0;
+
+        z-index:1000;
+    }
+
+
+    .footer-mobile button{
+
+        flex:1;
+
+        height:44px;
+
+        border:none;
+
+        border-radius:12px;
+
+        background:#F5F6F8;
+
+        color:#1B2640;
+
+        font-size:14px;
+
+        font-weight:600;
+
+        cursor:pointer;
+    }
+
+
+    .footer-mobile button:active{
+
+        transform:scale(.98);
+    }
+
+}
+
+
+/* =========================================================
+   MISS NAILS
+   MOBILE — BLOQUE FINAL UNIFICADO
+   ========================================================= */
+
+.mobile{
+    width:100%;
+    height:100dvh;
+    display:grid;
+    grid-template-rows:auto auto auto minmax(0,1fr) auto;
+    overflow:hidden;
+}
+
+/* =========================================================
+   1. CABECERA
+   ========================================================= */
+
+.mobile-header{
+    width:100%;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 16px;
+    background:#FFFFFF;
+    border-bottom:1px solid #ECECEC;
+    flex-shrink:0;
+}
+
+.mobile-logo{
+    display:flex;
+    align-items:center;
+    min-width:0;
+}
+
+.mobile-logo img{
+    display:block;
+    width:150px;
+    height:auto;
+    max-width:calc(100vw - 80px);
+}
+
+.mobile-notificaciones{
+    width:48px;
+    height:48px;
+    flex:0 0 48px;
+    border:0;
+    background:transparent;
+    font-size:28px;
+    cursor:pointer;
+}
+
+/* =========================================================
+   2. BUSCADOR
+   ========================================================= */
+
+.mobile-buscador{
+    width:100%;
+    padding:10px 12px;
+    background:#FFFFFF;
+    border-bottom:1px solid #ECECEC;
+    flex-shrink:0;
+}
+
+.mobile-buscador input{
+    width:100%;
+    height:46px;
+    padding:0 16px;
+    border:2px solid #111111;
+    border-radius:28px;
+    background:#FFFFFF;
+    font-size:15px;
+    outline:none;
+}
+
+/* Si el buscador real utiliza .buscador */
+.mobile .buscador{
+    width:100%;
+    padding:10px 12px;
+    background:#FFFFFF;
+    border-bottom:1px solid #ECECEC;
+    flex-shrink:0;
+}
+
+/* =========================================================
+   3. CATEGORÍAS
+   ========================================================= */
+
+.mobile-categorias,
+.mobile #categorias,
+.mobile .categorias{
+    width:100%;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    background:#FFFFFF;
+    overflow-x:auto;
+    overflow-y:hidden;
+    flex-shrink:0;
+    scrollbar-width:none;
+}
+
+.mobile-categorias::-webkit-scrollbar,
+.mobile #categorias::-webkit-scrollbar,
+.mobile .categorias::-webkit-scrollbar{
+    display:none;
+}
+
+.mobile-categoria,
+.mobile .categoria{
+    flex:0 0 auto;
+    height:38px;
+    padding:0 16px;
+    border:1px solid #999999;
+    border-radius:8px;
+    background:#FFFFFF;
+    color:#444444;
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.mobile-categoria.activa,
+.mobile .categoria.activa{
+    background:#111111;
+    color:#FFFFFF;
+}
+
+/* =========================================================
+   4. PRODUCTOS
+   ESTA ES LA ÚNICA ZONA QUE HACE SCROLL
+   ========================================================= */
+
+.mobile-productos.productos,
+.mobile #productos.productos{
+    width:100%;
+    min-width:0;
+    min-height:0;
+
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+
+    padding:10px 12px;
+    box-sizing:border-box;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    align-content:start;
+    -webkit-overflow-scrolling:touch;
+}
+
+/* Cada tarjeta ocupa exactamente una celda */
+.mobile-productos.productos > .producto,
+.mobile #productos.productos > .producto{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+}
+
+/* =========================================================
+   TARJETA
+   ========================================================= */
+
+.mobile-productos .producto,
+.mobile #productos .producto{
+    background:#FFFFFF;
+    border:1px solid #E5E5E5;
+    border-radius:8px;
+    overflow:hidden;
+    min-width:0;
+}
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.mobile-productos .foto,
+.mobile #productos .foto{
+    width:100%;
+    aspect-ratio:1 / 1;
+    background:#EEEEEE;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+}
+
+.mobile-productos .fotoProducto,
+.mobile #productos .fotoProducto{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.mobile-productos .producto-sin-imagen,
+.mobile #productos .producto-sin-imagen{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#F1F1F1;
+}
+
+.mobile-productos .producto-sin-imagen span,
+.mobile #productos .producto-sin-imagen span{
+    font-size:8px;
+    color:#999999;
+    text-align:center;
+}
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.mobile-productos .producto__contenido,
+.mobile #productos .producto__contenido{
+    padding:5px;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.mobile-productos .producto h3,
+.mobile #productos .producto h3{
+    margin:0;
+    padding:0;
+    height:22px;
+    overflow:hidden;
+    font-size:9px;
+    line-height:1.2;
+    font-weight:600;
+    color:#222222;
+}
+
+/* Ocultamos información secundaria en esta vista */
+.mobile-productos .producto__detalle,
+.mobile-productos .producto__meta,
+.mobile #productos .producto__detalle,
+.mobile #productos .producto__meta{
+    display:none;
+}
+
+/* =========================================================
+   PRECIO
+   ========================================================= */
+
+.mobile-productos .precio,
+.mobile #productos .precio{
+    margin-top:2px;
+    color:#FF4D2D;
+    font-size:11px;
+    font-weight:800;
+    line-height:1;
+}
+
+/* =========================================================
+   BOTÓN
+   ========================================================= */
+
+.mobile-productos .btnAgregar,
+.mobile #productos .btnAgregar{
+    width:100%;
+    height:24px;
+    margin-top:4px;
+    border:none;
+    border-radius:5px;
+    background:#111111;
+    color:#FFFFFF;
+    font-size:8px;
+    font-weight:700;
+}
+
+/* =========================================================
+   ESTADO VACÍO
+   ========================================================= */
+
+.mobile-productos .estado-vacio,
+.mobile #productos .estado-vacio{
+    grid-column:1 / -1;
+}
+
+/* =========================================================
+   5. PIE
+   ========================================================= */
+
+.mobile-footer{
+    width:100%;
+    height:64px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    padding:8px 12px;
+    background:#FFFFFF;
+    border-top:1px solid #ECECEC;
+    flex-shrink:0;
+    z-index:1000;
+}
+
+.mobile-footer button{
+    width:100%;
+    height:44px;
+    border:none;
+    border-radius:12px;
+    background:#F5F6F8;
+    color:#1B2640;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* =========================================================
+   COMPATIBILIDAD CON NOMBRES DE LA VISTA ACTUAL
+   ========================================================= */
+
+.mobile .footer-mobile{
+    width:100%;
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    gap:8px;
+    padding:8px 12px;
+    background:#FFFFFF;
+    border-top:1px solid #ECECEC;
+    flex-shrink:0;
+    z-index:1000;
+}
+
+.mobile .footer-mobile button{
+    flex:1;
+    height:44px;
+    border:none;
+    border-radius:12px;
+    background:#F5F6F8;
+    color:#1B2640;
+    font-size:14px;
+    font-weight:600;
+}
+
+/* =========================================================
+   PANTALLAS PEQUEÑAS
+   ========================================================= */
+
+@media(max-width:360px){
+    .mobile-productos.productos,
+    .mobile #productos.productos{
+        gap:6px;
+        padding:8px;
+    }
+
+    .mobile-productos .producto h3,
+    .mobile #productos .producto h3{
+        font-size:8px;
+    }
+
+    .mobile-productos .precio,
+    .mobile #productos .precio{
+        font-size:10px;
+    }
+
+    .mobile-productos .btnAgregar,
+    .mobile #productos .btnAgregar{
+        font-size:7px;
+    }
+}
