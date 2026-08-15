@@ -509,15 +509,29 @@ const mobile = {
                      IMAGEN
                 ========================== -->
 
-                <div class="foto">
+<div class="foto">
 
-                    <div class="producto-sin-imagen">
+    ${
+        producto.imagen
+        ?
+        `<img
+            src="https://drive.google.com/thumbnail?id=${producto.imagen}&sz=w800"
+            class="fotoProducto"
+            alt="${nombre}">
+        `
+        :
+        `
+        <div class="producto-sin-imagen">
 
-                        SIN IMAGEN
+            <span>
+                SIN IMAGEN
+            </span>
 
-                    </div>
+        </div>
+        `
+    }
 
-                </div>
+</div>
 
 
                 <!-- =========================
