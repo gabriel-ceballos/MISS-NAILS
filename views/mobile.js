@@ -125,15 +125,9 @@ const mobile = {
                      ÚNICA ZONA CON SCROLL
                 ================================== -->
 
-                <main
+                 <main
                     class="productos mobile-productos"
                     id="productos">
-
-                    <div class="estado-cargando">
-
-                        Cargando productos...
-
-                    </div>
 
                 </main>
 

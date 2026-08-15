@@ -120,15 +120,41 @@ async function iniciar() {
 
     console.log(respuesta);
 
-    if (!respuesta.ok) {
+        if (!respuesta.ok) {
 
-        console.error("No fue posible conectar con el backend.");
+        console.error(
+            "No fue posible conectar con el backend."
+        );
 
         return;
 
     }
 
-    console.log("5. Voy a mostrar el login");
+
+    /*************************************************
+     * RECUPERAR SESIÓN
+     *************************************************/
+
+    const sesionActiva =
+        sesion.cargar();
+
+
+    if (sesionActiva) {
+
+        console.log(
+            "5. Sesión recuperada → entrando a la tienda"
+        );
+
+        mostrarPantalla();
+
+        return;
+
+    }
+
+
+    console.log(
+        "5. No existe sesión → mostrar login"
+    );
 
     login.mostrar();
 

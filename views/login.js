@@ -163,21 +163,17 @@ const login = {
             console.log("LOGIN →", respuesta);
 
 
-            if (respuesta.ok) {
+if (respuesta.ok) {
 
-                sesion.usuario = respuesta.datos;
+    sesion.guardar(
+        respuesta.datos
+    );
 
-                /*
-                 * La pantalla ya fue identificada
-                 * desde el inicio de la aplicación.
-                 *
-                 * Aquí solamente se muestra
-                 * la distribución correspondiente.
-                 */
+    mostrarPantalla();
 
-                mostrarPantalla();
+    return;
 
-                return;
+
 
             }
 
