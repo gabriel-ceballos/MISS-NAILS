@@ -372,21 +372,29 @@ APP
 
 
 .mobile-notificaciones{
-
     width:42px;
-
     height:42px;
 
-    border:none;
+    flex:0 0 42px;
 
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:1px solid rgba(255,105,160,.48);
     border-radius:50%;
 
-    background:#FFFFFF;
+    background:rgba(255,248,251,.82);
 
-    font-size:22px;
+    color:#C99328;
 
     cursor:pointer;
 
+    box-shadow:none;
+
+    transition:
+        transform .20s ease,
+        background .20s ease;
 }
 
 
@@ -1547,14 +1555,59 @@ body{
     max-width:calc(100vw - 80px);
 }
 
-.mobile-notificaciones{
-    width:48px;
-    height:48px;
-    flex:0 0 48px;
-    border:0;
-    background:transparent;
-    font-size:28px;
+/*.mobile-notificaciones{
+    width:42px;
+    height:42px;
+
+    flex:0 0 42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:1px solid rgba(201,62,119,.16);
+    border-radius:50%;
+
+    background:rgba(255,255,255,.72);
+
+    color:#C99328;
+
     cursor:pointer;
+
+    box-shadow:0 3px 10px rgba(201,62,119,.08);
+
+    transition:
+        transform .20s ease,
+        background .20s ease,
+        box-shadow .20s ease;
+}
+
+*/
+
+.icono-notificacion{
+    width:20px;
+    height:20px;
+
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+
+    pointer-events:none;
+}
+
+
+.mobile-notificaciones:active{
+    transform:scale(.93);
+}
+
+
+.mobile-notificaciones:hover{
+    background:#FFFFFF;
+
+    box-shadow:
+        0 5px 14px rgba(201,62,119,.12);
 }
 
 /* =========================================================
