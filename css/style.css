@@ -221,12 +221,10 @@ APP
 }
 
 .categoria.activa{
-
-    background:#111111;
-
+    background:#C93E77;
     color:#FFFFFF;
-
 }
+
 
 .categoria:hover{
 
@@ -487,36 +485,52 @@ APP
 
 
 .mobile-categoria{
-
     flex:0 0 auto;
 
-    height:40px;
+    padding:9px 18px;
 
-    padding:0 16px;
+    border:1px solid rgba(201,62,119,.28);
+    border-radius:10px;
 
-    border:1px solid #AAAAAA;
+    background:#FFF3F7;
 
-    border-radius:8px;
+    color:#C93E77;
 
-    background:#FFFFFF;
-
-    font-size:13px;
+    font-size:14px;
+    font-weight:600;
 
     white-space:nowrap;
 
+    cursor:pointer;
+
+    transition:
+        background .20s ease,
+        color .20s ease,
+        border-color .20s ease,
+        transform .15s ease;
+}
+
+
+.mobile-categoria:hover{
+    background:#FBE4ED;
+    border-color:rgba(201,62,119,.45);
+}
+
+
+.mobile-categoria:active{
+    transform:scale(.97);
 }
 
 
 .mobile-categoria.activa{
-
-    background:#111111;
+    background:#C93E77;
+    border-color:#C93E77;
 
     color:#FFFFFF;
 
-    border-color:#111111;
-
+    box-shadow:
+        0 3px 8px rgba(201,62,119,.18);
 }
-
 
 /* =========================================
    FILA 4 — PRODUCTOS
@@ -1673,20 +1687,36 @@ body{
     flex:0 0 auto;
     height:38px;
     padding:0 16px;
-    border:1px solid #999999;
+
+    border:1px solid rgba(201,62,119,.28);
     border-radius:8px;
-    background:#FFFFFF;
-    color:#444444;
+
+    background:#FFF3F7;
+    color:#C93E77;
+
     font-size:13px;
     font-weight:700;
     white-space:nowrap;
+
+    transition:
+        background .20s ease,
+        color .20s ease,
+        border-color .20s ease,
+        transform .15s ease;
 }
+
+
 
 .mobile-categoria.activa,
 .mobile .categoria.activa{
-    background:#111111;
+    background:#C93E77;
+    border-color:#C93E77;
     color:#FFFFFF;
+
+    box-shadow:
+        0 3px 8px rgba(201,62,119,.18);
 }
+
 
 /* =========================================================
    4. PRODUCTOS

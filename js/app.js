@@ -95,6 +95,71 @@ window.addEventListener("resize", () => {
 
 });
 
+
+
+/*************************************************
+ * RECUPERAR ESTILOS AL VOLVER A LA APLICACIÓN
+ *************************************************/
+
+function refrescarEstilos() {
+
+    const hojas =
+        document.querySelectorAll(
+            'link[rel="stylesheet"]'
+        );
+
+    hojas.forEach(hoja => {
+
+        const href =
+            hoja.getAttribute("href");
+
+        if (
+            href &&
+            href.includes("css/style.css")
+        ) {
+
+            const separador =
+                href.includes("?")
+                    ? "&"
+                    : "?";
+
+            hoja.href =
+                href.split("?")[0] +
+                separador +
+                "v=" +
+                Date.now();
+
+        }
+
+    });
+
+}
+
+
+/*************************************************
+ * RECUPERAR ESTILOS AL DESBLOQUEAR
+ *************************************************/
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            document.visibilityState === "visible"
+        ) {
+
+            refrescarEstilos();
+
+        }
+
+    }
+);
+
+
+
+
+
+
 /*************************************************
 INICIAR APLICACIÓN
 *************************************************/
