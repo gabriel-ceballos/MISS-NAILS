@@ -1529,8 +1529,8 @@ body{
     align-items:center;
     justify-content:space-between;
     padding:10px 16px;
-    background:#FFFFFF;
-    border-bottom:1px solid #ECECEC;
+    background:#FFF4F8;
+    border-bottom:none;
     flex-shrink:0;
 }
 
@@ -1564,8 +1564,8 @@ body{
 .mobile-buscador{
     width:100%;
     padding:10px 12px;
-    background:#FFFFFF;
-    border-bottom:1px solid #ECECEC;
+    background:#FFF4F8;
+    border-bottom:1px solid #F3DCE6;
     flex-shrink:0;
 }
 
