@@ -149,33 +149,130 @@ const mobile = {
                      NAVEGACIÓN INFERIOR
                 ================================== -->
 
-                <nav class="mobile-footer">
+<nav class="mobile-footer">
 
-                    <button
-                        id="btnInicio"
-                        type="button">
+    <button
+        id="btnInicio"
+        class="mobile-nav-item activo"
+        type="button">
 
-                        Inicio
+        <span class="mobile-nav-icon">
 
-                    </button>
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true">
 
-                    <button
-                        id="btnCarrito"
-                        type="button">
+                <path
+                    d="M3 10.5
+                       L12 3
+                       L21 10.5
+                       V20
+                       H14
+                       V14
+                       H10
+                       V20
+                       H3
+                       Z">
+                </path>
 
-                        Carrito
+            </svg>
 
-                    </button>
+            <span class="mobile-nav-check">✓</span>
 
-                    <button
-                        id="btnCuenta"
-                        type="button">
+        </span>
 
-                        Cuenta
+        <span class="mobile-nav-label">
+            Inicio
+        </span>
 
-                    </button>
+    </button>
 
-                </nav>
+
+    <button
+        id="btnCarrito"
+        class="mobile-nav-item"
+        type="button">
+
+        <span class="mobile-nav-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true">
+
+                <path
+                    d="M3 4
+                       H5
+                       L7.2 15.5
+                       H18.5
+                       L21 7
+                       H6">
+                </path>
+
+                <circle
+                    cx="9"
+                    cy="19"
+                    r="1.5">
+                </circle>
+
+                <circle
+                    cx="17"
+                    cy="19"
+                    r="1.5">
+                </circle>
+
+            </svg>
+
+            <span class="mobile-nav-check">✓</span>
+
+        </span>
+
+        <span class="mobile-nav-label">
+            Carrito
+        </span>
+
+    </button>
+
+
+    <button
+        id="btnCuenta"
+        class="mobile-nav-item"
+        type="button">
+
+        <span class="mobile-nav-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true">
+
+                <circle
+                    cx="12"
+                    cy="8"
+                    r="4">
+                </circle>
+
+                <path
+                    d="M4 21
+                       C4.8 16.5
+                       7.5 14
+                       12 14
+                       C16.5 14
+                       19.2 16.5
+                       20 21">
+                </path>
+
+            </svg>
+
+            <span class="mobile-nav-check">✓</span>
+
+        </span>
+
+        <span class="mobile-nav-label">
+            Cuenta
+        </span>
+
+    </button>
+
+</nav>
 
             </div>
 
@@ -417,6 +514,37 @@ const mobile = {
             );
 
         });
+
+
+                const navegacion =
+            document.querySelectorAll(
+                ".mobile-nav-item"
+            );
+
+        navegacion.forEach(boton => {
+
+            boton.addEventListener(
+                "click",
+                () => {
+
+                    navegacion.forEach(item => {
+
+                        item.classList.remove(
+                            "activo"
+                        );
+
+                    });
+
+                    boton.classList.add(
+                        "activo"
+                    );
+
+                }
+            );
+
+        });
+
+        
 
     },
 
