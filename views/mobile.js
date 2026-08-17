@@ -8,6 +8,12 @@ const mobile = {
 
     intervaloInventario: null,
 
+     vistaActual: "catalogo",
+
+    estadoCatalogo: null,
+
+    historialInicializado: false,
+
 
     /*************************************************
      * MOSTRAR ESTRUCTURA MOBILE
@@ -279,9 +285,11 @@ const mobile = {
         `;
 
 
-        this.inicializarEventos();
+this.inicializarEventos();
 
-        console.log("MOBILE → solicitando productos");
+this.inicializarHistorial();
+
+console.log("MOBILE → solicitando productos");
 
 
         try {
@@ -514,6 +522,94 @@ const mobile = {
             );
 
         });
+
+
+
+
+        /*
+         * ============================================
+         * CLICK EN TARJETA DE PRODUCTO
+         * ============================================
+         */
+
+        const productos =
+            document.getElementById("productos");
+
+
+        if (productos) {
+
+            productos.addEventListener(
+                "click",
+                (evento) => {
+
+                    /*
+                     * Si el clic ocurrió dentro del
+                     * carrito rápido, no abrir detalle.
+                     */
+
+                    if (
+                        evento.target.closest(
+                            ".btnCarritoRapido"
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const tarjeta =
+                        evento.target.closest(
+                            ".producto"
+                        );
+
+
+                    if (!tarjeta) {
+
+                        return;
+
+                    }
+
+
+                    const id =
+                        tarjeta.dataset.id;
+
+
+                    const producto =
+                        this.productos.find(
+                            item =>
+                                String(item.id) ===
+                                String(id)
+                        );
+
+
+                    if (!producto) {
+
+                        console.warn(
+                            "MOBILE → producto no encontrado:",
+                            id
+                        );
+
+                        return;
+
+                    }
+
+
+                 console.log(
+    "MOBILE → abrir detalle:",
+    producto
+);
+
+this.guardarEstadoCatalogo();
+
+this.mostrarDetalleProducto(
+    producto
+);
+
+                }
+            );
+
+        }
 
 
                 const navegacion =
@@ -760,10 +856,54 @@ const mobile = {
     ${
         producto.imagen
         ?
-        `<img
+        `
+
+        <img
             src="https://drive.google.com/thumbnail?id=${producto.imagen}&sz=w800"
             class="fotoProducto"
-            alt="${nombre}">
+            alt="${this.escape(nombre)}">
+
+      <button
+    class="btnCarritoRapido"
+    type="button"
+    data-id="${this.escape(id)}"
+    aria-label="Agregar al carrito">
+
+    <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true">
+
+        <path
+            d="M3 4
+               H5
+               L7 15
+               H18
+               L21 7
+               H6">
+        </path>
+
+        <circle
+            cx="9"
+            cy="19"
+            r="1.2">
+        </circle>
+
+        <circle
+            cx="17"
+            cy="19"
+            r="1.2">
+        </circle>
+
+        <path
+            d="M17 3
+               V7
+               M14.5 5
+               H19.5">
+        </path>
+
+    </svg>
+
+</button>
         `
         :
         `
@@ -815,14 +955,7 @@ const mobile = {
                     </div>
 
 
-                    <button
-                        class="btnAgregar"
-                        type="button"
-                        data-id="${this.escape(id)}">
-
-                        AGREGAR
-
-                    </button>
+                  
 
                 </div>
 
@@ -833,10 +966,381 @@ const mobile = {
     },
 
 
+
+        /*************************************************
+     * GUARDAR ESTADO DEL CATÁLOGO
+     *************************************************/
+
+    guardarEstadoCatalogo() {
+
+        const app =
+            document.getElementById("app");
+
+        if (!app) {
+            return;
+        }
+
+        const productos =
+            document.getElementById("productos");
+
+        this.estadoCatalogo = {
+
+            html: app.innerHTML,
+
+            scrollTop:
+                productos
+                    ? productos.scrollTop
+                    : 0,
+
+            filtroCategoria:
+                this.filtroCategoria,
+
+            textoBusqueda:
+                this.textoBusqueda
+
+        };
+
+        console.log(
+            "MOBILE → estado del catálogo guardado"
+        );
+
+    },
+
+
+        /*************************************************
+     * RESTAURAR CATÁLOGO
+     *************************************************/
+
+    restaurarCatalogo() {
+
+        if (!this.estadoCatalogo) {
+
+            console.warn(
+                "MOBILE → no existe estado del catálogo"
+            );
+
+            return;
+
+        }
+
+
+        const app =
+            document.getElementById("app");
+
+
+        if (!app) {
+            return;
+        }
+
+
+        app.innerHTML =
+            this.estadoCatalogo.html;
+
+
+        this.vistaActual =
+            "catalogo";
+
+
+        /*
+         * Volvemos a conectar los eventos
+         * sobre el DOM restaurado.
+         */
+
+        this.inicializarEventos();
+
+
+        const productos =
+            document.getElementById("productos");
+
+
+        if (productos) {
+
+            productos.scrollTop =
+                this.estadoCatalogo.scrollTop || 0;
+
+        }
+
+
+        console.log(
+            "MOBILE → catálogo restaurado sin consultar API"
+        );
+
+    },
+
+
+
+
+
+    /*************************************************
+     * MOSTRAR DETALLE DEL PRODUCTO
+     *************************************************/
+
+mostrarDetalleProducto(producto) {
+
+    const app =
+        document.getElementById("app");
+
+
+    this.vistaActual = "detalle";
+
+
+    history.pushState(
+        {
+            vista: "detalle",
+            productoId: producto.id
+        },
+        "",
+        "#producto-" + producto.id
+    );
+
+
+        if (!app) {
+
+            console.error(
+                "MOBILE → no existe #app"
+            );
+
+            return;
+
+        }
+
+
+        const nombre =
+            producto.nombre ||
+            "Producto sin nombre";
+
+
+        let precio =
+            producto.precio;
+
+
+        if (typeof precio === "string") {
+
+            precio =
+                precio
+                    .replace(/\$/g, "")
+                    .replace(/\s/g, "")
+                    .replace(",", ".");
+
+        }
+
+
+        precio =
+            Number(precio) || 0;
+
+
+        const inventario =
+            Number(producto.inventario) || 0;
+
+
+        const categoria =
+            producto.categoria || "";
+
+
+        const imagen =
+            producto.imagen || "";
+
+
+        app.innerHTML = `
+
+            <div class="mobile-detalle-producto">
+
+                <header class="mobile-detalle-header">
+
+                    <button
+                        id="btnRegresarProductos"
+                        type="button"
+                        class="mobile-detalle-regresar"
+                        aria-label="Regresar">
+
+                        ←
+
+                    </button>
+
+
+                    <h2>
+                        Producto
+                    </h2>
+
+                </header>
+
+
+                <main class="mobile-detalle-contenido">
+
+                    <div class="mobile-detalle-imagen">
+
+                        ${
+                            imagen
+                            ?
+
+                            `
+                            <img
+                                src="https://drive.google.com/thumbnail?id=${this.escape(imagen)}&sz=w1200"
+                                alt="${this.escape(nombre)}">
+                            `
+
+                            :
+
+                            `
+                            <div class="producto-sin-imagen">
+
+                                <span>
+                                    SIN IMAGEN
+                                </span>
+
+                            </div>
+                            `
+                        }
+
+                    </div>
+
+
+                    <div class="mobile-detalle-informacion">
+
+                        <div class="mobile-detalle-categoria">
+
+                            ${this.escape(categoria)}
+
+                        </div>
+
+
+                        <h1>
+
+                            ${this.escape(nombre)}
+
+                        </h1>
+
+
+                        <div class="mobile-detalle-precio">
+
+                            $${precio.toFixed(2)}
+
+                        </div>
+
+
+                        <div class="mobile-detalle-inventario">
+
+                            Disponible:
+                            ${inventario}
+
+                        </div>
+
+
+                        <div class="mobile-detalle-separador"></div>
+
+
+                        <div class="mobile-detalle-acciones">
+
+                            <button
+                                id="btnAgregarDetalle"
+                                type="button"
+                                class="mobile-detalle-carrito">
+
+                                🛒
+                                Agregar al carrito
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </main>
+
+            </div>
+
+        `;
+
+
+        const regresar =
+            document.getElementById(
+                "btnRegresarProductos"
+            );
+
+
+        if (regresar) {
+
+regresar.addEventListener(
+    "click",
+    () => {
+
+        history.back();
+
+    }
+);
+
+        }
+
+
+        const agregar =
+            document.getElementById(
+                "btnAgregarDetalle"
+            );
+
+
+        if (agregar) {
+
+            agregar.addEventListener(
+                "click",
+                () => {
+
+                    console.log(
+                        "DETALLE → agregar al carrito:",
+                        producto
+                    );
+
+                }
+            );
+
+        }
+
+    },
+
+    /*************************************************
+     * HISTORIAL DEL DETALLE
+     *************************************************/
+
+    inicializarHistorial() {
+
+        if (this.historialInicializado) {
+            return;
+        }
+
+
+        window.addEventListener(
+            "popstate",
+            () => {
+
+                if (
+                    this.vistaActual === "detalle"
+                ) {
+
+                    this.restaurarCatalogo();
+
+                }
+
+            }
+        );
+
+
+        this.historialInicializado =
+            true;
+
+
+        console.log(
+            "MOBILE → historial inicializado"
+        );
+
+    },
+
+
+
     /*************************************************
      * MENSAJE DE CARGA
      *************************************************/
 
+
+    
     mostrarError(mensaje) {
 
         const contenedor =
@@ -881,3 +1385,7 @@ const mobile = {
     }
 
 };
+
+
+
+

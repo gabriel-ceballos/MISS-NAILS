@@ -1788,6 +1788,88 @@ body{
     display:block;
 }
 
+
+
+/* =========================================================
+   CARRITO RÁPIDO SOBRE LA IMAGEN
+   ========================================================= */
+
+.mobile-productos .btnCarritoRapido,
+.mobile #productos .btnCarritoRapido{
+
+    position:absolute;
+
+    right:4px;
+    bottom:4px;
+
+    width:22px;
+    height:22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0;
+
+    border:none;
+    outline:none;
+
+    border-radius:50%;
+
+    background:#FFFFFF;
+
+    color:#C93E77;
+
+    box-shadow:
+        0 2px 5px rgba(0,0,0,.14);
+
+    cursor:pointer;
+
+    z-index:5;
+
+    -webkit-tap-highlight-color:transparent;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+
+.mobile-productos .btnCarritoRapido svg,
+.mobile #productos .btnCarritoRapido svg{
+
+    width:13px;
+    height:13px;
+
+    fill:none;
+
+    stroke:currentColor;
+
+    stroke-width:1.7;
+
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+
+.mobile-productos .btnCarritoRapido:active,
+.mobile #productos .btnCarritoRapido:active{
+
+    transform:scale(.88);
+
+}
+
+
+.mobile-productos .btnCarritoRapido:focus,
+.mobile-productos .btnCarritoRapido:focus-visible,
+.mobile #productos .btnCarritoRapido:focus,
+.mobile #productos .btnCarritoRapido:focus-visible{
+
+    outline:none;
+
+}
+
+
 .mobile-productos .producto-sin-imagen,
 .mobile #productos .producto-sin-imagen{
     width:100%;
@@ -1850,22 +1932,7 @@ body{
     line-height:1;
 }
 
-/* =========================================================
-   BOTÓN
-   ========================================================= */
 
-.mobile-productos .btnAgregar,
-.mobile #productos .btnAgregar{
-    width:100%;
-    height:24px;
-    margin-top:4px;
-    border:none;
-    border-radius:5px;
-    background:#111111;
-    color:#FFFFFF;
-    font-size:8px;
-    font-weight:700;
-}
 
 /* =========================================================
    ESTADO VACÍO
@@ -2089,8 +2156,9 @@ body{
         font-size:10px;
     }
 
-    .mobile-productos .btnAgregar,
-    .mobile #productos .btnAgregar{
-        font-size:7px;
-    }
+
 }
+
+
+
+
