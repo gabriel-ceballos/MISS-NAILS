@@ -289,6 +289,13 @@ this.inicializarEventos();
 
 this.inicializarHistorial();
 
+
+if (window.carritoMobile) {
+
+    window.carritoMobile.actualizarContador();
+
+}
+
 console.log("MOBILE → solicitando productos");
 
 
@@ -1035,63 +1042,73 @@ this.mostrarDetalleProducto(
      * RESTAURAR CATÁLOGO
      *************************************************/
 
-    restaurarCatalogo() {
-
-        if (!this.estadoCatalogo) {
-
-            console.warn(
-                "MOBILE → no existe estado del catálogo"
-            );
-
-            return;
-
-        }
-
-
-        const app =
-            document.getElementById("app");
-
-
-        if (!app) {
-            return;
-        }
-
-
-        app.innerHTML =
-            this.estadoCatalogo.html;
-
-
-        this.vistaActual =
-            "catalogo";
-
-
-        /*
-         * Volvemos a conectar los eventos
-         * sobre el DOM restaurado.
-         */
-
-        this.inicializarEventos();
-
-
-        const productos =
-            document.getElementById("productos");
+restaurarCatalogo() { 
+ 
+    if (!this.estadoCatalogo) { 
+ 
+        console.warn( 
+            "MOBILE → no existe estado del catálogo" 
+        ); 
+ 
+        return; 
+ 
+    } 
+ 
+ 
+    const app = 
+        document.getElementById("app"); 
+ 
+ 
+    if (!app) { 
+        return; 
+    } 
+ 
+ 
+    app.innerHTML = 
+        this.estadoCatalogo.html; 
+ 
+ 
+    this.vistaActual = 
+        "catalogo"; 
+ 
+ 
+    /* 
+     * Volvemos a conectar los eventos 
+     * sobre el DOM restaurado. 
+     */ 
+ 
+    this.inicializarEventos(); 
 
 
-        if (productos) {
+    /*
+     * Actualizar el contador del carrito
+     * después de reconstruir el catálogo.
+     */
 
-            productos.scrollTop =
-                this.estadoCatalogo.scrollTop || 0;
+    if (window.carritoMobile) {
 
-        }
+        window.carritoMobile.actualizarContador();
 
-
-        console.log(
-            "MOBILE → catálogo restaurado sin consultar API"
-        );
-
-    },
-
-
+    }
+ 
+ 
+    const productos = 
+        document.getElementById("productos"); 
+ 
+ 
+    if (productos) { 
+ 
+        productos.scrollTop = 
+            this.estadoCatalogo.scrollTop || 0; 
+ 
+    } 
+ 
+ 
+    console.log( 
+        "MOBILE → catálogo restaurado sin consultar API" 
+    ); 
+ 
+},
 
 
 
@@ -1396,11 +1413,18 @@ regresar.addEventListener(
                      * el número visible en detalle.
                      */
 
-                    if (agregado) {
+if (agregado) {
 
-                        actualizarCantidadDetalle();
+    actualizarCantidadDetalle();
 
-                    }
+
+    if (window.carritoMobile) {
+
+        window.carritoMobile.actualizarContador();
+
+    }
+
+}
 
                 }
             );

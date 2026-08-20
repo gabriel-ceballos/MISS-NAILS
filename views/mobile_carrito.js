@@ -242,6 +242,8 @@
 
             this.guardar();
 
+            
+
             this.mensaje(
                 "Producto agregado al carrito",
                 "success"
@@ -445,17 +447,36 @@
 
         actualizarContador() {
 
+            const cantidad =
+                this.totalUnidades();
+
+
             const boton =
                 document.getElementById(
                     "btnCarrito"
                 );
 
-            if (!boton) return;
+
+            /*
+             * El botón puede no existir cuando
+             * estamos en detalle, login u otra vista.
+             *
+             * El carrito NO se pierde.
+             * El estado permanece en this.items.
+             */
+
+            if (!boton) {
+
+                return;
+
+            }
+
 
             let badge =
                 boton.querySelector(
                     ".carrito-contador"
                 );
+
 
             if (!badge) {
 
@@ -467,10 +488,12 @@
                 badge.className =
                     "carrito-contador";
 
+
                 const icono =
                     boton.querySelector(
                         ".mobile-nav-icon"
                     );
+
 
                 if (icono) {
 
@@ -488,17 +511,22 @@
 
             }
 
-            const cantidad =
-                this.totalUnidades();
 
             badge.textContent =
                 cantidad > 99
                     ? "99+"
                     : String(cantidad);
 
+
             badge.classList.toggle(
                 "oculto",
                 cantidad === 0
+            );
+
+
+            console.log(
+                "CARRITO → contador actualizado:",
+                cantidad
             );
 
         },
