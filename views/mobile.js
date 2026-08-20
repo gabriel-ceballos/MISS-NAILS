@@ -547,16 +547,40 @@ console.log("MOBILE → solicitando productos");
                      * carrito rápido, no abrir detalle.
                      */
 
-                    if (
-                        evento.target.closest(
-                            ".btnCarritoRapido"
-                        )
-                    ) {
+                   if (
+    evento.target.closest(
+        ".btnCarritoRapido"
+    )
+) {
 
-                        return;
+    const botonCarrito =
+        evento.target.closest(
+            ".btnCarritoRapido"
+        );
 
-                    }
+    const id =
+        botonCarrito.dataset.id;
 
+    const producto =
+        this.productos.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+    if (
+        producto &&
+        window.carritoMobile
+    ) {
+
+        window.carritoMobile.agregar(
+            producto
+        );
+
+    }
+
+    return;
+}
 
                     const tarjeta =
                         evento.target.closest(
@@ -1238,6 +1262,7 @@ mostrarDetalleProducto(producto) {
 
                                 🛒
                                 Agregar al carrito
+                                <span id="cantidadDetalleCarrito">0</span>
 
                             </button>
 
@@ -1277,6 +1302,67 @@ regresar.addEventListener(
                 "btnAgregarDetalle"
             );
 
+        const cantidadDetalle =
+            document.getElementById(
+                "cantidadDetalleCarrito"
+            );
+
+
+        /*
+         * CANTIDAD ACTUAL DEL PRODUCTO
+         *
+         * Si el producto ya fue agregado desde
+         * el catálogo, mostramos esa cantidad.
+         */
+
+        function actualizarCantidadDetalle() {
+
+            if (!cantidadDetalle) {
+                return;
+            }
+
+            let cantidad = 0;
+
+            if (
+                window.carritoMobile &&
+                Array.isArray(
+                    window.carritoMobile.items
+                )
+            ) {
+
+                const item =
+                    window.carritoMobile.items.find(
+                        productoCarrito =>
+                            String(
+                                productoCarrito.id
+                            ) ===
+                            String(producto.id)
+                    );
+
+                if (item) {
+
+                    cantidad =
+                        Number(
+                            item.cantidad
+                        ) || 0;
+
+                }
+
+            }
+
+            cantidadDetalle.textContent =
+                cantidad;
+
+        }
+
+
+        /*
+         * Mostrar inmediatamente la cantidad
+         * que ya tenía el producto.
+         */
+
+        actualizarCantidadDetalle();
+
 
         if (agregar) {
 
@@ -1284,10 +1370,37 @@ regresar.addEventListener(
                 "click",
                 () => {
 
-                    console.log(
-                        "DETALLE → agregar al carrito:",
-                        producto
-                    );
+                    if (
+                        !window.carritoMobile
+                    ) {
+
+                        console.error(
+                            "DETALLE → carritoMobile no está disponible."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const agregado =
+                        window.carritoMobile.agregar(
+                            producto,
+                            1
+                        );
+
+
+                    /*
+                     * Si el carrito aceptó el producto,
+                     * actualizamos inmediatamente
+                     * el número visible en detalle.
+                     */
+
+                    if (agregado) {
+
+                        actualizarCantidadDetalle();
+
+                    }
 
                 }
             );
@@ -1295,6 +1408,7 @@ regresar.addEventListener(
         }
 
     },
+
 
     /*************************************************
      * HISTORIAL DEL DETALLE
