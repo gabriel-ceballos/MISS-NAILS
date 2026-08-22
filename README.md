@@ -17,3 +17,10 @@ git status
 git add .
 
 git branch --show-current
+
+
+
+
+
+para ver en el celular la vista carrito mobile
+npx.cmd live-server --host=0.0.0.0 --port=8080

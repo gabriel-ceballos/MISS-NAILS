@@ -77,23 +77,7 @@ function mostrarPantalla() {
 
 }
 
-/*************************************************
-CAMBIO DE ESPACIO DISPONIBLE
-*************************************************/
 
-window.addEventListener("resize", () => {
-
-    const pantallaAnterior = sistema.pantalla;
-
-    detectarPantalla();
-
-    if (pantallaAnterior !== sistema.pantalla) {
-
-        mostrarPantalla();
-
-    }
-
-});
 
 
 

@@ -1,0 +1,1213 @@
+/* ==========================================================
+   MISS NAILS
+   VISTA MOBILE CARRITO
+   VESTIDO VISUAL
+
+   IMPORTANTE:
+   Este archivo pertenece EXCLUSIVAMENTE
+   a vista_mobileCarrito.js.
+
+   No modifica:
+   - style.css
+   - mobile.js
+   - mobile_carrito.js
+   ========================================================== */
+
+
+/* ==========================================================
+   CONTENEDOR GENERAL
+   ========================================================== */
+
+.vista-mobile-carrito {
+
+    --rosa: #C93E77;
+    --rosa-claro: #FFF4F8;
+    --rosa-suave: #FCE8F1;
+
+    --texto: #1B2640;
+    --texto-secundario: #666666;
+
+    --gris-fondo: #F5F6F8;
+    --gris-borde: #E7E7E7;
+
+    --blanco: #FFFFFF;
+
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+
+    display: grid;
+
+    grid-template-rows:
+        auto
+        minmax(0, 1fr)
+        auto
+        auto;
+
+    overflow: hidden;
+
+    background: var(--gris-fondo);
+
+    color: var(--texto);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    box-sizing: border-box;
+
+}
+
+
+/* ==========================================================
+   REGLAS GENERALES
+   ========================================================== */
+
+.vista-mobile-carrito *,
+.vista-mobile-carrito *::before,
+.vista-mobile-carrito *::after {
+
+    box-sizing: border-box;
+
+}
+
+
+.vista-mobile-carrito button {
+
+    font-family: inherit;
+
+    -webkit-tap-highlight-color: transparent;
+
+}
+
+
+/* ==========================================================
+   1. CABECERA
+   ========================================================== */
+
+.vista-mobile-carrito-header {
+
+    width: 100%;
+
+    min-width: 0;
+
+    height: 64px;
+
+    min-height: 64px;
+
+    display: flex;
+
+    align-items: center;
+
+    background: #FFFFFF;
+
+    border-bottom:
+        1px solid #ECECEC;
+
+    position: relative;
+
+    z-index: 30;
+
+}
+
+
+/* ==========================================================
+   BOTÓN REGRESAR
+   ========================================================== */
+
+.vista-mobile-carrito-btn-regresar {
+
+    width: 46px;
+
+    height: 46px;
+
+    flex: 0 0 46px;
+
+    margin-left: 8px;
+
+    padding: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #222222;
+
+    cursor: pointer;
+
+}
+
+
+.vista-mobile-carrito-btn-regresar:active {
+
+    transform: scale(.93);
+
+}
+
+
+.vista-mobile-carrito-icono-regresar {
+
+    display: block;
+
+    font-size: 27px;
+
+    line-height: 1;
+
+    font-weight: 300;
+
+}
+
+
+/* ==========================================================
+   TÍTULO CABECERA
+   ========================================================== */
+
+.vista-mobile-carrito-header-titulo {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 2px;
+
+}
+
+
+.vista-mobile-carrito-header-titulo h1 {
+
+    margin: 0;
+
+    padding: 0;
+
+    font-size: 20px;
+
+    line-height: 24px;
+
+    font-weight: 700;
+
+    color: #222222;
+
+}
+
+
+.vista-mobile-carrito-header-cantidad {
+
+    font-size: 11px;
+
+    line-height: 14px;
+
+    color: #777777;
+
+}
+
+
+/* ==========================================================
+   2. CONTENIDO
+   ÚNICA ZONA CON SCROLL
+   ========================================================== */
+
+.vista-mobile-carrito-contenido {
+
+    width: 100%;
+
+    min-width: 0;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+
+    background: #F5F6F8;
+
+    padding: 10px 10px 14px;
+
+}
+
+
+/* ==========================================================
+   LISTA
+   ========================================================== */
+
+.vista-mobile-carrito-lista {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+/* ==========================================================
+   PRODUCTO
+   ========================================================== */
+
+.vista-mobile-carrito-producto {
+
+    width: 100%;
+
+    min-width: 0;
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 10px;
+
+    background: #FFFFFF;
+
+    border:
+        1px solid #E7E7E7;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.04);
+
+}
+
+
+/* ==========================================================
+   IMAGEN
+   ========================================================== */
+
+.vista-mobile-carrito-producto-imagen {
+
+    width: 92px;
+
+    height: 92px;
+
+    flex: 0 0 92px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #F3F3F3;
+
+}
+
+
+.vista-mobile-carrito-producto-imagen-placeholder {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #F1F1F1,
+            #E7E7E7
+        );
+
+    color: #AAAAAA;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+/* Cuando posteriormente exista una imagen real */
+
+.vista-mobile-carrito-producto-imagen img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+}
+
+
+/* ==========================================================
+   INFORMACIÓN DEL PRODUCTO
+   ========================================================== */
+
+.vista-mobile-carrito-producto-info {
+
+    min-width: 0;
+
+    flex: 1 1 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+}
+
+
+/* ==========================================================
+   CABECERA DEL PRODUCTO
+   ========================================================== */
+
+.vista-mobile-carrito-producto-cabecera {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 6px;
+
+}
+
+
+.vista-mobile-carrito-producto-datos {
+
+    min-width: 0;
+
+    flex: 1 1 auto;
+
+}
+
+
+/* ==========================================================
+   CATEGORÍA
+   ========================================================== */
+
+.vista-mobile-carrito-producto-categoria {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    font-size: 10px;
+
+    line-height: 13px;
+
+    font-weight: 700;
+
+    color: var(--rosa);
+
+    text-transform: uppercase;
+
+    letter-spacing: .25px;
+
+}
+
+
+/* ==========================================================
+   NOMBRE
+   ========================================================== */
+
+.vista-mobile-carrito-producto-nombre {
+
+    margin: 0;
+
+    color: #222222;
+
+    font-size: 14px;
+
+    line-height: 18px;
+
+    font-weight: 650;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+
+}
+
+
+/* ==========================================================
+   PRESENTACIÓN / DESCRIPCIÓN
+   ========================================================== */
+
+.vista-mobile-carrito-producto-presentacion {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: #777777;
+
+    font-size: 11px;
+
+    line-height: 14px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+/* ==========================================================
+   ELIMINAR
+   ========================================================== */
+
+.vista-mobile-carrito-producto-eliminar {
+
+    width: 30px;
+
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #888888;
+
+    font-size: 23px;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+}
+
+
+.vista-mobile-carrito-producto-eliminar:active {
+
+    transform: scale(.90);
+
+    color: var(--rosa);
+
+}
+
+
+/* ==========================================================
+   PRECIO
+   ========================================================== */
+
+.vista-mobile-carrito-producto-precio {
+
+    margin-top: 5px;
+
+    color: #222222;
+
+    font-size: 17px;
+
+    line-height: 21px;
+
+    font-weight: 750;
+
+}
+
+
+/* ==========================================================
+   PIE DEL PRODUCTO
+   ========================================================== */
+
+.vista-mobile-carrito-producto-pie {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    margin-top: 6px;
+
+}
+
+
+/* ==========================================================
+   CONTROL DE CANTIDAD
+   ========================================================== */
+
+.vista-mobile-carrito-cantidad {
+
+    height: 32px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    border:
+        1px solid #DCDCDC;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    background: #FFFFFF;
+
+}
+
+
+.vista-mobile-carrito-cantidad-btn {
+
+    width: 32px;
+
+    height: 30px;
+
+    flex: 0 0 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #222222;
+
+    font-size: 19px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+}
+
+
+.vista-mobile-carrito-cantidad-btn:active {
+
+    background: var(--rosa-suave);
+
+}
+
+
+.vista-mobile-carrito-cantidad-numero {
+
+    min-width: 28px;
+
+    text-align: center;
+
+    color: #222222;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 30px;
+
+}
+
+
+/* ==========================================================
+   SUBTOTAL
+   ========================================================== */
+
+.vista-mobile-carrito-producto-subtotal {
+
+    color: #222222;
+
+    font-size: 14px;
+
+    line-height: 18px;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   3. CARRITO VACÍO
+   ========================================================== */
+
+.vista-mobile-carrito-vacio {
+
+    min-height: 300px;
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    background: #FFFFFF;
+
+    border:
+        1px solid #E7E7E7;
+
+    border-radius: 14px;
+
+}
+
+
+.vista-mobile-carrito-vacio-icono {
+
+    width: 64px;
+
+    height: 64px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 5px;
+
+    border-radius: 50%;
+
+    background: var(--rosa-suave);
+
+    font-size: 29px;
+
+}
+
+
+.vista-mobile-carrito-vacio h2 {
+
+    margin: 0;
+
+    font-size: 18px;
+
+    line-height: 23px;
+
+    color: #222222;
+
+}
+
+
+.vista-mobile-carrito-vacio p {
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+
+    line-height: 18px;
+
+}
+
+
+.vista-mobile-carrito-vacio-btn {
+
+    height: 42px;
+
+    margin-top: 7px;
+
+    padding: 0 22px;
+
+    border: none;
+
+    border-radius: 22px;
+
+    background: var(--rosa);
+
+    color: #FFFFFF;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.vista-mobile-carrito-vacio-btn:active {
+
+    transform: scale(.97);
+
+}
+
+
+/* ==========================================================
+   4. RESUMEN
+   ========================================================== */
+
+.vista-mobile-carrito-resumen {
+
+    width: 100%;
+
+    padding: 10px 14px 9px;
+
+    background: #FFFFFF;
+
+    border-top:
+        1px solid #E4E4E4;
+
+    box-shadow:
+        0 -4px 14px rgba(0,0,0,.05);
+
+    position: relative;
+
+    z-index: 20;
+
+}
+
+
+/* ==========================================================
+   FILAS
+   ========================================================== */
+
+.vista-mobile-carrito-resumen-fila {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    min-height: 21px;
+
+    color: #666666;
+
+    font-size: 12px;
+
+    line-height: 17px;
+
+}
+
+
+.vista-mobile-carrito-resumen-fila strong {
+
+    color: #222222;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.vista-mobile-carrito-resumen-separador {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin: 5px 0;
+
+    background: #EEEEEE;
+
+}
+
+
+/* ==========================================================
+   TOTAL
+   ========================================================== */
+
+.vista-mobile-carrito-resumen-total {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.vista-mobile-carrito-resumen-total span {
+
+    color: #222222;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+.vista-mobile-carrito-resumen-total strong {
+
+    color: #222222;
+
+    font-size: 20px;
+
+    line-height: 24px;
+
+    font-weight: 800;
+
+}
+
+
+/* ==========================================================
+   CONTINUAR PEDIDO
+   ========================================================== */
+
+.vista-mobile-carrito-continuar {
+
+    width: 100%;
+
+    height: 44px;
+
+    border: none;
+
+    border-radius: 23px;
+
+    background: var(--rosa);
+
+    color: #FFFFFF;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 12px rgba(201,62,119,.20);
+
+}
+
+
+.vista-mobile-carrito-continuar:active {
+
+    transform: scale(.98);
+
+}
+
+
+/* ==========================================================
+   5. NAVEGACIÓN INFERIOR
+   ========================================================== */
+
+.vista-mobile-carrito-footer {
+
+    width: 100%;
+
+    height: 64px;
+
+    min-height: 64px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    padding: 7px 10px;
+
+    background: #FFFFFF;
+
+    border-top:
+        1px solid #ECECEC;
+
+    position: relative;
+
+    z-index: 30;
+
+}
+
+
+/* ==========================================================
+   ITEM FOOTER
+   ========================================================== */
+
+.vista-mobile-carrito-footer-item {
+
+    width: 100%;
+
+    height: 50px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 2px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    color: #777777;
+
+    cursor: pointer;
+
+}
+
+
+.vista-mobile-carrito-footer-item:active {
+
+    transform: scale(.94);
+
+}
+
+
+.vista-mobile-carrito-footer-item.activo {
+
+    color: var(--rosa);
+
+}
+
+
+/* ==========================================================
+   ICONOS FOOTER
+   ========================================================== */
+
+.vista-mobile-carrito-footer-icono {
+
+    width: 25px;
+
+    height: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.vista-mobile-carrito-footer-icono svg {
+
+    width: 22px;
+
+    height: 22px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+}
+
+
+.vista-mobile-carrito-footer-label {
+
+    font-size: 11px;
+
+    line-height: 14px;
+
+    font-weight: 500;
+
+    color: currentColor;
+
+}
+
+
+/* ==========================================================
+   PANTALLAS PEQUEÑAS
+   ========================================================== */
+
+@media (max-width: 380px) {
+
+    .vista-mobile-carrito-header {
+
+        height: 60px;
+
+        min-height: 60px;
+
+    }
+
+
+    .vista-mobile-carrito-producto {
+
+        gap: 8px;
+
+        padding: 8px;
+
+    }
+
+
+    .vista-mobile-carrito-producto-imagen {
+
+        width: 82px;
+
+        height: 82px;
+
+        flex-basis: 82px;
+
+    }
+
+
+    .vista-mobile-carrito-producto-nombre {
+
+        font-size: 13px;
+
+        line-height: 17px;
+
+    }
+
+
+    .vista-mobile-carrito-producto-precio {
+
+        font-size: 16px;
+
+    }
+
+
+    .vista-mobile-carrito-resumen {
+
+        padding-left: 12px;
+
+        padding-right: 12px;
+
+    }
+
+
+    .vista-mobile-carrito-continuar {
+
+        height: 42px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   PANTALLAS MUY PEQUEÑAS
+   ========================================================== */
+
+@media (max-width: 340px) {
+
+    .vista-mobile-carrito-producto-imagen {
+
+        width: 76px;
+
+        height: 76px;
+
+        flex-basis: 76px;
+
+    }
+
+
+    .vista-mobile-carrito-producto-nombre {
+
+        font-size: 12px;
+
+        line-height: 16px;
+
+    }
+
+
+    .vista-mobile-carrito-producto-presentacion {
+
+        font-size: 10px;
+
+    }
+
+
+    .vista-mobile-carrito-producto-precio {
+
+        font-size: 15px;
+
+    }
+
+
+    .vista-mobile-carrito-producto-subtotal {
+
+        font-size: 12px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   PANTALLAS GRANDES
+
+   La vista sigue siendo MOBILE.
+   No cambia su arquitectura.
+   Solo evita que se vea exageradamente ancha.
+   ========================================================== */
+
+@media (min-width: 481px) {
+
+    .vista-mobile-carrito {
+
+        max-width: 480px;
+
+        margin: 0 auto;
+
+        border-left:
+            1px solid #E6E6E6;
+
+        border-right:
+            1px solid #E6E6E6;
+
+    }
+
+}
