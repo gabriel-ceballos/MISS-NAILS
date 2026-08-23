@@ -643,33 +643,36 @@ this.mostrarDetalleProducto(
         }
 
 
-                const navegacion =
-            document.querySelectorAll(
-                ".mobile-nav-item"
+const navegacion =
+    document.querySelectorAll(
+        ".mobile-nav-item"
+    );
+
+navegacion.forEach(boton => {
+    boton.addEventListener(
+        "click",
+        () => {
+
+            navegacion.forEach(item => {
+                item.classList.remove(
+                    "activo"
+                );
+            });
+
+            boton.classList.add(
+                "activo"
             );
 
-        navegacion.forEach(boton => {
+            if (
+                boton.id === "btnCarrito" &&
+                window.carritoMobile
+            ) {
+                window.carritoMobile.mostrar();
+            }
 
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    navegacion.forEach(item => {
-
-                        item.classList.remove(
-                            "activo"
-                        );
-
-                    });
-
-                    boton.classList.add(
-                        "activo"
-                    );
-
-                }
-            );
-
-        });
+        }
+    );
+});
 
         
 
@@ -1445,21 +1448,24 @@ if (agregado) {
         }
 
 
-        window.addEventListener(
-            "popstate",
-            () => {
+window.addEventListener(
+    "popstate",
+    () => {
 
-                if (
-                    this.vistaActual === "detalle"
-                ) {
+        if (
+            this.vistaActual === "detalle" ||
+            this.vistaActual === "carrito"
+        ) {
 
-                    this.restaurarCatalogo();
+            this.vistaActual =
+                "catalogo";
 
-                }
+            this.restaurarCatalogo();
 
-            }
-        );
+        }
 
+    }
+);
 
         this.historialInicializado =
             true;
@@ -1507,6 +1513,10 @@ if (agregado) {
     },
 
 
+    
+
+
+
     /*************************************************
      * SEGURIDAD HTML
      *************************************************/
@@ -1524,6 +1534,6 @@ if (agregado) {
 
 };
 
-
+window.mobile = mobile;
 
 

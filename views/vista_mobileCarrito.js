@@ -30,6 +30,11 @@
         ================================================== */
 
         contenedor: null,
+            datos: {
+        items: [],
+        unidades: 0,
+        subtotal: 0
+    },
 
 
         /* ==================================================
@@ -62,7 +67,28 @@
            RENDERIZAR ESTRUCTURA
         ================================================== */
 
-        renderizar() {
+     renderizar(datos = null) {
+
+
+        if (datos) {
+
+    this.datos = {
+
+        items:
+            Array.isArray(datos.items)
+                ? datos.items
+                : [],
+
+        unidades:
+            Number(datos.unidades) || 0,
+
+        subtotal:
+            Number(datos.subtotal) || 0
+
+    };
+
+}
+
 
             if (!this.contenedor) {
 
@@ -155,165 +181,177 @@
                              LISTA DE PRODUCTOS
                         ================================== -->
 
-                        <section
-                            class="vista-mobile-carrito-lista"
-                            id="vistaMobileCarritoLista">
+<section
+    class="vista-mobile-carrito-lista"
+    id="vistaMobileCarritoLista">
+
+    ${
+        this.datos.items.length
+            ? this.datos.items.map(item => {
+
+                const precio =
+                    Number(item.precio) || 0;
+
+                const cantidad =
+                    Number(item.cantidad) || 0;
+
+                const subtotal =
+                    precio * cantidad;
+
+                const imagen =
+                    item.imagen
+                        ? `
+                            <img
+                                src="https://drive.google.com/thumbnail?id=${item.imagen}&sz=w500"
+                                alt="${item.nombre || "Producto"}">
+                          `
+                        : `
+                            <div
+                                class="vista-mobile-carrito-producto-imagen-placeholder">
+
+                                FOTO
+
+                            </div>
+                          `;
+
+                return `
+
+                    <article
+                        class="vista-mobile-carrito-producto"
+                        data-producto-id="${item.id}">
+
+                        <div
+                            class="vista-mobile-carrito-producto-imagen">
+
+                            ${imagen}
+
+                        </div>
 
 
-                            <!-- =================================
-                                 TARJETA DE PRODUCTO
-                                 ESTRUCTURA BASE
-                            ================================== -->
-
-                            <article
-                                class="vista-mobile-carrito-producto">
+                        <div
+                            class="vista-mobile-carrito-producto-info">
 
 
-                                <!-- IMAGEN -->
+                            <div
+                                class="vista-mobile-carrito-producto-cabecera">
+
 
                                 <div
-                                    class="vista-mobile-carrito-producto-imagen">
+                                    class="vista-mobile-carrito-producto-datos">
 
 
-                                    <div
-                                        class="vista-mobile-carrito-producto-imagen-placeholder">
+                                    <span
+                                        class="vista-mobile-carrito-producto-categoria">
 
-                                        FOTO
+                                        ${item.categoria || "PRODUCTO"}
 
-                                    </div>
+                                    </span>
+
+
+                                    <h2
+                                        class="vista-mobile-carrito-producto-nombre">
+
+                                        ${item.nombre || "Producto"}
+
+                                    </h2>
+
+
+                                    <span
+                                        class="vista-mobile-carrito-producto-presentacion">
+
+                                        ${item.descripcion || ""}
+
+                                    </span>
 
 
                                 </div>
 
 
-                                <!-- INFORMACIÓN -->
+                                <button
+                                    class="vista-mobile-carrito-producto-eliminar"
+                                    type="button"
+                                    aria-label="Eliminar producto">
+
+                                    ×
+
+                                </button>
+
+
+                            </div>
+
+
+                            <div
+                                class="vista-mobile-carrito-producto-precio">
+
+                                $${precio.toFixed(2)}
+
+                            </div>
+
+
+                            <div
+                                class="vista-mobile-carrito-producto-pie">
+
 
                                 <div
-                                    class="vista-mobile-carrito-producto-info">
+                                    class="vista-mobile-carrito-cantidad">
 
 
-                                    <div
-                                        class="vista-mobile-carrito-producto-cabecera">
+                                    <button
+                                        class="vista-mobile-carrito-cantidad-btn"
+                                        type="button"
+                                        aria-label="Disminuir cantidad">
+
+                                        −
+
+                                    </button>
 
 
-                                        <div
-                                            class="vista-mobile-carrito-producto-datos">
+                                    <span
+                                        class="vista-mobile-carrito-cantidad-numero">
+
+                                        ${cantidad}
+
+                                    </span>
 
 
-                                            <span
-                                                class="vista-mobile-carrito-producto-categoria">
+                                    <button
+                                        class="vista-mobile-carrito-cantidad-btn"
+                                        type="button"
+                                        aria-label="Aumentar cantidad">
 
-                                                CATEGORÍA
+                                        +
 
-                                            </span>
-
-
-                                            <h2
-                                                class="vista-mobile-carrito-producto-nombre">
-
-                                                Nombre del producto
-
-                                            </h2>
-
-
-                                            <span
-                                                class="vista-mobile-carrito-producto-presentacion">
-
-                                                Presentación / descripción
-
-                                            </span>
-
-
-                                        </div>
-
-
-                                        <button
-                                            class="vista-mobile-carrito-producto-eliminar"
-                                            type="button"
-                                            aria-label="Eliminar producto">
-
-                                            ×
-
-                                        </button>
-
-
-                                    </div>
-
-
-                                    <!-- PRECIO -->
-
-                                    <div
-                                        class="vista-mobile-carrito-producto-precio">
-
-                                        $0.00
-
-                                    </div>
-
-
-                                    <!-- PARTE INFERIOR -->
-
-                                    <div
-                                        class="vista-mobile-carrito-producto-pie">
-
-
-                                        <!-- CANTIDAD -->
-
-                                        <div
-                                            class="vista-mobile-carrito-cantidad">
-
-
-                                            <button
-                                                class="vista-mobile-carrito-cantidad-btn"
-                                                type="button"
-                                                aria-label="Disminuir cantidad">
-
-                                                −
-
-                                            </button>
-
-
-                                            <span
-                                                class="vista-mobile-carrito-cantidad-numero">
-
-                                                1
-
-                                            </span>
-
-
-                                            <button
-                                                class="vista-mobile-carrito-cantidad-btn"
-                                                type="button"
-                                                aria-label="Aumentar cantidad">
-
-                                                +
-
-                                            </button>
-
-
-                                        </div>
-
-
-                                        <!-- SUBTOTAL -->
-
-                                        <strong
-                                            class="vista-mobile-carrito-producto-subtotal">
-
-                                            $0.00
-
-                                        </strong>
-
-
-                                    </div>
+                                    </button>
 
 
                                 </div>
 
 
-                            </article>
+                                <strong
+                                    class="vista-mobile-carrito-producto-subtotal">
+
+                                    $${subtotal.toFixed(2)}
+
+                                </strong>
 
 
-                        </section>
+                            </div>
 
+
+                        </div>
+
+
+                    </article>
+
+                `;
+
+            }).join("")
+
+            : ""
+
+    }
+
+</section>
 
                         <!-- =================================
                              ESTADO CARRITO VACÍO
@@ -635,11 +673,41 @@
 
                 </div>
 
-            `;
+                  `;
+
+
+        const regresar =
+            document.getElementById(
+                "vistaMobileCarritoRegresar"
+            );
+
+
+        if (regresar) {
+
+            regresar.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        window.mobile &&
+                        typeof mobile.restaurarCatalogo ===
+                        "function"
+                    ) {
+
+                        mobile.vistaActual =
+                            "catalogo";
+
+                        mobile.restaurarCatalogo();
+
+                    }
+
+                }
+            );
 
         }
 
 
+        }
     };
 
 

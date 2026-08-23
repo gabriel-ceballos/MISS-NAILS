@@ -551,9 +551,30 @@
                 "#carrito"
             );
 
-            this.validarInventario();
+   this.validarInventario();
 
-            this.renderizar();
+if (window.vistaMobileCarrito) {
+
+    window.vistaMobileCarrito.renderizar({
+        items: this.items,
+        unidades: this.totalUnidades(),
+        subtotal: this.subtotal()
+    });
+
+}
+
+
+            console.log(
+    "CARRITO → datos para nueva vista",
+    {
+        items: this.items,
+        unidades: this.totalUnidades(),
+        subtotal: this.subtotal()
+    }
+);
+
+
+            
 
         },
 
