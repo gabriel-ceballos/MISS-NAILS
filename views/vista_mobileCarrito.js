@@ -22,6 +22,27 @@
     "use strict";
 
 
+    function formatearMoneda(valor) {
+
+        const numero =
+            Number(valor);
+
+        if (!Number.isFinite(numero)) {
+            return "$0.00";
+        }
+
+        return "$" +
+            numero.toLocaleString(
+                "en-US",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+    }
+
+
     const vistaMobileCarrito = {
 
 
@@ -284,7 +305,7 @@
                             <div
                                 class="vista-mobile-carrito-producto-precio">
 
-                                $${precio.toFixed(2)}
+                               ${formatearMoneda(precio)}
 
                             </div>
 
@@ -333,7 +354,7 @@
                                 <strong
                                     class="vista-mobile-carrito-producto-subtotal">
 
-                                    $${subtotal.toFixed(2)}
+                                    ${formatearMoneda(subtotal)}
 
                                 </strong>
 
@@ -428,7 +449,7 @@
 
                             <strong
                                 id="vistaMobileCarritoSubtotal">
-                                $${this.datos.subtotal.toFixed(2)}
+                                ${formatearMoneda(this.datos.subtotal)}
                             </strong>
 
 
@@ -475,7 +496,7 @@
 
                             <strong
                                 id="vistaMobileCarritoTotal">
-                                $${this.datos.subtotal.toFixed(2)}
+                                 ${formatearMoneda(this.datos.subtotal)}
                             </strong>
 
 
