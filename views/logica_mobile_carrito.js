@@ -1,6 +1,6 @@
-﻿/* ==========================================================
+/* ==========================================================
    MISS NAILS
-   MOBILE CARRITO
+   LOGICA MOBILE CARRITO
    Modulo independiente
    ========================================================== */
 
@@ -312,35 +312,77 @@
 
         },
 
-        disminuir(id) {
+disminuir(id) {
 
-            const item =
-                this.items.find(
-                    producto =>
-                        String(producto.id) ===
-                        String(id)
-                );
+    const item =
+        this.items.find(
+            producto =>
+                String(producto.id) ===
+                String(id)
+        );
 
-            if (!item) return;
 
-            item.cantidad--;
+    if (!item) {
+        return;
+    }
 
-            if (item.cantidad <= 0) {
 
-                this.items =
-                    this.items.filter(
-                        producto =>
-                            String(producto.id) !==
-                            String(id)
-                    );
+    /*
+     * Si hay más de una unidad,
+     * simplemente disminuimos.
+     */
 
-            }
+    if (
+        numero(item.cantidad) > 1
+    ) {
 
-            this.guardar();
+        item.cantidad--;
 
-            this.renderizar();
+        this.guardar();
 
-        },
+        this.renderizar();
+
+        return;
+
+    }
+
+
+    /*
+     * Si queda exactamente una unidad,
+     * no eliminamos automáticamente.
+     *
+     * Primero pedimos confirmación.
+     */
+
+    const confirmar =
+        window.confirm(
+            "¿Está seguro que desea remover este artículo?"
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    /*
+     * El usuario confirmó.
+     * Eliminamos completamente el artículo.
+     */
+
+    this.items =
+        this.items.filter(
+            producto =>
+                String(producto.id) !==
+                String(id)
+        );
+
+
+    this.guardar();
+
+    this.renderizar();
+
+},
 
         eliminar(id) {
 
@@ -590,322 +632,7 @@ if (window.vistaMobileCarrito) {
 
         },
 
-        renderizar() {
 
-            const app =
-                document.getElementById(
-                    "app"
-                );
-
-            if (!app) return;
-
-            this.vistaActiva =
-                true;
-
-            mobile.vistaActual =
-                "carrito";
-
-            const total =
-                this.subtotal();
-
-            app.innerHTML = `
-
-                <div class="mobile-carrito">
-
-                    <header
-                        class="mobile-carrito-header">
-
-                        <button
-                            id="btnVolverCarrito"
-                            type="button"
-                            aria-label="Regresar">
-
-                            ←
-
-                        </button>
-
-                        <h1>Carrito</h1>
-
-                        <span
-                            class="mobile-carrito-unidades">
-
-                            ${this.totalUnidades()}
-
-                        </span>
-
-                    </header>
-
-                    <main
-                        class="mobile-carrito-contenido">
-
-                        ${this.renderItems()}
-
-                    </main>
-
-                    <footer
-                        class="mobile-carrito-footer">
-
-                        <div
-                            class="mobile-carrito-resumen">
-
-                            <span>
-                                Subtotal
-                            </span>
-
-                            <strong>
-                                $${total.toFixed(2)}
-                            </strong>
-
-                        </div>
-
-                        <div
-                            class="mobile-carrito-resumen total">
-
-                            <span>
-                                Total
-                            </span>
-
-                            <strong>
-                                $${total.toFixed(2)}
-                            </strong>
-
-                        </div>
-
-                        <button
-                            class="mobile-carrito-continuar"
-                            type="button">
-
-                            Continuar
-
-                        </button>
-
-                    </footer>
-
-                </div>
-
-            `;
-
-            const volver =
-                document.getElementById(
-                    "btnVolverCarrito"
-                );
-
-            volver?.addEventListener(
-                "click",
-                () => this.volver()
-            );
-
-            const catalogoVacio =
-                document.getElementById(
-                    "btnIrCatalogoVacio"
-                );
-
-            catalogoVacio?.addEventListener(
-                "click",
-                () => history.back()
-            );
-
-            app
-                .querySelectorAll(
-                    "[data-carrito-accion]"
-                )
-                .forEach(boton => {
-
-                    boton.addEventListener(
-                        "click",
-                        () => {
-
-                            const id =
-                                boton.dataset.id;
-
-                            const accion =
-                                boton.dataset.carritoAccion;
-
-                            if (
-                                accion ===
-                                "sumar"
-                            ) {
-
-                                this.aumentar(id);
-
-                            }
-
-                            if (
-                                accion ===
-                                "restar"
-                            ) {
-
-                                this.disminuir(id);
-
-                            }
-
-                            if (
-                                accion ===
-                                "eliminar"
-                            ) {
-
-                                this.eliminar(id);
-
-                            }
-
-                        }
-                    );
-
-                });
-
-            this.actualizarContador();
-
-        },
-
-        renderItems() {
-
-            if (!this.items.length) {
-
-                return `
-
-                    <section
-                        class="mobile-carrito-vacio">
-
-                        <div
-                            class="mobile-carrito-vacio-icono">
-
-                            🛒
-
-                        </div>
-
-                        <strong>
-                            Tu carrito está vacío
-                        </strong>
-
-                        <span>
-                            Agrega productos
-                            desde el catálogo.
-                        </span>
-
-                        <button
-                            id="btnIrCatalogoVacio"
-                            type="button">
-
-                            Ver productos
-
-                        </button>
-
-                    </section>
-
-                `;
-
-            }
-
-            return this.items.map(
-                item => {
-
-                    const imagen =
-                        item.imagen
-
-                            ? `
-
-                                <img
-                                    src="https://drive.google.com/thumbnail?id=${escapar(item.imagen)}&sz=w500"
-                                    alt="${escapar(item.nombre)}">
-
-                              `
-
-                            : `
-
-                                <div
-                                    class="mobile-carrito-sin-imagen">
-
-                                    SIN IMAGEN
-
-                                </div>
-
-                              `;
-
-                    const subtotal =
-                        numero(item.precio) *
-                        numero(item.cantidad);
-
-                    return `
-
-                        <article
-                            class="mobile-carrito-item">
-
-                            <div
-                                class="mobile-carrito-item-imagen">
-
-                                ${imagen}
-
-                            </div>
-
-                            <div
-                                class="mobile-carrito-item-info">
-
-                                <h2>
-                                    ${escapar(item.nombre)}
-                                </h2>
-
-                                <span
-                                    class="mobile-carrito-item-precio">
-
-                                    $${numero(item.precio).toFixed(2)}
-
-                                </span>
-
-                                <div
-                                    class="mobile-carrito-controles">
-
-                                    <button
-                                        type="button"
-                                        data-carrito-accion="restar"
-                                        data-id="${escapar(item.id)}">
-
-                                        −
-
-                                    </button>
-
-                                    <strong>
-                                        ${numero(item.cantidad)}
-                                    </strong>
-
-                                    <button
-                                        type="button"
-                                        data-carrito-accion="sumar"
-                                        data-id="${escapar(item.id)}">
-
-                                        +
-
-                                    </button>
-
-                                </div>
-
-                                <strong
-                                    class="mobile-carrito-item-subtotal">
-
-                                    $${subtotal.toFixed(2)}
-
-                                </strong>
-
-                            </div>
-
-                            <button
-                                class="mobile-carrito-eliminar"
-                                type="button"
-                                data-carrito-accion="eliminar"
-                                data-id="${escapar(item.id)}"
-                                aria-label="Eliminar producto">
-
-                                ×
-
-                            </button>
-
-                        </article>
-
-                    `;
-
-                }
-            ).join("");
-
-        },
 
         mensaje(texto, tipo) {
 
