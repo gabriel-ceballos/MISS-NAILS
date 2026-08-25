@@ -510,6 +510,7 @@
 
                         <button
                             class="vista-mobile-carrito-footer-item"
+                            id="vistaMobileCarritoInicio"
                             type="button">
 
 
@@ -674,6 +675,19 @@
                 </div>
 
                   `;
+
+
+                  const inicio =
+                document.getElementById(
+                    "vistaMobileCarritoInicio"
+                );
+
+            inicio?.addEventListener(
+                "click",
+                () => history.back()
+            );
+
+
 
 
         const regresar =
