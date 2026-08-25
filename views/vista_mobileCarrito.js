@@ -153,7 +153,8 @@
                                 <span
                                     id="vistaMobileCarritoCantidad">
 
-                                    0
+                                      ${this.datos.unidades}
+
 
                                 </span>
 
@@ -317,7 +318,9 @@
                                     <button
                                         class="vista-mobile-carrito-cantidad-btn"
                                         type="button"
-                                        aria-label="Aumentar cantidad">
+                                        aria-label="Aumentar cantidad"
+                                        data-carrito-accion="sumar"
+                                        data-id="${item.id}">
 
                                         +
 
@@ -425,9 +428,7 @@
 
                             <strong
                                 id="vistaMobileCarritoSubtotal">
-
-                                $0.00
-
+                                $${this.datos.subtotal.toFixed(2)}
                             </strong>
 
 
@@ -474,9 +475,7 @@
 
                             <strong
                                 id="vistaMobileCarritoTotal">
-
-                                $0.00
-
+                                $${this.datos.subtotal.toFixed(2)}
                             </strong>
 
 
@@ -720,6 +719,37 @@
 
         }
 
+
+          const botonesSumar =
+            this.contenedor.querySelectorAll(
+                '[data-carrito-accion="sumar"]'
+            );
+
+        botonesSumar.forEach(
+            boton => {
+
+                boton.addEventListener(
+                    "click",
+                    () => {
+
+                        const id =
+                            boton.dataset.id;
+
+                        if (
+                            window.carritoMobile &&
+                            typeof window.carritoMobile.aumentar ===
+                                "function"
+                        ) {
+
+                            window.carritoMobile.aumentar(id);
+
+                        }
+
+                    }
+                );
+
+            }
+        );
 
         }
     };

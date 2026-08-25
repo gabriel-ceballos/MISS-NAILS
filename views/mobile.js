@@ -423,27 +423,52 @@ console.log("MOBILE → solicitando productos");
 
 
             /*
-             * Reemplazar la información local
-             * por la información actual del backend.
-             */
+            * Una respuesta sin productos válidos
+            * no debe destruir el último inventario
+            * conocido.
+            */
+
+            if (
+                nuevosProductos.length === 0
+            ) {
+
+                console.warn(
+                    "MOBILE → inventario no actualizado: respuesta sin productos válidos"
+                );
+
+                return;
+
+            }
+
+
+            /*
+            * Reemplazar la información local
+            * solamente cuando el backend entregó
+            * un inventario válido.
+            */
 
             this.productos =
                 nuevosProductos;
 
 
-            /*
-             * Volver a aplicar búsqueda/categoría
-             * y actualizar solamente la zona
-             * de productos.
-             */
+                /*
+                * Actualizar visualmente el catálogo
+                * solamente si el catálogo está activo.
+                */
 
-            this.renderizar();
+                if (
+                    this.vistaActual === "catalogo"
+                ) {
+
+                    this.renderizar();
+
+                }
 
 
-            console.log(
-                "MOBILE → inventario sincronizado:",
-                nuevosProductos.length
-            );
+                console.log(
+                    "MOBILE → inventario sincronizado:",
+                    nuevosProductos.length
+                );
 
 
         } catch (error) {

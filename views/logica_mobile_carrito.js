@@ -14,6 +14,94 @@
         return Number.isFinite(n) ? n : 0;
     }
 
+
+
+    function numeroPrecio(valor) {
+
+    if (typeof valor === "number") {
+        return Number.isFinite(valor)
+            ? valor
+            : 0;
+    }
+
+    let texto =
+        String(valor ?? "")
+            .trim()
+            .replace(/\$/g, "")
+            .replace(/\s/g, "");
+
+    if (!texto) {
+        return 0;
+    }
+
+    /*
+     * Si existen punto y coma:
+     * el último separador se considera decimal.
+     */
+    if (
+        texto.includes(".") &&
+        texto.includes(",")
+    ) {
+
+        if (
+            texto.lastIndexOf(",") >
+            texto.lastIndexOf(".")
+        ) {
+
+            texto =
+                texto
+                    .replace(/\./g, "")
+                    .replace(",", ".");
+
+        } else {
+
+            texto =
+                texto
+                    .replace(/,/g, "");
+
+        }
+
+    } else if (texto.includes(",")) {
+
+        /*
+         * 75,00 → 75
+         * 1,250 → 1250
+         */
+        const partes =
+            texto.split(",");
+
+        if (
+            partes.length === 2 &&
+            partes[1].length === 2
+        ) {
+
+            texto =
+                partes[0] +
+                "." +
+                partes[1];
+
+        } else {
+
+            texto =
+                texto.replace(/,/g, "");
+
+        }
+
+    }
+
+    const numeroConvertido =
+        Number(texto);
+
+    return Number.isFinite(numeroConvertido)
+        ? numeroConvertido
+        : 0;
+}
+
+
+
+
+
+
     function escapar(valor) {
         return String(valor ?? "")
             .replace(/&/g, "&amp;")
@@ -108,17 +196,17 @@
 
         },
 
-        subtotal() {
+            subtotal() {
 
-            return this.items.reduce(
-                (total, item) =>
-                    total +
-                    numero(item.precio) *
-                    numero(item.cantidad),
-                0
-            );
+                return this.items.reduce(
+                    (total, item) =>
+                        total +
+                        numeroPrecio(item.precio) *
+                        numero(item.cantidad),
+                    0
+                );
 
-        },
+            },
 
         obtenerProducto(id) {
 
@@ -211,7 +299,7 @@
                     "Producto sin nombre",
 
                 precio:
-                    numero(producto.precio),
+                 numeroPrecio(producto.precio),
 
                 imagen:
                     producto.imagen || "",
@@ -294,7 +382,7 @@
                     disponible;
 
                 item.precio =
-                    numero(producto.precio);
+                numeroPrecio(producto.precio);
 
                 item.nombre =
                     producto.nombre ||
@@ -308,7 +396,7 @@
 
             this.guardar();
 
-            this.renderizar();
+            this.actualizarVista();
 
         },
 
@@ -340,7 +428,7 @@ disminuir(id) {
 
         this.guardar();
 
-        this.renderizar();
+        this.actualizarVista();
 
         return;
 
@@ -380,7 +468,7 @@ disminuir(id) {
 
     this.guardar();
 
-    this.renderizar();
+    this.actualizarVista();
 
 },
 
@@ -395,7 +483,7 @@ disminuir(id) {
 
             this.guardar();
 
-            this.renderizar();
+            this.actualizarVista();
 
         },
 
@@ -435,7 +523,7 @@ disminuir(id) {
                             numero(item.inventario) !==
                                 disponible ||
                             numero(item.precio) !==
-                                numero(producto.precio)
+                                numeroPrecio(producto.precio)
                         ) {
 
                             cambio = true;
@@ -450,10 +538,10 @@ disminuir(id) {
                                 producto.nombre ||
                                 item.nombre,
 
-                            precio:
-                                numero(
-                                    producto.precio
-                                ),
+                        precio:
+                            numeroPrecio(
+                                producto.precio
+                            ),
 
                             imagen:
                                 producto.imagen ||
@@ -486,6 +574,30 @@ disminuir(id) {
             return cambio;
 
         },
+
+
+        actualizarVista() {
+
+    if (
+        window.vistaMobileCarrito &&
+        typeof window.vistaMobileCarrito.renderizar ===
+            "function"
+    ) {
+
+        window.vistaMobileCarrito.renderizar({
+            items: this.items,
+            unidades: this.totalUnidades(),
+            subtotal: this.subtotal()
+        });
+
+    }
+
+    this.actualizarContador();
+
+},
+
+
+
 
         actualizarContador() {
 
