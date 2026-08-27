@@ -150,7 +150,19 @@
                             <span
                                 class="vista-mobile-carrito-icono-regresar">
 
-                                ←
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true">
+
+                                    <path
+                                        d="M19 12H5">
+                                    </path>
+
+                                    <path
+                                        d="M11 18L5 12L11 6">
+                                    </path>
+
+                                </svg>
 
                             </span>
 
@@ -163,25 +175,12 @@
 
                             <h1>
 
-                                Mi carrito
+                                Mi carrito (${this.datos.unidades})
 
                             </h1>
 
 
-                            <span
-                                class="vista-mobile-carrito-header-cantidad">
 
-                                <span
-                                    id="vistaMobileCarritoCantidad">
-
-                                      ${this.datos.unidades}
-
-
-                                </span>
-
-                                productos
-
-                            </span>
 
 
                         </div>

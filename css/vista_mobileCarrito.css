@@ -119,7 +119,6 @@
 .vista-mobile-carrito-btn-regresar {
 
     width: 46px;
-
     height: 46px;
 
     flex: 0 0 46px;
@@ -140,29 +139,87 @@
 
     background: transparent;
 
-    color: #222222;
+    color: #C93E77;
 
     cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+        background-color .18s ease,
+        transform .12s ease;
+
+}
+
+
+.vista-mobile-carrito-btn-regresar:hover {
+
+    background: #FFF0F5;
 
 }
 
 
 .vista-mobile-carrito-btn-regresar:active {
 
-    transform: scale(.93);
+    transform: scale(.90);
+
+    background: #FCE0EA;
+
+}
+
+
+
+.vista-mobile-carrito-btn-regresar.presionando {
+
+    transform: scale(.90);
+
+    background: #FCE0EA;
 
 }
 
 
 .vista-mobile-carrito-icono-regresar {
 
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        transform .18s ease;
+
+}
+
+
+.vista-mobile-carrito-icono-regresar svg {
+
+    width: 34px;
+    height: 34px;
+
     display: block;
 
-    font-size: 27px;
+    fill: none;
 
-    line-height: 1;
+    stroke: currentColor;
 
-    font-weight: 300;
+    stroke-width: 2.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+}
+
+
+.vista-mobile-carrito-btn-regresar:hover
+.vista-mobile-carrito-icono-regresar {
+
+    transform: translateX(-2px);
 
 }
 
