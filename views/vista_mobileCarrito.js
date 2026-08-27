@@ -319,11 +319,13 @@
 
 
                                     <button
-                                        class="vista-mobile-carrito-cantidad-btn"
-                                        type="button"
-                                        aria-label="Disminuir cantidad">
+                                    class="vista-mobile-carrito-cantidad-btn"
+                                    type="button"
+                                    aria-label="Disminuir cantidad"
+                                    data-carrito-accion="restar"
+                                    data-id="${item.id}">
 
-                                        −
+                                    −
 
                                     </button>
 
@@ -742,39 +744,80 @@
 
 
           const botonesSumar =
-            this.contenedor.querySelectorAll(
-                '[data-carrito-accion="sumar"]'
-            );
+    this.contenedor.querySelectorAll(
+        '[data-carrito-accion="sumar"]'
+    );
 
-        botonesSumar.forEach(
-            boton => {
 
-                boton.addEventListener(
-                    "click",
-                    () => {
+botonesSumar.forEach(
+    boton => {
 
-                        const id =
-                            boton.dataset.id;
+        boton.addEventListener(
+            "click",
+            () => {
 
-                        if (
-                            window.carritoMobile &&
-                            typeof window.carritoMobile.aumentar ===
-                                "function"
-                        ) {
+                const id =
+                    boton.dataset.id;
 
-                            window.carritoMobile.aumentar(id);
+                if (
+                    window.carritoMobile &&
+                    typeof window.carritoMobile.aumentar ===
+                        "function"
+                ) {
 
-                        }
+                    window.carritoMobile.aumentar(id);
 
-                    }
-                );
+                }
 
             }
         );
 
+    }
+);
+
+
+/* =========================================
+   BOTONES RESTAR
+========================================= */
+
+const botonesRestar =
+    this.contenedor.querySelectorAll(
+        '[data-carrito-accion="restar"]'
+    );
+
+
+botonesRestar.forEach(
+    boton => {
+
+        boton.addEventListener(
+            "click",
+            () => {
+
+                const id =
+                    boton.dataset.id;
+
+                if (
+                    window.carritoMobile &&
+                    typeof window.carritoMobile.disminuir ===
+                        "function"
+                ) {
+
+                    window.carritoMobile.disminuir(id);
+
+                }
+
+            }
+        );
+
+    }
+);
+
         }
     };
 
+
+
+    
 
     /* ======================================================
        EXPONER VISTA
