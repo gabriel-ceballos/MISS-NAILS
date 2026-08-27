@@ -23,7 +23,7 @@ async mostrar() {
 
     const app = document.getElementById("app");
 
-    app.style.visibility = "hidden";
+    
 
     app.innerHTML = `
 
@@ -298,12 +298,29 @@ if (window.carritoMobile) {
 
 }
 
+
+const inicioCargaCatalogo =
+    performance.now();
+
+console.log(
+    "TIEMPO → inicio carga catálogo"
+);
+
 console.log("MOBILE → solicitando productos");
 
 
         try {
 
             const respuesta = await api("productos");
+
+                        console.log(
+                "TIEMPO → API productos:",
+                (
+                    performance.now() -
+                    inicioCargaCatalogo
+                ).toFixed(0),
+                "ms"
+            );
 
             console.log(
                 "MOBILE → respuesta productos",
@@ -322,7 +339,7 @@ console.log("MOBILE → solicitando productos");
                     "No fue posible cargar los productos."
                 );
 
-                app.style.visibility = "visible";
+                
 
                 return;
 
@@ -341,9 +358,27 @@ console.log("MOBILE → solicitando productos");
             );
 
 
-                this.renderizar();
+                    this.renderizar();
 
-                app.style.visibility = "visible";
+                    console.log(
+                        "TIEMPO → render catálogo:",
+                        (
+                            performance.now() -
+                            inicioCargaCatalogo
+                        ).toFixed(0),
+                        "ms"
+                    );
+
+                    
+
+                    console.log(
+                        "TIEMPO → carga completa:",
+                        (
+                            performance.now() -
+                            inicioCargaCatalogo
+                        ).toFixed(0),
+                        "ms"
+                    );
 
                 this.iniciarSincronizacion();
 
@@ -358,7 +393,7 @@ console.log("MOBILE → solicitando productos");
             this.mostrarError(
                 "No fue posible cargar los productos."
             );
-            app.style.visibility = "visible";
+            
 
         }
 
