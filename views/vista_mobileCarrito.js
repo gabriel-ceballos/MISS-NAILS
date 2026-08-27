@@ -330,12 +330,15 @@
                                     </button>
 
 
-                                    <span
-                                        class="vista-mobile-carrito-cantidad-numero">
-
-                                        ${cantidad}
-
-                                    </span>
+                                    <input
+                                    class="vista-mobile-carrito-cantidad-numero"
+                                    type="text"
+                                    inputmode="numeric"
+                                    pattern="[0-9]*"
+                                    autocomplete="off"
+                                    value="${cantidad}"
+                                    data-carrito-cantidad="${item.id}"
+                                    aria-label="Cantidad de ${item.nombre}">
 
 
                                     <button
@@ -812,11 +815,113 @@ botonesRestar.forEach(
     }
 );
 
-        }
-    };
+
+/* =========================================
+   CAMPOS DE CANTIDAD
+========================================= */
 
 
 
+const camposCantidad =
+    this.contenedor.querySelectorAll(
+        "[data-carrito-cantidad]"
+    );
+
+
+camposCantidad.forEach(
+    campo => {
+
+        /*
+         * Solo permite digitos.
+         * Si se intenta introducir:
+         * + - . , letras, e, etc.
+         * se conserva el ultimo valor valido.
+         */
+
+        let ultimoValorValido =
+            campo.value;
+
+
+        campo.addEventListener(
+            "input",
+            () => {
+
+                if (
+                    /^\d*$/.test(
+                        campo.value
+                    )
+                ) {
+
+                    ultimoValorValido =
+                        campo.value;
+
+                    return;
+
+                }
+
+
+                campo.value =
+                    ultimoValorValido;
+
+            }
+        );
+
+
+        /*
+         * Al salir del campo:
+         * validamos y guardamos.
+         */
+
+        campo.addEventListener(
+            "change",
+            () => {
+
+                const id =
+                    campo.dataset.carritoCantidad;
+
+                if (
+                    window.carritoMobile &&
+                    typeof window.carritoMobile.cambiarCantidad ===
+                        "function"
+                ) {
+
+                    window.carritoMobile.cambiarCantidad(
+                        id,
+                        campo.value
+                    );
+
+                }
+
+            }
+        );
+
+
+        /*
+         * ENTER = aceptar la cantidad.
+         */
+
+        campo.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    event.preventDefault();
+
+                    campo.blur();
+
+                }
+
+            }
+        );
+
+    }
+);
+}
+};
     
 
     /* ======================================================

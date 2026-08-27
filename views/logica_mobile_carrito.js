@@ -341,6 +341,139 @@
 
         },
 
+
+
+                    cambiarCantidad(id, valor) {
+
+            const item =
+                this.items.find(
+                    producto =>
+                        String(producto.id) ===
+                        String(id)
+                );
+
+
+            if (!item) {
+                return;
+            }
+
+
+            /*
+             * SOLO ACEPTAMOS DIGITOS
+             */
+
+            const texto =
+                String(valor ?? "");
+
+
+            if (!/^\d+$/.test(texto)) {
+
+                this.mensaje(
+                    "La cantidad solo puede contener números",
+                    "warning"
+                );
+
+                this.actualizarVista();
+
+                return;
+            }
+
+
+            const cantidad =
+                Number(texto);
+
+
+            /*
+             * LA CANTIDAD MINIMA ES 1.
+             * Para eliminar existe el boton −.
+             */
+
+            if (
+                !Number.isInteger(cantidad) ||
+                cantidad < 1
+            ) {
+
+                this.mensaje(
+                    "La cantidad mínima es 1",
+                    "warning"
+                );
+
+                this.actualizarVista();
+
+                return;
+            }
+
+
+            /*
+             * CONSULTAMOS EL STOCK ACTUAL
+             */
+
+            const producto =
+                this.obtenerProducto(id);
+
+
+            const disponible =
+                producto
+                    ? this.obtenerInventario(producto)
+                    : numero(item.inventario);
+
+
+            /*
+             * JAMAS PERMITIMOS SUPERAR EL STOCK
+             */
+
+            if (
+                cantidad > disponible
+            ) {
+
+                this.mensaje(
+                    `Solo hay ${disponible} disponible(s)`,
+                    "warning"
+                );
+
+                this.actualizarVista();
+
+                return;
+            }
+
+
+            /*
+             * ACTUALIZAMOS LA CANTIDAD
+             */
+
+            item.cantidad =
+                cantidad;
+
+
+            if (producto) {
+
+                item.inventario =
+                    disponible;
+
+                item.precio =
+                    numeroPrecio(
+                        producto.precio
+                    );
+
+                item.nombre =
+                    producto.nombre ||
+                    item.nombre;
+
+                item.imagen =
+                    producto.imagen ||
+                    item.imagen;
+
+            }
+
+
+            this.guardar();
+
+            this.actualizarVista();
+
+        },
+
+
+
         aumentar(id) {
 
             const item =
@@ -628,7 +761,7 @@ disminuir(id) {
                 );
 
         },
-        
+
 
         eliminar(id) {
 
