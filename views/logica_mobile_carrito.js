@@ -442,15 +442,8 @@ disminuir(id) {
      * Primero pedimos confirmación.
      */
 
-    const confirmar =
-        window.confirm(
-            "¿Está seguro que desea remover este artículo?"
-        );
-
-
-    if (!confirmar) {
-        return;
-    }
+    this.mostrarModalEliminar(item);
+    return;
 
 
     /*
@@ -471,6 +464,171 @@ disminuir(id) {
     this.actualizarVista();
 
 },
+
+
+        mostrarModalEliminar(item) {
+
+            const existente =
+                document.getElementById(
+                    "mn-modal-eliminar"
+                );
+
+            if (existente) {
+                existente.remove();
+            }
+
+
+            const logo =
+                document.querySelector(
+                    ".mobile-logo img, .logo-missnails"
+                );
+
+
+            const modal =
+                document.createElement("div");
+
+            modal.id =
+                "mn-modal-eliminar";
+
+            modal.innerHTML = `
+
+                <div class="mn-modal-eliminar-fondo">
+
+                    <div
+                        class="mn-modal-eliminar-caja"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="mnModalTitulo">
+
+                        <div class="mn-modal-eliminar-logo">
+
+                            ${
+                                logo
+                                    ? `
+                                        <img
+                                            src="${logo.src}"
+                                            alt="Miss Nails">
+                                      `
+                                    : `
+                                        <span>
+                                            MISS NAILS
+                                        </span>
+                                      `
+                            }
+
+                        </div>
+
+
+                        <h2 id="mnModalTitulo">
+
+                            ¿Eliminar este producto?
+
+                        </h2>
+
+
+                        <p class="mn-modal-eliminar-producto">
+
+                            ${item?.nombre || "Este producto"}
+
+                        </p>
+
+
+                        <div class="mn-modal-eliminar-botones">
+
+                            <button
+                                type="button"
+                                class="mn-modal-btn-cancelar"
+                                id="mnModalCancelar">
+
+                                Cancelar
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="mn-modal-btn-eliminar"
+                                id="mnModalConfirmar">
+
+                                Eliminar
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            document.body.appendChild(modal);
+
+
+            const cerrar =
+                () => {
+
+                    modal.remove();
+
+                };
+
+
+            document
+                .getElementById("mnModalCancelar")
+                ?.addEventListener(
+                    "click",
+                    cerrar
+                );
+
+
+            document
+                .getElementById("mnModalConfirmar")
+                ?.addEventListener(
+                    "click",
+                    () => {
+
+                        this.items =
+                            this.items.filter(
+                                producto =>
+                                    String(producto.id) !==
+                                    String(item.id)
+                            );
+
+
+                        this.guardar();
+
+                        this.actualizarVista();
+
+                        cerrar();
+
+                    }
+                );
+
+
+            modal
+                .querySelector(
+                    ".mn-modal-eliminar-fondo"
+                )
+                ?.addEventListener(
+                    "click",
+                    event => {
+
+                        if (
+                            event.target.classList.contains(
+                                "mn-modal-eliminar-fondo"
+                            )
+                        ) {
+
+                            cerrar();
+
+                        }
+
+                    }
+                );
+
+        },
+        
 
         eliminar(id) {
 
