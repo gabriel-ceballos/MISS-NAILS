@@ -763,10 +763,39 @@ const navegacion =
         ".mobile-nav-item"
     );
 
-navegacion.forEach(boton => {
+navegacion.forEach(boton => { 
     boton.addEventListener(
         "click",
         () => {
+
+            /*
+             * Carrito:
+             * primero guardamos el catálogo
+             * con Home todavía activo.
+             */
+
+          if (
+    boton.id === "btnCarrito" &&
+    window.carritoMobile
+) {
+
+    window.carritoMobile.mostrar();
+
+    navegacion.forEach(item => {
+        item.classList.remove("activo");
+    });
+
+    boton.classList.add("activo");
+
+    return;
+
+}
+
+
+            /*
+             * Las demás vistas sí actualizan
+             * directamente la navegación.
+             */
 
             navegacion.forEach(item => {
                 item.classList.remove(
@@ -774,16 +803,10 @@ navegacion.forEach(boton => {
                 );
             });
 
+
             boton.classList.add(
                 "activo"
             );
-
-            if (
-                boton.id === "btnCarrito" &&
-                window.carritoMobile
-            ) {
-                window.carritoMobile.mostrar();
-            }
 
         }
     );

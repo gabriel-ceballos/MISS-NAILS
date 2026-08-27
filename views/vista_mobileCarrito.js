@@ -567,6 +567,12 @@
                             </span>
 
 
+
+
+
+                            <span class="vista-mobile-carrito-footer-check">✓</span>
+
+
                             <span
                                 class="vista-mobile-carrito-footer-label">
 
@@ -628,6 +634,8 @@
 
                             </span>
 
+                            <span class="vista-mobile-carrito-footer-check">✓</span>
+
 
                             <span
                                 class="vista-mobile-carrito-footer-label">
@@ -680,6 +688,8 @@
 
 
                             </span>
+
+                            <span class="vista-mobile-carrito-footer-check">✓</span>
 
 
                             <span

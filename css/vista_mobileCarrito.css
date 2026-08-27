@@ -1073,6 +1073,8 @@ overflow: hidden;
 
     cursor: pointer;
 
+    position: relative; 
+
 }
 
 
@@ -1087,6 +1089,24 @@ overflow: hidden;
 
     color: var(--rosa);
 
+}
+
+
+.vista-mobile-carrito-footer-check {
+    display: none;
+    position: absolute;
+    top: 7px;
+    left: calc(50% + 8px);
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--rosa);
+    pointer-events: none;
+}
+
+.vista-mobile-carrito-footer-item.activo
+.vista-mobile-carrito-footer-check {
+    display: block;
 }
 
 
