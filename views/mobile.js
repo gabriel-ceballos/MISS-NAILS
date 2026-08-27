@@ -447,28 +447,76 @@ console.log("MOBILE → solicitando productos");
             * un inventario válido.
             */
 
-            this.productos =
-                nuevosProductos;
+           /*
+ * Detectar si realmente cambió el inventario.
+ */
+
+let inventarioCambio =
+    this.productos.length !==
+    nuevosProductos.length;
 
 
-                /*
-                * Actualizar visualmente el catálogo
-                * solamente si el catálogo está activo.
-                */
+if (!inventarioCambio) {
 
-                if (
-                    this.vistaActual === "catalogo"
-                ) {
+    for (
+        let i = 0;
+        i < nuevosProductos.length;
+        i++
+    ) {
 
-                    this.renderizar();
+        const anterior =
+            this.productos[i];
 
-                }
+        const nuevo =
+            nuevosProductos[i];
+
+        if (
+            String(anterior.id) !==
+                String(nuevo.id) ||
+
+            Number(anterior.inventario) !==
+                Number(nuevo.inventario)
+        ) {
+
+            inventarioCambio = true;
+
+            break;
+
+        }
+
+    }
+
+}
 
 
-                console.log(
-                    "MOBILE → inventario sincronizado:",
-                    nuevosProductos.length
-                );
+/*
+ * Actualizar la información local.
+ */
+
+this.productos =
+    nuevosProductos;
+
+
+/*
+ * Solo reconstruir el catálogo
+ * cuando realmente cambió el inventario
+ * y estamos viendo el catálogo.
+ */
+
+if (
+    inventarioCambio &&
+    this.vistaActual === "catalogo"
+) {
+
+    this.renderizar();
+
+}
+
+
+console.log(
+    "MOBILE → inventario sincronizado:",
+    nuevosProductos.length
+);
 
 
         } catch (error) {
@@ -917,10 +965,11 @@ navegacion.forEach(boton => {
         ?
         `
 
-        <img
-            src="https://drive.google.com/thumbnail?id=${producto.imagen}&sz=w800"
-            class="fotoProducto"
-            alt="${this.escape(nombre)}">
+<img
+    src="https://drive.google.com/thumbnail?id=${producto.imagen}&sz=w300"
+    class="fotoProducto"
+    alt="${this.escape(nombre)}"
+    loading="lazy">
 
       <button
     class="btnCarritoRapido"

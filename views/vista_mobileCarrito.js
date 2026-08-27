@@ -720,16 +720,99 @@
             );
 
 
-        if (regresar) {
+if (regresar) {
 
-            regresar.addEventListener(
-                "click",
+    let pulsacionValida = false;
+    let navegando = false;
+    let tiempoPulsacion = 0;
+
+
+    regresar.addEventListener(
+        "pointerdown",
+        () => {
+
+            pulsacionValida = true;
+
+            tiempoPulsacion =
+                Date.now();
+
+
+            regresar.classList.add(
+                "presionando"
+            );
+
+
+            if (
+                "vibrate" in navigator
+            ) {
+
+                navigator.vibrate(12);
+
+            }
+
+        }
+    );
+
+
+    regresar.addEventListener(
+        "pointerup",
+        () => {
+
+            if (!pulsacionValida) {
+                return;
+            }
+
+
+            const duracion =
+                Date.now() -
+                tiempoPulsacion;
+
+
+            /*
+             * La pulsacion debe mantenerse
+             * al menos 70 ms.
+             */
+
+            if (
+                duracion < 70
+            ) {
+
+                pulsacionValida = false;
+
+                regresar.classList.remove(
+                    "presionando"
+                );
+
+                return;
+
+            }
+
+
+            if (navegando) {
+                return;
+            }
+
+
+            navegando = true;
+
+
+            regresar.classList.remove(
+                "presionando"
+            );
+
+
+            /*
+             * Dejamos que el efecto visual
+             * se vea antes de regresar.
+             */
+
+            setTimeout(
                 () => {
 
                     if (
                         window.mobile &&
                         typeof mobile.restaurarCatalogo ===
-                        "function"
+                            "function"
                     ) {
 
                         mobile.vistaActual =
@@ -739,10 +822,42 @@
 
                     }
 
-                }
+                },
+                120
             );
 
         }
+    );
+
+
+    regresar.addEventListener(
+        "pointercancel",
+        () => {
+
+            pulsacionValida = false;
+
+            regresar.classList.remove(
+                "presionando"
+            );
+
+        }
+    );
+
+
+    regresar.addEventListener(
+        "pointerleave",
+        () => {
+
+            pulsacionValida = false;
+
+            regresar.classList.remove(
+                "presionando"
+            );
+
+        }
+    );
+
+}
 
 
           const botonesSumar =
