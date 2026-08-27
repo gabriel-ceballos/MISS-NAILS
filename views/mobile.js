@@ -19,11 +19,13 @@ const mobile = {
      * MOSTRAR ESTRUCTURA MOBILE
      *************************************************/
 
-    async mostrar() {
+async mostrar() {
 
-        const app = document.getElementById("app");
+    const app = document.getElementById("app");
 
-        app.innerHTML = `
+    app.style.visibility = "hidden";
+
+    app.innerHTML = `
 
             <div class="mobile">
 
@@ -320,6 +322,8 @@ console.log("MOBILE → solicitando productos");
                     "No fue posible cargar los productos."
                 );
 
+                app.style.visibility = "visible";
+
                 return;
 
             }
@@ -337,9 +341,11 @@ console.log("MOBILE → solicitando productos");
             );
 
 
-            this.renderizar();
+                this.renderizar();
 
-             this.iniciarSincronizacion();
+                app.style.visibility = "visible";
+
+                this.iniciarSincronizacion();
 
 
         } catch (error) {
@@ -352,6 +358,7 @@ console.log("MOBILE → solicitando productos");
             this.mostrarError(
                 "No fue posible cargar los productos."
             );
+            app.style.visibility = "visible";
 
         }
 

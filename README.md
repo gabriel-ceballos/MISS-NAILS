@@ -26,3 +26,10 @@ para ver en el celular la vista carrito mobile
 npx.cmd live-server --host=0.0.0.0 --port=8080
 
 npx.cmd live-server
+
+
+git add .
+git commit -m "Optimiza carga de imagenes del catalogo mobile"
+git push
+git status
+
