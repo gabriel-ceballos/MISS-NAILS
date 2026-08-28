@@ -653,6 +653,7 @@
                         =============================== -->
 
                         <button
+                            id="btnCuenta"
                             class="vista-mobile-carrito-footer-item"
                             type="button">
 
@@ -721,7 +722,7 @@
                 () => history.back()
             );
 
-
+            
 
 
         const regresar =
