@@ -1492,6 +1492,7 @@ mostrarDetalleProducto(producto) {
 
                             `
                             <img
+                                class="mobile-detalle-foto"
                                 src="https://drive.google.com/thumbnail?id=${this.escape(imagen)}&sz=w1200"
                                 alt="${this.escape(nombre)}">
                             `
