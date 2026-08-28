@@ -898,20 +898,23 @@ navegacion.forEach(boton => {
              * ========================================
              */
 
-            if (
-                boton.id === "btnCuenta"
-            ) {
+if (
+    boton.id === "btnCuenta"
+) {
 
-                /*
-                 * Cuenta todavía no tiene vista
-                 * funcional en esta versión.
-                 *
-                 * Por tanto NO hacemos nada.
-                 */
+    if (
+        window.vistaCuentaMobile &&
+        typeof window.vistaCuentaMobile.mostrar ===
+            "function"
+    ) {
 
-                return;
+        window.vistaCuentaMobile.mostrar();
 
-            }
+    }
+
+    return;
+
+}
 
         }
     );
