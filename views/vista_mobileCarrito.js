@@ -652,10 +652,10 @@
                              CUENTA
                         =============================== -->
 
-                        <button
-                            id="btnCuenta"
-                            class="vista-mobile-carrito-footer-item"
-                            type="button">
+                            <button
+                                id="btnCuenta"
+                                class="vista-mobile-carrito-footer-item"
+                                type="button">
 
 
                             <span
@@ -721,6 +721,7 @@
                 "click",
                 () => history.back()
             );
+
 
             
 

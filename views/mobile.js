@@ -641,6 +641,27 @@ actualizarNavegacion(vista) {
 
 
     /*************************************************
+     * ENTRAR A CUENTA DESDE OTRA VISTA
+     *************************************************/
+
+    entrarCuentaDesdeCarrito() {
+
+        if (
+            window.vistaCuentaMobile &&
+            typeof window.vistaCuentaMobile.mostrar ===
+                "function"
+        ) {
+
+            window.vistaCuentaMobile.mostrar();
+
+        }
+
+    },
+
+
+
+
+    /*************************************************
      * EVENTOS
      *************************************************/
 
