@@ -23,25 +23,36 @@
            MOSTRAR VISTA
            ================================================== */
 
-        mostrar() {
+mostrar() {
 
-            this.contenedor =
-                document.getElementById("app");
+    if (
+        window.mobile &&
+        typeof window.mobile.guardarEstadoCatalogo ===
+            "function"
+    ) {
 
+        window.mobile.guardarEstadoCatalogo();
 
-            if (!this.contenedor) {
-
-                console.error(
-                    "CUENTA MOBILE → no existe #app"
-                );
-
-                return;
-            }
+    }
 
 
-            this.renderizar();
+    this.contenedor =
+        document.getElementById("app");
 
-        },
+
+    if (!this.contenedor) {
+
+        console.error(
+            "CUENTA MOBILE → no existe #app"
+        );
+
+        return;
+    }
+
+
+    this.renderizar();
+
+},
 
 
         /* ==================================================
@@ -247,12 +258,44 @@
 
                 </div>
 
-            `;
+                       `;
+
+
+            const btnInicio =
+                document.getElementById(
+                    "btnInicio"
+                );
+
+
+            if (btnInicio) {
+
+                btnInicio.addEventListener(
+                    "click",
+                    () => {
+
+                        console.log(
+                            "CUENTA → volver a catálogo"
+                        );
+
+if (
+    window.mobile &&
+    typeof window.mobile.restaurarCatalogo ===
+        "function"
+) {
+
+    window.mobile.restaurarCatalogo();
+
+}
+
+                    }
+                );
+
+            }
+
 
         }
 
     };
-
 
     /* ======================================================
        EXPONER VISTA
