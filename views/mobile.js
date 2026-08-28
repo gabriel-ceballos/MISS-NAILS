@@ -575,7 +575,68 @@ console.log(
 
 
 
+/*************************************************
+ * SINCRONIZAR NAVEGACIÓN INFERIOR
+ *************************************************/
 
+actualizarNavegacion(vista) {
+
+    const botones =
+        document.querySelectorAll(
+            ".mobile-nav-item"
+        );
+
+    botones.forEach(boton => {
+
+        boton.classList.remove(
+            "activo"
+        );
+
+    });
+
+
+    let botonActivo = null;
+
+
+    if (vista === "catalogo") {
+
+        botonActivo =
+            document.getElementById(
+                "btnInicio"
+            );
+
+    }
+
+
+    if (vista === "carrito") {
+
+        botonActivo =
+            document.getElementById(
+                "btnCarrito"
+            );
+
+    }
+
+
+    if (vista === "cuenta") {
+
+        botonActivo =
+            document.getElementById(
+                "btnCuenta"
+            );
+
+    }
+
+
+    if (botonActivo) {
+
+        botonActivo.classList.add(
+            "activo"
+        );
+
+    }
+
+},
 
 
 
@@ -763,55 +824,99 @@ const navegacion =
         ".mobile-nav-item"
     );
 
-navegacion.forEach(boton => { 
+
+navegacion.forEach(boton => {
+
     boton.addEventListener(
         "click",
         () => {
 
             /*
-             * Carrito:
-             * primero guardamos el catálogo
-             * con Home todavía activo.
+             * ========================================
+             * INICIO
+             * ========================================
              */
 
-          if (
-    boton.id === "btnCarrito" &&
-    window.carritoMobile
-) {
+            if (
+                boton.id === "btnInicio"
+            ) {
 
-    window.carritoMobile.mostrar();
+                if (
+                    this.vistaActual ===
+                    "catalogo"
+                ) {
 
-    navegacion.forEach(item => {
-        item.classList.remove("activo");
-    });
+                    this.actualizarNavegacion(
+                        "catalogo"
+                    );
 
-    boton.classList.add("activo");
+                    return;
 
-    return;
+                }
 
-}
+
+                if (
+                    typeof this.restaurarCatalogo ===
+                    "function"
+                ) {
+
+                    this.restaurarCatalogo();
+
+                }
+
+                return;
+
+            }
 
 
             /*
-             * Las demás vistas sí actualizan
-             * directamente la navegación.
+             * ========================================
+             * CARRITO
+             * ========================================
              */
 
-            navegacion.forEach(item => {
-                item.classList.remove(
-                    "activo"
-                );
-            });
+            if (
+                boton.id === "btnCarrito"
+            ) {
+
+                if (
+                    window.carritoMobile
+                ) {
+
+                    window.carritoMobile.mostrar();
+
+                }
+
+                return;
+
+            }
 
 
-            boton.classList.add(
-                "activo"
-            );
+            /*
+             * ========================================
+             * CUENTA
+             * ========================================
+             */
+
+            if (
+                boton.id === "btnCuenta"
+            ) {
+
+                /*
+                 * Cuenta todavía no tiene vista
+                 * funcional en esta versión.
+                 *
+                 * Por tanto NO hacemos nada.
+                 */
+
+                return;
+
+            }
 
         }
     );
-});
 
+});
         
 
     },
@@ -1210,16 +1315,21 @@ restaurarCatalogo() {
         this.estadoCatalogo.html; 
  
  
-    this.vistaActual = 
-        "catalogo"; 
- 
- 
-    /* 
-     * Volvemos a conectar los eventos 
-     * sobre el DOM restaurado. 
-     */ 
- 
-    this.inicializarEventos(); 
+this.vistaActual =
+    "catalogo";
+
+
+this.actualizarNavegacion(
+    "catalogo"
+);
+
+
+/*
+ * Volvemos a conectar los eventos
+ * sobre el DOM restaurado.
+ */
+
+this.inicializarEventos();
 
 
     /*
