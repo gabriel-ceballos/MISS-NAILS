@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Miss Nails</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+
+      /*
+       * Espacio reservado para el footer.
+       * El footer permanece fijo y no forma parte
+       * del contenido de #app.
+       */
+      padding-bottom: 112px;
+    }
+
+    /*
+     * CONTENEDOR PRINCIPAL
+     *
+     * Aquí iremos migrando posteriormente
+     * las diferentes vistas de Miss Nails.
+     */
+
+    #app {
+      width: 100%;
+      min-height: calc(100vh - 112px);
+      position: relative;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       APLICACIÓN
+       ===================================================== -->
+
+  <main id="app">
+
+    <!--
+      Este espacio queda reservado para la vista actual.
+
+      NO se carga todavía ninguna vista existente.
+    -->
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER MÓVIL
+       =====================================================
+
+       El footer está FUERA de #app.
+
+       Por ahora es la única pieza funcional
+       que estamos incorporando.
+  -->
+
+  <script src="views/footer_mobile.js"></script>
+
+
+</body>
+
+</html>
