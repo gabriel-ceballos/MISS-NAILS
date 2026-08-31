@@ -92,16 +92,11 @@ if (
 
             <div class="mobile">
 
-                <!-- =================================
-                     PARTE 1 — ENCABEZADO
-                     Logo + notificaciones + búsqueda + categorías
-                ================================== -->
-
-                <section class="mobile-parte-superior">
-
-                <!-- =================================
-                     CABECERA
-                ================================== -->
+                <!-- =================================================
+                     ① ENCABEZADO
+                     LOGO + CAMPANITA
+                     ZONA FIJA
+                ================================================== -->
 
                 <header class="mobile-header">
 
@@ -116,6 +111,7 @@ if (
                     <button
                         id="btnNotificaciones"
                         class="mobile-notificaciones"
+                        type="button"
                         aria-label="Notificaciones">
 
                         <svg
@@ -138,23 +134,26 @@ if (
                 </header>
 
 
-                <!-- =================================
-                     BUSCADOR
-                ================================== -->
+                <!-- =================================================
+                     ② BUSCADOR
+                     ZONA FIJA
+                ================================================== -->
 
                 <section class="mobile-buscador">
 
                     <input
                         type="search"
                         id="txtBuscar"
-                        placeholder="Buscar productos...">
+                        placeholder="Buscar productos..."
+                        autocomplete="off">
 
                 </section>
 
 
-                <!-- =================================
-                     CATEGORÍAS
-                ================================== -->
+                <!-- =================================================
+                     ③ CATEGORÍAS
+                     ZONA FIJA
+                ================================================== -->
 
                 <section
                     class="mobile-categorias"
@@ -162,6 +161,7 @@ if (
 
                     <button
                         class="mobile-categoria activa"
+                        type="button"
                         data-categoria="">
 
                         Todas
@@ -170,6 +170,7 @@ if (
 
                     <button
                         class="mobile-categoria"
+                        type="button"
                         data-categoria="GEL">
 
                         Gel
@@ -178,6 +179,7 @@ if (
 
                     <button
                         class="mobile-categoria"
+                        type="button"
                         data-categoria="RUBBER">
 
                         Rubber
@@ -186,6 +188,7 @@ if (
 
                     <button
                         class="mobile-categoria"
+                        type="button"
                         data-categoria="ACRILICOS">
 
                         Acrílicos
@@ -194,6 +197,7 @@ if (
 
                     <button
                         class="mobile-categoria"
+                        type="button"
                         data-categoria="TOP COAT">
 
                         Top Coat
@@ -202,6 +206,7 @@ if (
 
                     <button
                         class="mobile-categoria"
+                        type="button"
                         data-categoria="PROMOCIONES">
 
                         Promociones
@@ -210,47 +215,40 @@ if (
 
                 </section>
 
-                </section>
 
-
-                <!-- =================================
-                     PARTE 2 — CATÁLOGO
-                ================================== -->
-
-                <section class="mobile-parte-catalogo">
-
-                <!-- =================================
-                     PRODUCTOS
-                ================================== -->
+                <!-- =================================================
+                     ④ CATÁLOGO
+                     ÚNICA ZONA CON SCROLL
+                ================================================== -->
 
                 <main
-                    class="productos mobile-productos"
-                    id="productos">
+                    class="mobile-parte-catalogo">
+
+                    <div
+                        class="productos mobile-productos"
+                        id="productos">
+
+                    </div>
 
                 </main>
 
 
-                <!-- =================================
-                     ZONA INFERIOR RESERVADA
-                     El footer_mobile.js se montará aquí posteriormente.
-                     Por ahora permanece vacía.
-                ================================== -->
-                </section>
+                <!-- =================================================
+                     ⑤ ESPACIO RESERVADO PARA FOOTER
+                     FIJO / SIN CONTENIDO POR AHORA
 
+                     Aquí se montará posteriormente:
+                     views/footer_mobile.js
+                ================================================== -->
 
-                <!-- =================================
-                     PARTE 3 — ZONA INFERIOR
-                     Vacía. Aquí se montará footer_mobile.js.
-                ================================== -->
+                <section
+                    class="mobile-parte-inferior"
+                    aria-hidden="true">
 
-                <section class="mobile-parte-inferior">
-
-                    <div
-                        class="mobile-footer-zone"
-                        aria-hidden="true">
-                    </div>
+                    <div class="mobile-footer-zone"></div>
 
                 </section>
+
 
             </div>
 
