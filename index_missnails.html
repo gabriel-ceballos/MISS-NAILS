@@ -2,88 +2,140 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta charset="UTF-8">
 
-  <title>Miss Nails</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-  <style>
+    <title>MISS NAILS</title>
 
-    * {
-      box-sizing: border-box;
-    }
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-    }
+    <!-- =====================================================
+         ESTILOS DE LA NUEVA APLICACIÓN
+         ===================================================== -->
 
-    body {
-      min-height: 100vh;
-      background: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
+    <link
+        rel="stylesheet"
+        href="css/Miss_Nails_style.css">
 
-      /*
-       * Espacio reservado para el footer.
-       * El footer permanece fijo y no forma parte
-       * del contenido de #app.
-       */
-      padding-bottom: 112px;
-    }
-
-    /*
-     * CONTENEDOR PRINCIPAL
-     *
-     * Aquí iremos migrando posteriormente
-     * las diferentes vistas de Miss Nails.
-     */
-
-    #app {
-      width: 100%;
-      min-height: calc(100vh - 112px);
-      position: relative;
-    }
-
-  </style>
 
 </head>
 
 
 <body>
 
-  <!-- =====================================================
-       APLICACIÓN
-       ===================================================== -->
 
-  <main id="app">
+    <!-- =====================================================
+         CONTENEDOR PRINCIPAL
+         ===================================================== -->
 
-    <!--
-      Este espacio queda reservado para la vista actual.
-
-      NO se carga todavía ninguna vista existente.
-    -->
-
-  </main>
+    <main id="app"></main>
 
 
-  <!-- =====================================================
-       FOOTER MÓVIL
-       =====================================================
+    <!-- =====================================================
+         API
+         ===================================================== -->
 
-       El footer está FUERA de #app.
+    <script src="api/api.js"></script>
 
-       Por ahora es la única pieza funcional
-       que estamos incorporando.
-  -->
 
-  <script src="views/footer_mobile.js"></script>
+    <!-- =====================================================
+         MEMORIA MÍNIMA DE LA NUEVA APLICACIÓN
+         =====================================================
+
+         Se mantiene aquí temporalmente porque
+         Vista Catálogo Móvil.js la utiliza.
+
+         No depende de la aplicación anterior.
+         ===================================================== -->
+
+    <script>
+
+        const memoriaApp = {
+
+            clave:
+                "missNailsNuevoEstado",
+
+            guardar(estado) {
+
+                sessionStorage.setItem(
+                    this.clave,
+                    JSON.stringify(estado)
+                );
+
+            },
+
+
+            cargar() {
+
+                const estado =
+                    sessionStorage.getItem(
+                        this.clave
+                    );
+
+                return estado
+                    ? JSON.parse(estado)
+                    : null;
+
+            },
+
+
+            limpiar() {
+
+                sessionStorage.removeItem(
+                    this.clave
+                );
+
+            }
+
+        };
+
+    </script>
+
+
+    <!-- =====================================================
+         NUEVA VISTA CATÁLOGO MÓVIL
+         ===================================================== -->
+
+    <script
+        src="views/Vista Catálogo Móvil.js">
+    </script>
+
+
+    <!-- =====================================================
+         INICIAR NUEVA APLICACIÓN
+         ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                if (
+                    window.vistaCatalogoMobile &&
+                    typeof
+                    window.vistaCatalogoMobile.mostrar
+                    === "function"
+                ) {
+
+                    await
+                    window.vistaCatalogoMobile.mostrar();
+
+                } else {
+
+                    console.error(
+                        "MISS NAILS → no se encontró Vista Catálogo Móvil"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
 
 
 </body>

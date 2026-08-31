@@ -1,0 +1,866 @@
+/* =========================================================
+   MISS NAILS
+   NUEVA ESTRUCTURA MÓVIL
+   Archivo: Miss_Nails_style.css
+
+   Incluye únicamente estilos de:
+   - Vista catálogo móvil
+   - Encabezado / logo / campanita
+   - Buscador
+   - Categorías
+   - Catálogo / productos
+   - Detalle de producto
+   - Zona inferior reservada
+
+   NO incluye estilos del footer.
+   ========================================================= */
+
+:root{
+    --rosa:#E65A92;
+    --rosaOscuro:#C93E77;
+    --rosaClaro:#FFF4F8;
+    --grisFondo:#F5F6F8;
+    --grisTexto:#777777;
+    --texto:#222222;
+    --blanco:#FFFFFF;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    width:100%;
+    min-height:100%;
+    font-size:16px;
+    -webkit-text-size-adjust:100%;
+}
+
+body{
+    width:100%;
+    min-height:100dvh;
+    font-family:"Segoe UI",Arial,Helvetica,sans-serif;
+    background:var(--grisFondo);
+    color:var(--texto);
+    overflow:hidden;
+    text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+}
+
+button,
+input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+}
+
+img{
+    display:block;
+    user-select:none;
+    -webkit-user-drag:none;
+}
+
+#app{
+    width:100%;
+    height:100dvh;
+    min-height:0;
+}
+
+/* =========================================================
+   VISTA CATÁLOGO
+   ========================================================= */
+
+.mobile{
+    width:100%;
+    height:100dvh;
+    min-height:0;
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr) 0px;
+    overflow:hidden;
+    background:var(--grisFondo);
+}
+
+/* =========================================================
+   PARTE 1 — SUPERIOR
+   ========================================================= */
+
+.mobile-parte-superior{
+    width:100%;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    background:var(--blanco);
+}
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.mobile-header{
+    width:100%;
+    min-height:72px;
+    height:72px;
+    flex:0 0 72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 16px;
+    background:var(--rosaClaro);
+    border-bottom:1px solid #F3DCE6;
+}
+
+.mobile-logo{
+    display:flex;
+    align-items:center;
+    min-width:0;
+    overflow:hidden;
+}
+
+.mobile-logo img{
+    display:block;
+    width:150px;
+    height:auto;
+    max-width:calc(100vw - 80px);
+    object-fit:contain;
+}
+
+/* =========================================================
+   NOTIFICACIONES
+   ========================================================= */
+
+.mobile-notificaciones{
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    border:1px solid rgba(201,62,119,.16);
+    border-radius:50%;
+    background:rgba(255,255,255,.72);
+    color:#C99328;
+    box-shadow:0 3px 10px rgba(201,62,119,.08);
+    transition:
+        transform .20s ease,
+        background .20s ease,
+        box-shadow .20s ease;
+}
+
+.mobile-notificaciones:active{
+    transform:scale(.93);
+}
+
+.mobile-notificaciones:hover{
+    background:#FFFFFF;
+    box-shadow:0 5px 14px rgba(201,62,119,.12);
+}
+
+.icono-notificacion{
+    width:20px;
+    height:20px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    pointer-events:none;
+}
+
+/* =========================================================
+   BUSCADOR
+   ========================================================= */
+
+.mobile-buscador{
+    width:100%;
+    min-height:68px;
+    height:68px;
+    flex:0 0 68px;
+    padding:10px 12px;
+    background:var(--rosaClaro);
+    border-bottom:1px solid #F3DCE6;
+}
+
+.mobile-buscador input{
+    width:100%;
+    height:46px;
+    padding:0 16px;
+    border:2px solid #111111;
+    border-radius:28px;
+    background:#FFFFFF;
+    color:var(--texto);
+    font-size:15px;
+    outline:none;
+}
+
+.mobile-buscador input:focus{
+    border-color:var(--rosaOscuro);
+}
+
+/* =========================================================
+   CATEGORÍAS
+   ========================================================= */
+
+.mobile-categorias{
+    width:100%;
+    min-width:0;
+    height:58px;
+    min-height:58px;
+    flex:0 0 58px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    background:#FFFFFF;
+    border-bottom:1px solid #DDDDDD;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:none;
+}
+
+.mobile-categorias::-webkit-scrollbar{
+    display:none;
+}
+
+.mobile-categoria{
+    flex:0 0 auto;
+    height:38px;
+    padding:0 16px;
+    border:1px solid rgba(201,62,119,.28);
+    border-radius:8px;
+    background:#FFF3F7;
+    color:var(--rosaOscuro);
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    transition:
+        background .20s ease,
+        color .20s ease,
+        border-color .20s ease,
+        transform .15s ease;
+}
+
+.mobile-categoria:hover{
+    background:#FBE4ED;
+    border-color:rgba(201,62,119,.45);
+}
+
+.mobile-categoria:active{
+    transform:scale(.97);
+}
+
+.mobile-categoria.activa{
+    background:var(--rosaOscuro);
+    border-color:var(--rosaOscuro);
+    color:#FFFFFF;
+    box-shadow:0 3px 8px rgba(201,62,119,.18);
+}
+
+/* =========================================================
+   PARTE 2 — CATÁLOGO
+   ========================================================= */
+
+.mobile-parte-catalogo{
+    width:100%;
+    min-width:0;
+    min-height:0;
+    display:grid;
+    grid-template-rows:minmax(0,1fr);
+    overflow:hidden;
+    background:var(--grisFondo);
+}
+
+/* =========================================================
+   PRODUCTOS
+   ========================================================= */
+
+.mobile-productos.productos,
+.mobile #productos.productos{
+    width:100%;
+    min-width:0;
+    min-height:0;
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    grid-auto-rows:max-content;
+    align-content:start;
+    gap:8px;
+    padding:10px 12px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    background:var(--grisFondo);
+    -webkit-overflow-scrolling:touch;
+}
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+.mobile-productos .producto,
+.mobile #productos .producto{
+    width:100%;
+    min-width:0;
+    background:#FFFFFF;
+    border:1px solid #E5E5E5;
+    border-radius:8px;
+    overflow:hidden;
+}
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.mobile-productos .foto,
+.mobile #productos .foto{
+    width:100%;
+    aspect-ratio:1/1;
+    background:#EEEEEE;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    position:relative;
+}
+
+.mobile-productos .fotoProducto,
+.mobile #productos .fotoProducto{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* =========================================================
+   SIN IMAGEN
+   ========================================================= */
+
+.mobile-productos .producto-sin-imagen,
+.mobile #productos .producto-sin-imagen{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#F1F1F1;
+}
+
+.mobile-productos .producto-sin-imagen span,
+.mobile #productos .producto-sin-imagen span{
+    font-size:8px;
+    color:#999999;
+    font-weight:600;
+    text-align:center;
+}
+
+/* =========================================================
+   CARRITO RÁPIDO
+   ========================================================= */
+
+.mobile-productos .btnCarritoRapido,
+.mobile #productos .btnCarritoRapido{
+    position:absolute;
+    right:4px;
+    bottom:4px;
+    width:22px;
+    height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    border:none;
+    outline:none;
+    border-radius:50%;
+    background:#FFFFFF;
+    color:var(--rosaOscuro);
+    box-shadow:0 2px 5px rgba(0,0,0,.14);
+    z-index:5;
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+.mobile-productos .btnCarritoRapido svg,
+.mobile #productos .btnCarritoRapido svg{
+    width:13px;
+    height:13px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.mobile-productos .btnCarritoRapido:active,
+.mobile #productos .btnCarritoRapido:active{
+    transform:scale(.88);
+}
+
+.mobile-productos .btnCarritoRapido:focus,
+.mobile-productos .btnCarritoRapido:focus-visible,
+.mobile #productos .btnCarritoRapido:focus,
+.mobile #productos .btnCarritoRapido:focus-visible{
+    outline:none;
+}
+
+/* =========================================================
+   INFORMACIÓN
+   ========================================================= */
+
+.mobile-productos .producto__contenido,
+.mobile #productos .producto__contenido{
+    padding:5px;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.mobile-productos .producto h3,
+.mobile #productos .producto h3{
+    margin:0;
+    padding:0;
+    height:22px;
+    overflow:hidden;
+    font-size:9px;
+    line-height:1.2;
+    font-weight:600;
+    color:#222222;
+}
+
+.mobile-productos .producto__detalle,
+.mobile-productos .producto__meta,
+.mobile #productos .producto__detalle,
+.mobile #productos .producto__meta{
+    display:none;
+}
+
+.mobile-productos .precio,
+.mobile #productos .precio{
+    margin-top:2px;
+    color:#FF4D2D;
+    font-size:11px;
+    font-weight:800;
+    line-height:1;
+}
+
+/* =========================================================
+   ESTADO VACÍO / ERROR
+   ========================================================= */
+
+.mobile-productos .estado-vacio,
+.mobile #productos .estado-vacio{
+    grid-column:1/-1;
+    min-height:180px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:20px;
+    background:#FFFFFF;
+    border:1px dashed #CCCCCC;
+    border-radius:10px;
+    text-align:center;
+}
+
+.mobile-productos .estado-vacio strong,
+.mobile #productos .estado-vacio strong{
+    font-size:15px;
+}
+
+.mobile-productos .estado-vacio span,
+.mobile #productos .estado-vacio span{
+    font-size:12px;
+    color:var(--grisTexto);
+}
+
+/* =========================================================
+   PARTE 3 — ZONA INFERIOR
+   VACÍA / RESERVADA PARA footer_mobile.js
+   ========================================================= */
+
+.mobile-parte-inferior{
+    width:100%;
+    min-height:0;
+    overflow:hidden;
+    background:#FFFFFF;
+}
+
+.mobile-footer-zone{
+    width:100%;
+    height:100%;
+}
+
+/* =========================================================
+   DETALLE DE PRODUCTO
+   ========================================================= */
+
+.mobile-detalle-producto{
+    width:100%;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+    background:#FFFFFF;
+    color:#181818;
+}
+
+.mobile-detalle-header{
+    position:sticky;
+    top:0;
+    z-index:30;
+    height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 16px;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(201,62,119,.08);
+}
+
+.mobile-detalle-header h2{
+    margin:0;
+    color:#242424;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.2px;
+}
+
+.mobile-detalle-regresar{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    width:38px;
+    height:38px;
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:0;
+    border-radius:50%;
+    background:#FFFFFF;
+    color:#222222;
+    font-size:25px;
+    font-weight:300;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.mobile-detalle-regresar:active{
+    transform:translateY(-50%) scale(.94);
+}
+
+.mobile-detalle-contenido{
+    width:100%;
+    padding-bottom:110px;
+    background:#FFFFFF;
+}
+
+.mobile-detalle-imagen{
+    width:100%;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(
+        180deg,
+        #FFF8FB 0%,
+        #FFFFFF 100%
+    );
+}
+
+.mobile-detalle-imagen img{
+    display:block;
+    width:100%;
+    max-width:520px;
+    height:auto;
+    max-height:52dvh;
+    object-fit:contain;
+    margin:0 auto;
+}
+
+.mobile-detalle-imagen .producto-sin-imagen{
+    width:100%;
+    min-height:320px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(
+        145deg,
+        #FFF7FA,
+        #F7F7F7
+    );
+    color:#AAAAAA;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.8px;
+}
+
+.mobile-detalle-informacion{
+    position:relative;
+    margin-top:-2px;
+    padding:22px 20px 28px;
+    background:#FFFFFF;
+    border-radius:24px 24px 0 0;
+}
+
+.mobile-detalle-categoria{
+    display:inline-flex;
+    align-items:center;
+    min-height:26px;
+    padding:5px 11px;
+    margin-bottom:10px;
+    border-radius:999px;
+    background:rgba(201,62,119,.08);
+    color:var(--rosaOscuro);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.7px;
+    text-transform:uppercase;
+}
+
+.mobile-detalle-informacion h1{
+    margin:0 0 8px;
+    max-width:95%;
+    color:#171717;
+    font-size:clamp(24px,7vw,31px);
+    font-weight:750;
+    line-height:1.06;
+    letter-spacing:-.7px;
+}
+
+.mobile-detalle-precio{
+    margin-top:14px;
+    color:var(--rosaOscuro);
+    font-size:30px;
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.5px;
+}
+
+.mobile-detalle-inventario{
+    display:inline-flex;
+    align-items:center;
+    margin-top:13px;
+    padding:7px 11px;
+    border-radius:10px;
+    background:#F7F7F7;
+    color:#555555;
+    font-size:13px;
+    font-weight:600;
+}
+
+.mobile-detalle-inventario::before{
+    content:"";
+    width:7px;
+    height:7px;
+    margin-right:7px;
+    border-radius:50%;
+    background:var(--rosaOscuro);
+    box-shadow:0 0 0 3px rgba(201,62,119,.10);
+}
+
+.mobile-detalle-separador{
+    width:100%;
+    height:1px;
+    margin:24px 0 21px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(201,62,119,.18),
+        transparent
+    );
+}
+
+/* =========================================================
+   ACCIÓN DE DETALLE
+   ========================================================= */
+
+.mobile-detalle-acciones{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:40;
+    width:100%;
+    padding:
+        10px
+        16px
+        calc(10px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border-top:1px solid rgba(201,62,119,.10);
+    box-shadow:0 -5px 20px rgba(0,0,0,.05);
+}
+
+.mobile-detalle-carrito{
+    width:100%;
+    min-height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    padding:0 20px;
+    border:0;
+    border-radius:16px;
+    background:linear-gradient(
+        135deg,
+        #D33D7A,
+        #C93E77
+    );
+    color:#FFFFFF;
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:.2px;
+    cursor:pointer;
+    box-shadow:0 7px 20px rgba(201,62,119,.24);
+}
+
+.mobile-detalle-carrito:active{
+    transform:scale(.98);
+}
+
+/* =========================================================
+   PANTALLAS PEQUEÑAS
+   ========================================================= */
+
+@media(max-width:360px){
+
+    .mobile-header{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .mobile-logo img{
+        width:140px;
+    }
+
+    .mobile-productos.productos,
+    .mobile #productos.productos{
+        gap:6px;
+        padding:8px;
+    }
+
+    .mobile-productos .producto h3,
+    .mobile #productos .producto h3{
+        font-size:8px;
+    }
+
+    .mobile-productos .precio,
+    .mobile #productos .precio{
+        font-size:10px;
+    }
+}
+
+/* =========================================================
+   HORIZONTAL
+   ========================================================= */
+
+@media (orientation:landscape) and (max-height:600px){
+
+    .mobile{
+        width:100%;
+        height:100dvh;
+        grid-template-rows:minmax(0,1fr) 0px;
+        overflow:hidden;
+    }
+
+    .mobile-parte-superior{
+        grid-row:1;
+        display:grid;
+        grid-template-columns:
+            minmax(125px,165px)
+            minmax(0,1fr)
+            46px;
+        grid-template-rows:
+            60px
+            50px
+            minmax(0,1fr);
+        overflow:hidden;
+    }
+
+    .mobile-header{
+        display:contents;
+    }
+
+    .mobile-logo{
+        grid-column:1;
+        grid-row:1;
+        width:100%;
+        height:60px;
+        padding:6px 8px;
+        display:flex;
+        align-items:center;
+        background:var(--rosaClaro);
+    }
+
+    .mobile-logo img{
+        width:145px;
+        max-width:100%;
+    }
+
+    .mobile-notificaciones{
+        grid-column:3;
+        grid-row:1;
+        align-self:center;
+        justify-self:center;
+    }
+
+    .mobile-buscador{
+        grid-column:2;
+        grid-row:1;
+        width:100%;
+        height:60px;
+        min-width:0;
+        display:flex;
+        align-items:center;
+        padding:7px 8px;
+        background:var(--rosaClaro);
+        border-bottom:none;
+    }
+
+    .mobile-buscador input{
+        width:100%;
+        height:44px;
+        min-width:0;
+        padding:0 15px;
+        font-size:14px;
+    }
+
+    .mobile-categorias{
+        grid-column:1 / -1;
+        grid-row:2;
+        height:50px;
+        min-height:50px;
+        padding:5px 10px;
+    }
+
+    .mobile-parte-catalogo{
+        grid-column:1 / -1;
+        grid-row:3;
+    }
+
+    .mobile-productos.productos,
+    .mobile #productos.productos{
+        width:100%;
+        height:100%;
+        padding:8px 10px;
+    }
+
+    .mobile-parte-inferior{
+        grid-row:2;
+        height:0;
+        min-height:0;
+    }
+}
