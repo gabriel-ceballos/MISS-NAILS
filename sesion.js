@@ -1,7 +1,7 @@
-/*****************************************************************
- * MISS NAILS
- * SESIÓN
- *****************************************************************/
+/* =========================================================
+   MISS NAILS
+   SESIÓN DEL USUARIO
+   ========================================================= */
 
 window.sesion = {
 
@@ -12,123 +12,62 @@ window.sesion = {
 
         try {
 
-            const datos =
+            const guardado =
                 localStorage.getItem(
                     "missNailsSesion"
                 );
 
-
-            if (!datos) {
+            if (!guardado) {
 
                 this.usuario = null;
 
-                console.log(
-                    "SESION → no existe sesión guardada"
-                );
-
-                return false;
-
+                return null;
             }
 
 
             this.usuario =
-                JSON.parse(datos);
+                JSON.parse(guardado);
 
-
-            if (!this.usuario) {
-
-                localStorage.removeItem(
-                    "missNailsSesion"
-                );
-
-                return false;
-
-            }
-
-
-            console.log(
-                "SESION → recuperada",
-                this.usuario
-            );
-
-
-            return true;
+            return this.usuario;
 
 
         } catch (error) {
 
             console.error(
-                "SESION → error al recuperar",
+                "SESION → error al cargar:",
                 error
             );
 
-
             this.usuario = null;
-
 
             localStorage.removeItem(
                 "missNailsSesion"
             );
 
-
-            return false;
-
+            return null;
         }
-
     },
 
 
     guardar(usuario) {
 
-        try {
+        this.usuario =
+            usuario;
 
-            this.usuario =
-                usuario;
-
-
-            localStorage.setItem(
-                "missNailsSesion",
-                JSON.stringify(usuario)
-            );
-
-
-            console.log(
-                "SESION → guardada correctamente"
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "SESION → error al guardar",
-                error
-            );
-
-        }
-
+        localStorage.setItem(
+            "missNailsSesion",
+            JSON.stringify(usuario)
+        );
     },
 
 
     cerrar() {
 
-        this.usuario = null;
-
+        this.usuario =
+            null;
 
         localStorage.removeItem(
             "missNailsSesion"
         );
-
-
-        console.log(
-            "SESION → cerrada"
-        );
-
     }
-
 };
-
-
-console.log(
-    "SESION CARGADA",
-    window.sesion
-);

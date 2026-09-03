@@ -1,7 +1,7 @@
-/*****************************************************************
- * MISS NAILS
- * API CENTRAL
- *****************************************************************/
+/* =========================================================
+   MISS NAILS
+   API CENTRAL
+   ========================================================= */
 
 const API_URL =
     "https://miss-nails-api.ceballosgg2000.workers.dev/";
@@ -11,18 +11,13 @@ async function api(accion, datos = {}) {
 
     try {
 
-        console.log("API →", accion);
-
-
         const body =
             new URLSearchParams();
-
 
         body.append(
             "accion",
             accion
         );
-
 
         body.append(
             "datos",
@@ -43,32 +38,23 @@ async function api(accion, datos = {}) {
         const json =
             await respuesta.json();
 
-
-        console.log(
-            "BACKEND →",
-            json
-        );
-
-
         return json;
 
 
     } catch (error) {
 
         console.error(
-            "API ERROR:",
+            "API → ERROR:",
             error
         );
 
-
         return {
-
             ok: false,
-
             mensaje: error.message
-
         };
 
     }
-
 }
+
+
+window.api = api;

@@ -1,98 +1,78 @@
-/*****************************************************************
- * MISS NAILS
- * APP PRINCIPAL
- *
- * Esta aplicación NO selecciona una versión
- * por dispositivo.
- *****************************************************************/
+/* =========================================================
+   MISS NAILS
+   CONTROLADOR CENTRAL DE LA APLICACIÓN
+   ========================================================= */
 
 window.app = {
 
     vistaActual: null,
 
 
-    /*************************************************
-     * INICIAR
-     *************************************************/
-
     async iniciar() {
 
         console.log(
-            "APP → iniciando"
+            "APP → iniciando MISS NAILS"
         );
 
 
-        console.log(
-            "APP → comprobando backend"
-        );
+        /*
+         * Comprobar comunicación
+         * con el backend.
+         */
 
+        try {
 
-        const respuesta =
-            await api("ping");
+            const respuesta =
+                await api("ping");
 
-
-        console.log(
-            "APP → respuesta backend",
-            respuesta
-        );
-
-
-        if (
-            !respuesta ||
-            !respuesta.ok
-        ) {
-
-            this.mostrarError(
-                "No fue posible conectar con MISS NAILS."
+            console.log(
+                "APP → ping:",
+                respuesta
             );
 
+        } catch (error) {
 
-            return;
-
+            console.error(
+                "APP → error de comunicación:",
+                error
+            );
         }
 
 
-        console.log(
-            "APP → backend conectado"
-        );
+        /*
+         * Recuperar sesión.
+         */
 
-
-        const sesionActiva =
+        const usuario =
             sesion.cargar();
 
 
-        if (sesionActiva) {
+        /*
+         * Si existe sesión,
+         * entrar directamente
+         * al catálogo.
+         */
 
-            console.log(
-                "APP → sesión recuperada"
-            );
-
+        if (usuario) {
 
             this.ir(
                 "catalogo"
             );
 
-
             return;
-
         }
 
 
-        console.log(
-            "APP → no existe sesión"
-        );
-
+        /*
+         * Si no existe sesión,
+         * mostrar login.
+         */
 
         this.ir(
             "login"
         );
-
     },
 
-
-    /*************************************************
-     * NAVEGACIÓN
-     *************************************************/
 
     ir(vista) {
 
@@ -111,7 +91,19 @@ window.app = {
 
             case "login":
 
-                login.mostrar();
+                if (
+                    window.login &&
+                    typeof window.login.mostrar === "function"
+                ) {
+
+                    window.login.mostrar();
+
+                } else {
+
+                    this.mostrarError(
+                        "No se pudo cargar el módulo de acceso."
+                    );
+                }
 
                 break;
 
@@ -120,18 +112,16 @@ window.app = {
 
                 if (
                     window.catalogo &&
-                    typeof catalogo.mostrar ===
-                        "function"
+                    typeof window.catalogo.mostrar === "function"
                 ) {
 
-                    catalogo.mostrar();
+                    window.catalogo.mostrar();
 
                 } else {
 
                     console.warn(
-                        "APP → catálogo todavía no está construido"
+                        "APP → catálogo todavía no cargado."
                     );
-
                 }
 
                 break;
@@ -141,18 +131,16 @@ window.app = {
 
                 if (
                     window.carrito &&
-                    typeof carrito.mostrar ===
-                        "function"
+                    typeof window.carrito.mostrar === "function"
                 ) {
 
-                    carrito.mostrar();
+                    window.carrito.mostrar();
 
                 } else {
 
                     console.warn(
-                        "APP → carrito todavía no está construido"
+                        "APP → carrito todavía no cargado."
                     );
-
                 }
 
                 break;
@@ -162,18 +150,16 @@ window.app = {
 
                 if (
                     window.cuenta &&
-                    typeof cuenta.mostrar ===
-                        "function"
+                    typeof window.cuenta.mostrar === "function"
                 ) {
 
-                    cuenta.mostrar();
+                    window.cuenta.mostrar();
 
                 } else {
 
                     console.warn(
-                        "APP → cuenta todavía no está construida"
+                        "APP → cuenta todavía no cargada."
                     );
-
                 }
 
                 break;
@@ -186,65 +172,48 @@ window.app = {
                     vista
                 );
 
+                break;
         }
-
     },
 
 
-    /*************************************************
-     * ERROR GENERAL
-     *************************************************/
-
     mostrarError(mensaje) {
 
-        const app =
-            document.getElementById(
-                "app"
-            );
+        const contenedor =
+            document.getElementById("app");
 
-
-        if (!app) {
-
+        if (!contenedor) {
             return;
-
         }
 
 
-        app.innerHTML = `
+        contenedor.innerHTML = `
+            <div class="mn-error">
+                <strong>
+                    Ocurrió un problema
+                </strong>
 
-            <section class="mn-error">
-
-                <h1>
-                    MISS NAILS
-                </h1>
-
-                <p>
-                    ${mensaje}
-                </p>
-
-            </section>
-
+                <span>
+                    ${String(mensaje)}
+                </span>
+            </div>
         `;
-
     }
-
 };
 
 
-/*************************************************
- * ARRANQUE
- *************************************************/
+/*
+ * Arranque de la aplicación.
+ */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-        console.log(
-            "APP → DOM listo"
-        );
+        window.app.iniciar();
 
-
-        app.iniciar();
-
+    },
+    {
+        once: true
     }
 );
