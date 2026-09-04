@@ -24,22 +24,38 @@ const catalogo = {
          * un catálogo guardado, lo restauramos.
          */
 
-        if (
-            logicaCatalogo.estadoCatalogo &&
-            logicaCatalogo.restaurarEstado()
-        ) {
+    if (
+    logicaCatalogo.estadoCatalogo &&
+    logicaCatalogo.restaurarEstado()
+) {
 
-            this.inicializarEventos();
-            this.inicializarHistorial();
+    this.inicializarEventos();
+    this.inicializarHistorial();
 
-            logicaCatalogo.iniciarSincronizacion();
+    /*
+     * El estado restaurado NO contiene mn-horizontal
+     * ni mn-vertical.
+     *
+     * Volvemos a aplicar inmediatamente la orientación
+     * real del viewport actual.
+     */
+    if (
+        window.app &&
+        typeof window.app.actualizarOrientacion ===
+            "function"
+    ) {
 
-            console.log(
-                "CATALOGO → vista restaurada"
-            );
+        window.app.actualizarOrientacion();
+    }
 
-            return;
-        }
+    logicaCatalogo.iniciarSincronizacion();
+
+    console.log(
+        "CATALOGO → vista restaurada"
+    );
+
+    return;
+}
 
 
         // =================================================
@@ -225,6 +241,10 @@ const catalogo = {
 
 
         this.renderizar();
+
+
+
+            logicaCatalogo.guardarEstado();
 
 
         // =================================================

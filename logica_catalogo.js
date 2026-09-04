@@ -296,41 +296,75 @@ const logicaCatalogo = {
     // GUARDAR ESTADO DEL CATÁLOGO
     // =====================================================
 
-    guardarEstado() {
+// =====================================================
+// GUARDAR ESTADO DEL CATÁLOGO
+// =====================================================
 
-        const app =
-            document.getElementById("app");
+guardarEstado() {
 
-        if (!app) {
-            return;
+    const app =
+        document.getElementById("app");
+
+    if (!app) {
+        return;
+    }
+
+    const productos =
+        document.getElementById("productos");
+
+
+    /*
+     * IMPORTANTE:
+     *
+     * No debemos guardar las clases de orientación
+     * dentro del estado del catálogo.
+     *
+     * mn-horizontal y mn-vertical pertenecen al
+     * viewport actual y son responsabilidad de app.js.
+     *
+     * Si guardamos esas clases, un catálogo guardado
+     * mientras el teléfono estaba horizontal puede
+     * regresar posteriormente con 6 columnas aunque
+     * el teléfono ya esté vertical.
+     */
+
+    const copia =
+        app.cloneNode(true);
+
+
+    copia.querySelectorAll(".mobile").forEach(
+        elemento => {
+
+            elemento.classList.remove(
+                "mn-horizontal",
+                "mn-vertical"
+            );
         }
-
-        const productos =
-            document.getElementById("productos");
+    );
 
 
-        this.estadoCatalogo = {
+    this.estadoCatalogo = {
 
-            html:
-                app.innerHTML,
+        html:
+            copia.innerHTML,
 
-            scrollTop:
-                productos
-                    ? productos.scrollTop
-                    : 0,
+        scrollTop:
+            productos
+                ? productos.scrollTop
+                : 0,
 
-            filtroCategoria:
-                this.filtroCategoria,
+        filtroCategoria:
+            this.filtroCategoria,
 
-            textoBusqueda:
-                this.textoBusqueda
-        };
+        textoBusqueda:
+            this.textoBusqueda
+    };
 
 
-        console.log(
-            "CATALOGO → estado guardado"
-        );
-    },
+    console.log(
+        "CATALOGO → estado guardado sin orientación"
+    );
+},
 
 
     // =====================================================
