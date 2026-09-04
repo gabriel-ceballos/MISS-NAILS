@@ -350,15 +350,20 @@
 
             footer.querySelectorAll(".mn-footer-icono")
                 .forEach((elemento) => {
-                    elemento.style.width = "32px";
-                    elemento.style.height = "32px";
-                    elemento.style.flex = "0 0 32px";
+                    elemento.style.width = "29px";
+                    elemento.style.height = "29px";
+                    elemento.style.flex = "0 0 29px";
                 });
 
             footer.querySelectorAll(".mn-footer-icono svg")
                 .forEach((elemento) => {
-                    elemento.style.width = "32px";
-                    elemento.style.height = "32px";
+                    elemento.style.width = "29px";
+                    elemento.style.height = "29px";
+
+                    elemento.querySelectorAll("*")
+                        .forEach((trazo) => {
+                            trazo.style.strokeWidth = "1.6px";
+                        });
                 });
 
             footer.querySelectorAll(".mn-footer-label")

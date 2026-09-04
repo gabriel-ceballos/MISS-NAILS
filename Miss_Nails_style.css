@@ -174,8 +174,8 @@ img{
 }
 
 #mn-footer #miss-nails-footer-mobile .mn-footer-icono{
-    width:32px;
-    height:32px;
+    width:29px;
+    height:29px;
 
     display:flex;
     align-items:center;
@@ -183,12 +183,20 @@ img{
 }
 
 #mn-footer #miss-nails-footer-mobile .mn-footer-icono svg{
-    width:32px;
-    height:32px;
+    width:25px !important;
+    height:25px !important;
+
     display:block;
+
     fill:none;
     stroke:currentColor;
+
     pointer-events:none;
+}
+
+/* Trazo fino y nítido de los iconos */
+#mn-footer #miss-nails-footer-mobile .mn-footer-icono svg *{
+    stroke-width:1.6px !important;
 }
 
 #mn-footer #miss-nails-footer-mobile .mn-footer-label{
@@ -1541,3 +1549,23 @@ img{
         height:46px;
     }
 }
+
+
+/* =========================================================
+   FOOTER RESPONSIVE — VISTA HORIZONTAL
+   En horizontal la pantalla tiene mucha menos altura,
+   por lo que el footer necesita mayor espacio vertical.
+   Vertical:   90% aplicación / 10% footer
+   Horizontal: 85% aplicación / 15% footer
+   ========================================================= */
+
+@media (orientation: landscape){
+
+    #mn-shell{
+        grid-template-rows:
+            minmax(0,85%)
+            minmax(0,15%);
+    }
+
+}
+
