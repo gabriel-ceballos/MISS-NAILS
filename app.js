@@ -85,6 +85,13 @@ window.app = {
         this.vistaActual =
             vista;
 
+            if (
+                    window.footer &&
+                    typeof window.footer.activar === "function"
+                ) {
+                    window.footer.activar(vista);
+                }
+
 
         switch (vista) {
 
