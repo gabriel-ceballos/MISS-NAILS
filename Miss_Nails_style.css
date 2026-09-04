@@ -82,11 +82,167 @@ img{
    CONTENEDOR DE LA APLICACIÓN
    ========================================================= */
 
-#app{
+#mn-shell{
     width:100%;
     height:100dvh;
     min-height:0;
+
+    display:grid;
+    grid-template-rows:minmax(0,90%) minmax(0,10%);
+
     overflow:hidden;
+}
+
+#app{
+    width:100%;
+    height:100%;
+    min-height:0;
+    overflow:hidden;
+}
+
+#mn-footer{
+    width:100%;
+    height:100%;
+    min-height:0;
+
+    overflow:hidden;
+
+    background:#FFFFFF;
+}
+
+#mn-footer #miss-nails-footer-mobile{
+    width:100%;
+    height:100%;
+    min-height:0;
+    position:static;
+}
+
+#mn-footer #miss-nails-footer-mobile{
+    width:100%;
+    height:100%;
+    min-height:0;
+    position:static;
+
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    align-items:stretch;
+
+    background:#FFFFFF;
+    border-top:1px solid #EEEEEE;
+    box-shadow:0 -2px 8px rgba(0,0,0,.04);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-item{
+    position:relative;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+
+    margin:0;
+    padding:4px 4px 3px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:1px;
+
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#777777;
+
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-icono-wrap{
+    position:relative;
+    width:36px;
+    height:36px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 36px;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-icono{
+    width:32px;
+    height:32px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-icono svg{
+    width:32px;
+    height:32px;
+    display:block;
+    fill:none;
+    stroke:currentColor;
+    pointer-events:none;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-label{
+    margin:0;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+    font-size:11px;
+    line-height:14px;
+    font-weight:600;
+    color:#777777;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-check{
+    position:absolute;
+    top:-2px;
+    right:-2px;
+
+    display:none;
+    color:#C83D7A;
+    font-size:18px;
+    line-height:18px;
+    font-weight:700;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-cart-count{
+    position:absolute;
+    top:1px;
+    left:23px;
+
+    color:#777777;
+    font-size:12px;
+    line-height:14px;
+    font-weight:700;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-item.activo{
+    color:#C83D7A;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-item.activo .mn-footer-label{
+    color:#C83D7A;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-item.activo .mn-footer-check{
+    display:block;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-item:focus-visible{
+    outline:2px solid #C83D7A;
+    outline-offset:-3px;
+    border-radius:10px;
 }
 
 /* =========================================================
@@ -95,7 +251,7 @@ img{
 
 .mobile{
     width:100%;
-    height:100dvh;
+    height:100%;
     min-height:0;
 
     display:grid;
@@ -105,14 +261,14 @@ img{
      * ② buscador
      * ③ categorías
      * ④ catálogo
-     * ⑤ espacio footer
+     *
+     * El footer es GLOBAL y vive fuera de #app.
      */
-grid-template-rows:
-    72px
-    68px
-    58px
-    minmax(0,1fr)
-    68px;
+    grid-template-rows:
+        72px
+        68px
+        58px
+        minmax(0,1fr);
 
     overflow:hidden;
 
@@ -678,7 +834,8 @@ grid-template-rows:
    ========================================================= */
 
 .mobile-parte-inferior{
-    grid-row:5;
+    display:none;
+    grid-row:auto;
 
     width:100%;
     height:68px;
@@ -706,7 +863,8 @@ grid-template-rows:
 
 .mobile-detalle-producto{
     width:100%;
-    min-height:100dvh;
+    height:100%;
+    min-height:0;
 
     display:flex;
     flex-direction:column;
@@ -1127,309 +1285,259 @@ grid-template-rows:
 }
 
 /* =========================================================
-   TELÉFONO GIRADO — HORIZONTAL
-   =========================================================
+   LAYOUT DINÁMICO DE ORIENTACIÓN
 
-   La vista sigue siendo MÓVIL.
-   No se crea otra vista.
+   IMPORTANTE:
+   La orientación no depende de @media (orientation).
+   app.js aplica .mn-vertical o .mn-horizontal al contenedor
+   .mobile cada vez que cambia el viewport.
 
-   ① Header:
-      logo + buscador + campanita en una sola fila
-
-   ② Categorías:
-      fila fija
-
-   ③ Catálogo:
-      única zona con scroll
-
-   ④ Espacio footer:
-      reservado y fijo
-
+   Esto evita que Android/Chrome conserve una distribución
+   anterior después de bloquear/desbloquear o girar varias veces.
    ========================================================= */
 
-@media (
-    orientation:landscape
-) and (
-    max-height:600px
-){
+.mobile.mn-vertical{
+    width:100%;
+    height:100%;
+    grid-template-columns:1fr;
+    grid-template-rows:
+        72px
+        68px
+        58px
+        minmax(0,1fr);
+}
 
-    /* =====================================================
-       HORIZONTAL
+.mobile.mn-vertical .mobile-header{
+    grid-column:1;
+    grid-row:1;
 
-       FILA 1 → LOGO | BUSCADOR | CAMPANITA
-       FILA 2 → CATEGORÍAS
-       FILA 3 → CATÁLOGO
-       FILA 4 → FOOTER
-       ===================================================== */
+    display:flex;
+}
 
-    .mobile{
+.mobile.mn-vertical .mobile-logo{
+    grid-column:auto;
+    grid-row:auto;
+}
 
-        position:relative;
+.mobile.mn-vertical .mobile-notificaciones{
+    grid-column:auto;
+    grid-row:auto;
+}
 
-        width:100%;
-        height:100dvh;
+.mobile.mn-vertical .mobile-buscador{
+    grid-column:1;
+    grid-row:2;
 
-        display:grid;
+    position:static;
+    width:100%;
+    height:100%;
+    min-height:0;
+}
 
+.mobile.mn-vertical .mobile-categorias{
+    grid-column:1;
+    grid-row:3;
+
+    height:58px;
+    min-height:0;
+}
+
+.mobile.mn-vertical .mobile-parte-catalogo{
+    grid-column:1;
+    grid-row:4;
+}
+
+.mobile.mn-horizontal{
+    position:relative;
+    width:100%;
+    height:100%;
+
+    grid-template-columns:
+        150px
+        minmax(0,1fr)
+        46px;
+
+    grid-template-rows:
+        60px
+        50px
+        minmax(0,1fr);
+}
+
+/* ---------------------------------------------------------
+   FILA 1 — LOGO | BUSCADOR | CAMPANITA
+   --------------------------------------------------------- */
+
+.mobile.mn-horizontal .mobile-header{
+    grid-column:1 / -1;
+    grid-row:1;
+
+    display:contents;
+}
+
+.mobile.mn-horizontal .mobile-logo{
+    grid-column:1;
+    grid-row:1;
+
+    width:150px;
+    height:60px;
+    min-width:0;
+
+    padding:
+        6px
+        8px;
+
+    display:flex;
+    align-items:center;
+
+    background:var(--mn-rosa-claro);
+}
+
+.mobile.mn-horizontal .mobile-logo img{
+    width:145px;
+    max-width:100%;
+}
+
+.mobile.mn-horizontal .mobile-notificaciones{
+    grid-column:3;
+    grid-row:1;
+
+    width:40px;
+    height:40px;
+
+    align-self:center;
+    justify-self:center;
+
+    flex:0 0 40px;
+    z-index:3;
+}
+
+.mobile.mn-horizontal .mobile-buscador{
+    grid-column:2;
+    grid-row:1;
+
+    position:static;
+
+    width:100%;
+    height:60px;
+    min-width:0;
+    min-height:0;
+
+    padding:
+        7px
+        8px;
+
+    display:flex;
+    align-items:center;
+
+    background:var(--mn-rosa-claro);
+    border-bottom:none;
+    z-index:2;
+}
+
+.mobile.mn-horizontal .mobile-buscador input{
+    width:100%;
+    height:44px;
+    min-width:0;
+    font-size:14px;
+}
+
+/* ---------------------------------------------------------
+   FILA 2 — CATEGORÍAS
+   --------------------------------------------------------- */
+
+.mobile.mn-horizontal .mobile-categorias{
+    grid-column:1 / -1;
+    grid-row:2;
+
+    width:100%;
+    height:50px;
+    min-height:0;
+
+    padding:
+        5px
+        10px;
+}
+
+/* ---------------------------------------------------------
+   FILA 3 — CATÁLOGO
+   --------------------------------------------------------- */
+
+.mobile.mn-horizontal .mobile-parte-catalogo{
+    grid-column:1 / -1;
+    grid-row:3;
+
+    width:100%;
+    min-width:0;
+    min-height:0;
+}
+
+.mobile.mn-horizontal .mobile-productos.productos,
+.mobile.mn-horizontal #productos.productos{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+
+    padding:
+        8px
+        10px;
+
+    gap:8px;
+
+    grid-template-columns:
+        repeat(6,minmax(0,1fr));
+}
+
+/* El antiguo espacio interno del footer nunca participa
+   en el grid. El footer real está fuera de #app. */
+
+.mobile.mn-horizontal .mobile-parte-inferior,
+.mobile.mn-vertical .mobile-parte-inferior{
+    display:none;
+}
+
+/* =========================================================
+   VIEWPORTS HORIZONTALES MUY BAJOS
+
+   No usamos otra media-query de orientación.
+   Solamente ajustamos dimensiones cuando el viewport es
+   realmente bajo. La clase .mn-horizontal sigue siendo la
+   que determina la distribución.
+   ========================================================= */
+
+@media (max-height:430px){
+
+    .mobile.mn-horizontal{
         grid-template-columns:
             150px
             minmax(0,1fr)
             46px;
 
         grid-template-rows:
-            60px
-            50px
-            minmax(0,1fr)
-            68px;
-
-        overflow:hidden;
-    }
-
-
-    /* =====================================================
-       ① ENCABEZADO
-       ===================================================== */
-
-    .mobile-header{
-
-        display:contents;
-    }
-
-
-    .mobile-logo{
-
-        grid-column:1;
-        grid-row:1;
-
-        width:150px;
-        height:60px;
-
-        padding:
-            6px
-            8px;
-
-        display:flex;
-
-        align-items:center;
-
-        background:
-            var(--mn-rosa-claro);
-    }
-
-
-    .mobile-logo img{
-
-        width:145px;
-        max-width:100%;
-    }
-
-
-    /* =====================================================
-       ① CAMPANITA
-       ===================================================== */
-
-    .mobile-notificaciones{
-
-        grid-column:3;
-        grid-row:1;
-
-        width:40px;
-        height:40px;
-
-        align-self:center;
-        justify-self:center;
-
-        flex:0 0 40px;
-
-        z-index:3;
-    }
-
-
-    /* =====================================================
-       ① BUSCADOR
-
-       AHORA ES UNA COLUMNA REAL DE LA FILA 1.
-       ===================================================== */
-
-    .mobile-buscador{
-
-        grid-column:2;
-        grid-row:1;
-
-        position:static;
-
-        width:100%;
-        height:60px;
-
-        min-width:0;
-        min-height:60px;
-
-        padding:
-            7px
-            8px;
-
-        display:flex;
-
-        align-items:center;
-
-        background:
-            var(--mn-rosa-claro);
-
-        border-bottom:none;
-
-        z-index:2;
-    }
-
-
-    .mobile-buscador input{
-
-        width:100%;
-        height:44px;
-
-        min-width:0;
-
-        padding:
-            0
-            15px;
-
-        font-size:14px;
-    }
-
-
-    /* =====================================================
-       ② CATEGORÍAS
-       ===================================================== */
-
-    .mobile-categorias{
-
-        grid-column:1 / -1;
-        grid-row:2;
-
-        width:100%;
-        height:50px;
-        min-height:50px;
-
-        padding:
-            5px
-            10px;
-    }
-
-
-    /* =====================================================
-       ③ CATÁLOGO
-       ===================================================== */
-
-    .mobile-parte-catalogo{
-
-        grid-column:1 / -1;
-        grid-row:3;
-
-        width:100%;
-
-        min-width:0;
-        min-height:0;
-
-        overflow:hidden;
-    }
-
-
-    .mobile-productos.productos,
-    .mobile #productos.productos{
-
-        width:100%;
-        height:100%;
-
-        min-width:0;
-        min-height:0;
-
-        padding:
-            8px
-            10px;
-
-        gap:8px;
-
-        overflow-y:auto;
-        overflow-x:hidden;
-
-        grid-template-columns:
-            repeat(
-                6,
-                minmax(0,1fr)
-            );
-    }
-
-
-    /* =====================================================
-       ④ FOOTER
-       ===================================================== */
-
-    .mobile-parte-inferior{
-
-        grid-column:1 / -1;
-        grid-row:4;
-
-        width:100%;
-
-        height:68px;
-        min-height:68px;
-    }
-
-
-    .mobile-footer-zone{
-
-        width:100%;
-        height:68px;
-    }
-
-}
-
-/* =========================================================
-   ALTURAS HORIZONTALES MUY PEQUEÑAS
-   ========================================================= */
-
-@media (
-    orientation:landscape
-) and (
-    max-height:430px
-){
-
-    .mobile{
-        grid-template-rows:
             54px
             46px
-            minmax(0,1fr)
-            72px;
+            minmax(0,1fr);
     }
 
-    .mobile-header{
+    .mobile.mn-horizontal .mobile-logo{
+        width:150px;
         height:54px;
-        min-height:54px;
     }
 
-    .mobile-buscador{
-        height:54px;
-        min-height:54px;
-
-        left:155px;
-        right:50px;
-    }
-
-    .mobile-buscador input{
+    .mobile.mn-horizontal .mobile-notificaciones{
+        width:40px;
         height:40px;
     }
 
-    .mobile-categorias{
+    .mobile.mn-horizontal .mobile-buscador{
+        height:54px;
+    }
+
+    .mobile.mn-horizontal .mobile-buscador input{
+        height:40px;
+    }
+
+    .mobile.mn-horizontal .mobile-categorias{
         height:46px;
-        min-height:46px;
     }
-
-    .mobile-parte-inferior{
-        height:72px;
-        min-height:72px;
-    }
-
-    .mobile-footer-zone{
-        height:72px;
-    }
-
 }

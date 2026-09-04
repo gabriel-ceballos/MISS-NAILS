@@ -260,297 +260,20 @@
 
 
         // =================================================
-        // ESTILOS PROPIOS DEL FOOTER
+        // INSERTAR FOOTER EN SU CONTENEDOR GLOBAL
         // =================================================
 
-        const estilos =
-            document.createElement("style");
-
-
-        estilos.id =
-            "miss-nails-footer-mobile-style";
-
-
-        estilos.textContent = `
-
-            #${FOOTER_ID} {
-
-                position:fixed;
-
-                left:0;
-                right:0;
-                bottom:0;
-
-                z-index:9999;
-
-                height:112px;
-
-                box-sizing:border-box;
-
-                display:grid;
-
-                grid-template-columns:
-                    repeat(3,1fr);
-
-                align-items:start;
-
-                padding:
-                    14px 12px 8px;
-
-                background:#FFFFFF;
-
-                border-top:
-                    1px solid #EEEEEE;
-
-                box-shadow:
-                    0 -2px 8px
-                    rgba(0,0,0,.04);
-
-                font-family:
-                    Arial,
-                    Helvetica,
-                    sans-serif;
-            }
-
-
-            /* =========================================
-               BOTONES
-            ========================================== */
-
-            #${FOOTER_ID}
-            .mn-footer-item {
-
-                position:relative;
-
-                width:100%;
-
-                height:90px;
-
-                margin:0;
-                padding:0;
-
-                display:flex;
-
-                flex-direction:column;
-
-                align-items:center;
-
-                justify-content:flex-start;
-
-                border:0;
-
-                background:transparent;
-
-                color:#777777;
-
-                cursor:pointer;
-
-                -webkit-tap-highlight-color:
-                    transparent;
-            }
-
-
-            /* =========================================
-               ICONOS
-            ========================================== */
-
-            #${FOOTER_ID}
-            .mn-footer-icono-wrap {
-
-                position:relative;
-
-                width:48px;
-                height:48px;
-
-                display:flex;
-
-                align-items:center;
-
-                justify-content:center;
-            }
-
-
-            #${FOOTER_ID}
-            .mn-footer-icono {
-
-                width:30px;
-                height:30px;
-
-                display:flex;
-
-                align-items:center;
-
-                justify-content:center;
-            }
-
-
-            #${FOOTER_ID}
-            .mn-footer-icono svg {
-
-                width:30px;
-                height:30px;
-
-                display:block;
-
-                fill:none;
-
-                stroke:currentColor;
-
-                pointer-events:none;
-            }
-
-
-            /* =========================================
-               TEXTO
-            ========================================== */
-
-            #${FOOTER_ID}
-            .mn-footer-label {
-
-                margin-top:3px;
-
-                font-size:16px;
-
-                line-height:20px;
-
-                font-weight:600;
-
-                color:#777777;
-            }
-
-
-            /* =========================================
-               PALOMITA
-            ========================================== */
-
-            #${FOOTER_ID}
-            .mn-footer-check {
-
-                position:absolute;
-
-                top:-8px;
-                right:-1px;
-
-                display:none;
-
-                color:#C83D7A;
-
-                font-size:25px;
-
-                line-height:25px;
-
-                font-weight:700;
-            }
-
-
-            /* =========================================
-               CONTADOR
-            ========================================== */
-
-            #${FOOTER_ID}
-            .mn-footer-cart-count {
-
-                position:absolute;
-
-                top:7px;
-                left:27px;
-
-                color:#777777;
-
-                font-size:16px;
-
-                line-height:20px;
-
-                font-weight:600;
-            }
-
-
-            /* =========================================
-               ACTIVO
-            ========================================== */
-
-            #${FOOTER_ID}
-            .mn-footer-item.activo {
-
-                color:#C83D7A;
-            }
-
-
-            #${FOOTER_ID}
-            .mn-footer-item.activo
-            .mn-footer-label {
-
-                color:#C83D7A;
-            }
-
-
-            #${FOOTER_ID}
-            .mn-footer-item.activo
-            .mn-footer-check {
-
-                display:block;
-            }
-
-
-            /* =========================================
-               ACCESIBILIDAD
-            ========================================== */
-
-            #${FOOTER_ID}
-            .mn-footer-item:focus-visible {
-
-                outline:
-                    2px solid #C83D7A;
-
-                outline-offset:-3px;
-
-                border-radius:10px;
-            }
-
-
-            /* =========================================
-               TABLET / DESKTOP
-            ========================================== */
-
-            @media (min-width:768px) {
-
-                #${FOOTER_ID} {
-
-                    max-width:520px;
-
-                    margin:0 auto;
-
-                    left:50%;
-                    right:auto;
-
-                    transform:
-                        translateX(-50%);
-
-                    width:100%;
-                }
-
-            }
-
-        `;
-
-
-        if (
-            !document.getElementById(
-                estilos.id
-            )
-        ) {
-
-            document.head.appendChild(
-                estilos
+        const contenedor =
+            document.getElementById("mn-footer");
+
+        if (!contenedor) {
+            console.error(
+                "FOOTER → no existe #mn-footer"
             );
+            return footer;
         }
 
-
-        // =================================================
-        // INSERTAR FOOTER FUERA DE #app
-        // =================================================
-
-        document.body.appendChild(
+        contenedor.appendChild(
             footer
         );
 
@@ -785,9 +508,26 @@
     // API PÚBLICA
     // =====================================================
 
+    function ocultar() {
+
+        const elemento =
+            document.getElementById(FOOTER_ID);
+
+        if (elemento) {
+            elemento.hidden = true;
+        }
+    }
+
+
     window.footer = {
 
-        mostrar: crearFooter,
+        mostrar: function () {
+            const elemento = crearFooter();
+            if (elemento) elemento.hidden = false;
+            return elemento;
+        },
+
+        ocultar,
 
         activar,
 
