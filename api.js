@@ -9,6 +9,8 @@ const API_URL =
 
 async function api(accion, datos = {}) {
 
+    const inicioAPI = performance.now();
+
     try {
 
         const body =
@@ -33,6 +35,14 @@ async function api(accion, datos = {}) {
                     body
                 }
             );
+
+        console.log(
+            "API →",
+            accion,
+            "→ respuesta en",
+            Math.round(performance.now() - inicioAPI),
+            "ms"
+        );
 
 
         const json =

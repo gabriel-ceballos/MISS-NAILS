@@ -17,10 +17,14 @@ const logicaCatalogo = {
 
     async cargarProductos() {
 
-        console.log("CATALOGO → solicitando productos");
+const inicioCatalogo =
+    performance.now();
 
-        try {
+console.log(
+    "CATALOGO → solicitando productos"
+);
 
+try {
             const respuesta = await api("productos");
 
             console.log(
@@ -46,6 +50,15 @@ const logicaCatalogo = {
                 Array.isArray(respuesta.datos)
                     ? respuesta.datos
                     : [];
+
+                    console.log(
+                "CATALOGO → datos procesados en",
+                Math.round(
+                    performance.now() -
+                    inicioCatalogo
+                ),
+                "ms"
+            );
 
             console.log(
                 "CATALOGO → productos recibidos:",

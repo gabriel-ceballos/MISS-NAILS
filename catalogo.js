@@ -240,9 +240,19 @@ const catalogo = {
         }
 
 
-        this.renderizar();
+            const inicioRender =
+                performance.now();
 
+            this.renderizar();
 
+            console.log(
+                "CATALOGO → renderizado en",
+                Math.round(
+                    performance.now() -
+                    inicioRender
+                ),
+                "ms"
+            );
 
             logicaCatalogo.guardarEstado();
 
