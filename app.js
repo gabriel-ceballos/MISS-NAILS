@@ -38,24 +38,30 @@
              */
             this.inicializarOrientacion();
 
-            try {
+            /*
+             * PING EN SEGUNDO PLANO
+             *
+             * No bloqueamos la entrada al catálogo/login esperando
+             * la respuesta del backend. La conexión se comprueba,
+             * pero la navegación continúa inmediatamente.
+             */
+            api("ping")
+                .then((respuesta) => {
 
-                const respuesta =
-                    await api("ping");
+                    console.log(
+                        "APP → ping:",
+                        respuesta
+                    );
 
-                console.log(
-                    "APP → ping:",
-                    respuesta
-                );
+                })
+                .catch((error) => {
 
-            } catch (error) {
+                    console.error(
+                        "APP → error de comunicación:",
+                        error
+                    );
 
-                console.error(
-                    "APP → error de comunicación:",
-                    error
-                );
-
-            }
+                });
 
 
             const usuario =
