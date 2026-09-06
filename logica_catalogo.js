@@ -1,6 +1,13 @@
 const logicaCatalogo = {
 
     productos: [],
+
+    // Catálogo e inventario se mantienen separados en memoria.
+    // Los productos siguen conteniendo sus datos originales para no romper
+    // compatibilidad con las vistas existentes; el inventario oficial
+    // para consulta se conserva adicionalmente en este mapa.
+    inventario: new Map(),
+
     filtroCategoria: "",
     textoBusqueda: "",
     intervaloInventario: null,
@@ -46,13 +53,36 @@ try {
                 };
             }
 
-            this.productos =
+            const datos =
                 Array.isArray(respuesta.datos)
                     ? respuesta.datos
                     : [];
 
-                    console.log(
-                "CATALOGO → datos procesados en",
+            console.log(
+                "CATALOGO → productos recibidos antes de procesar:",
+                datos.length
+            );
+
+            const inicioProcesamiento = performance.now();
+
+            // Separar inventario del catálogo sin modificar el backend.
+            this.actualizarInventario(datos);
+
+            // Conservamos la estructura completa para no romper todavía
+            // las funciones existentes que esperan producto.inventario.
+            this.productos = datos;
+
+            console.log(
+                "CATALOGO → procesamiento de datos en",
+                Math.round(
+                    performance.now() -
+                    inicioProcesamiento
+                ),
+                "ms"
+            );
+
+            console.log(
+                "CATALOGO → tiempo total cargarProductos en",
                 Math.round(
                     performance.now() -
                     inicioCatalogo
@@ -125,6 +155,12 @@ try {
 
     async sincronizarProductos() {
 
+        const inicioSincronizacion = performance.now();
+
+        console.log(
+            "CATALOGO → INICIO SINCRONIZACIÓN INVENTARIO"
+        );
+
         try {
 
             const respuesta =
@@ -147,8 +183,11 @@ try {
                     ? respuesta.datos
                     : [];
 
-            this.productos =
-                nuevosProductos;
+            // Actualizar únicamente el estado separado de inventario.
+            this.actualizarInventario(nuevosProductos);
+
+            // Mantener el catálogo actualizado sin cambiar su estructura.
+            this.productos = nuevosProductos;
 
 
             /*
@@ -171,30 +210,142 @@ try {
 
 
             /*
-             * Si estamos viendo el catálogo,
-             * actualizamos las tarjetas.
+             * Si estamos viendo el catálogo, NO reconstruimos
+             * la vista completa. El catálogo progresivo conserva
+             * las tarjetas ya construidas y sólo actualizamos
+             * el inventario visible.
              */
 
             if (
-                typeof window.catalogo?.renderizar ===
+                this.vistaActual === "catalogo" &&
+                typeof window.catalogo?.actualizarInventarioVisible ===
                 "function"
             ) {
 
-                window.catalogo.renderizar();
+                window.catalogo.actualizarInventarioVisible();
             }
 
             console.log(
-                "CATALOGO → inventario sincronizado:",
-                nuevosProductos.length
+                "CATALOGO → inventario sincronizado sin reconstruir catálogo:",
+                nuevosProductos.length,
+                "| tiempo total:",
+                Math.round(
+                    performance.now() -
+                    inicioSincronizacion
+                ),
+                "ms"
             );
 
         } catch (error) {
 
             console.error(
                 "CATALOGO → error de sincronización:",
-                error
+                error,
+                "| tiempo:",
+                Math.round(
+                    performance.now() -
+                    inicioSincronizacion
+                ),
+                "ms"
             );
         }
+    },
+
+
+    // =====================================================
+    // INVENTARIO SEPARADO
+    // =====================================================
+
+    actualizarInventario(datos) {
+
+        const nuevoInventario = new Map();
+        const idsDuplicados = new Map();
+        let registrosValidos = 0;
+        let registrosSinId = 0;
+
+        if (Array.isArray(datos)) {
+
+            datos.forEach((producto, indice) => {
+
+                if (!producto || producto.id == null || String(producto.id).trim() === "") {
+                    registrosSinId++;
+                    return;
+                }
+
+                const id = String(producto.id);
+                const existencia = Number(producto.inventario) || 0;
+
+                registrosValidos++;
+
+                if (nuevoInventario.has(id)) {
+
+                    if (!idsDuplicados.has(id)) {
+                        idsDuplicados.set(id, []);
+                    }
+
+                    idsDuplicados.get(id).push({
+                        indice,
+                        inventario: existencia
+                    });
+                }
+
+                nuevoInventario.set(
+                    id,
+                    existencia
+                );
+            });
+        }
+
+        this.inventario = nuevoInventario;
+
+        console.log(
+            "CATALOGO → inventario separado:",
+            this.inventario.size
+        );
+
+        console.log(
+            "CATALOGO → registros de inventario válidos:",
+            registrosValidos
+        );
+
+        console.log(
+            "CATALOGO → registros sin ID:",
+            registrosSinId
+        );
+
+        console.log(
+            "CATALOGO → IDs duplicados:",
+            idsDuplicados.size
+        );
+
+        if (idsDuplicados.size) {
+
+            console.warn(
+                "CATALOGO → detalle de IDs duplicados:",
+                Array.from(idsDuplicados.entries())
+            );
+        }
+    },
+
+
+    obtenerInventario(id) {
+
+        return Number(
+            this.inventario.get(String(id)) ?? 0
+        );
+    },
+
+
+    productoParaCarrito(producto) {
+
+        if (!producto) {
+            return producto;
+        }
+
+        return {
+            ...producto,
+            inventario: this.obtenerInventario(producto.id)
+        };
     },
 
 

@@ -1,10 +1,25 @@
 const catalogo = {
 
+    listaRenderizada: [],
+    indiceRender: 0,
+    capacidadViewport: 0,
+    bloqueRender: 0,
+    manejadorScroll: null,
+    cargandoBloque: false,
+    ultimoScrollTopCarga: -1,
+    umbralScrollCarga: 120,
+
     // =====================================================
     // MOSTRAR CATÁLOGO
     // =====================================================
 
     async mostrar() {
+
+        const inicioArranqueCatalogo = performance.now();
+
+        console.log(
+            "CATALOGO → INICIO ARRANQUE"
+        );
 
         const app =
             document.getElementById("app");
@@ -17,6 +32,26 @@ const catalogo = {
 
             return;
         }
+
+        /*
+         * BLINDAJE DE MONTAJE
+         *
+         * Si el catálogo ya está montado, una llamada repetida
+         * a mostrar() no debe destruirlo ni volver a cargarlo.
+         * Esto permite que la sincronización, orientación o
+         * navegación repetida no reinicien la carga progresiva.
+         */
+        if (
+            logicaCatalogo.vistaActual === "catalogo" &&
+            document.getElementById("productos")
+        ) {
+            console.log(
+                "CATALOGO → mostrar omitido: catálogo ya montado"
+            );
+            return;
+        }
+
+        logicaCatalogo.vistaActual = "catalogo";
 
 
         /*
@@ -256,6 +291,36 @@ const catalogo = {
 
             logicaCatalogo.guardarEstado();
 
+            const tiempoDisponible = Math.round(
+                performance.now() -
+                inicioArranqueCatalogo
+            );
+
+            console.log(
+                "CATALOGO → ARRANQUE COMPLETADO",
+                "| tiempo total:",
+                tiempoDisponible,
+                "ms",
+                "| tarjetas iniciales:",
+                this.indiceRender,
+                "| productos totales recibidos:",
+                this.listaRenderizada.length,
+                "| capacidad viewport:",
+                this.capacidadViewport,
+                "| bloque:",
+                this.bloqueRender
+            );
+
+            console.log(
+                "CATALOGO → DISPONIBLE PARA EL USUARIO EN",
+                tiempoDisponible,
+                "ms",
+                "| tarjetas iniciales:",
+                this.indiceRender,
+                "| productos totales:",
+                this.listaRenderizada.length
+            );
+
 
         // =================================================
         // SINCRONIZACIÓN
@@ -392,7 +457,7 @@ const catalogo = {
                     ) {
 
                         window.carrito.agregar(
-                            producto,
+                            logicaCatalogo.productoParaCarrito(producto),
                             1
                         );
 
@@ -467,60 +532,299 @@ const catalogo = {
     renderizar() {
 
         const contenedor =
-            document.getElementById(
-                "productos"
-            );
-
+            document.getElementById("productos");
 
         if (!contenedor) {
-
             console.error(
                 "CATALOGO → no existe #productos"
             );
-
             return;
         }
-
 
         const lista =
             logicaCatalogo.obtenerFiltrados();
 
+        // Si la misma lista ya está renderizada, no reconstruimos
+        // el catálogo. Esto permite que una sincronización de inventario
+        // o una nueva entrada a la vista conserve la carga progresiva.
+        const mismaLista =
+            Array.isArray(this.listaRenderizada) &&
+            this.listaRenderizada.length === lista.length &&
+            this.listaRenderizada.every((producto, indice) =>
+                String(producto?.id ?? "") ===
+                String(lista[indice]?.id ?? "")
+            );
 
-        if (!lista.length) {
-
-            contenedor.innerHTML = `
-
-                <div class="estado-vacio">
-
-                    <strong>
-                        No hay productos disponibles
-                    </strong>
-
-                    <span>
-                        No se encontraron productos.
-                    </span>
-
-                </div>
-            `;
-
+        if (mismaLista && contenedor.querySelector(".producto[data-id]")) {
+            this.listaRenderizada = lista;
+            this.actualizarInventarioVisible();
+            console.log(
+                "CATALOGO → render omitido: lista sin cambios; se conserva carga progresiva"
+            );
             return;
         }
 
+        if (!lista.length) {
+            contenedor.innerHTML = `
+                <div class="estado-vacio">
+                    <strong>No hay productos disponibles</strong>
+                    <span>No se encontraron productos.</span>
+                </div>
+            `;
+            this.listaRenderizada = [];
+            this.indiceRender = 0;
+            return;
+        }
 
-        contenedor.innerHTML =
-            lista
-                .map(
-                    producto =>
-                        this.crearProducto(
-                            producto
-                        )
-                )
-                .join("");
+        this.listaRenderizada = lista;
+        this.indiceRender = 0;
+        this.bloqueRender = 0;
+        this.capacidadViewport = 0;
 
+        contenedor.innerHTML = "";
+        this.cargarBloqueInicial();
+    },
+
+
+    // =====================================================
+    // CARGA PROGRESIVA SEGÚN CAPACIDAD REAL DEL VIEWPORT
+    // =====================================================
+
+    calcularCapacidadViewport() {
+
+        const contenedor =
+            document.getElementById("productos");
+
+        if (!contenedor) return 1;
+
+        const alturaDisponible = contenedor.clientHeight;
+
+        if (alturaDisponible <= 0) return 1;
+
+        const columnas = Math.max(
+            1,
+            getComputedStyle(contenedor)
+                .gridTemplateColumns
+                .split(" ")
+                .filter(Boolean)
+                .length
+        );
+
+        // Medimos una tarjeta real para no inventar una altura.
+        const muestra = this.listaRenderizada[0];
+        contenedor.innerHTML = this.crearProducto(muestra);
+
+        const tarjeta = contenedor.querySelector(".producto");
+        const estilo = tarjeta
+            ? getComputedStyle(tarjeta)
+            : null;
+
+        const alturaTarjeta = tarjeta
+            ? tarjeta.getBoundingClientRect().height +
+              parseFloat(estilo?.marginBottom || 0)
+            : 1;
+
+        const filasVisibles = Math.max(
+            1,
+            Math.ceil(alturaDisponible / Math.max(1, alturaTarjeta))
+        );
+
+        const capacidad = filasVisibles * columnas;
 
         console.log(
-            "CATALOGO → productos mostrados:",
-            lista.length
+            "CATALOGO → capacidad viewport:",
+            capacidad,
+            "| columnas:",
+            columnas,
+            "| filas:",
+            filasVisibles
+        );
+
+        return capacidad;
+    },
+
+
+    cargarBloqueInicial() {
+
+        const contenedor =
+            document.getElementById("productos");
+
+        if (!contenedor || !this.listaRenderizada?.length) return;
+
+        const capacidad =
+            this.calcularCapacidadViewport();
+
+        this.capacidadViewport = capacidad;
+
+        const cantidadInicial = Math.min(
+            this.listaRenderizada.length,
+            capacidad * 2
+        );
+
+        contenedor.innerHTML =
+            this.listaRenderizada
+                .slice(0, cantidadInicial)
+                .map(producto => this.crearProducto(producto))
+                .join("");
+
+        this.indiceRender = cantidadInicial;
+        this.bloqueRender = 1;
+        this.cargandoBloque = false;
+        this.ultimoScrollTopCarga = contenedor.scrollTop;
+
+        console.log(
+            "CATALOGO → bloque inicial:",
+            cantidadInicial,
+            "de",
+            this.listaRenderizada.length
+        );
+
+        this.prepararCargaPorScroll();
+    },
+
+
+    actualizarInventarioVisible() {
+
+        const contenedor =
+            document.getElementById("productos");
+
+        if (!contenedor) return;
+
+        const tarjetas =
+            contenedor.querySelectorAll(".producto[data-id]");
+
+        let actualizadas = 0;
+
+        tarjetas.forEach(tarjeta => {
+
+            const id = tarjeta.dataset.id;
+
+            const inventario =
+                logicaCatalogo.obtenerInventario(id);
+
+            const meta =
+                tarjeta.querySelector(".producto__meta");
+
+            if (meta) {
+                meta.textContent =
+                    `Disponible: ${inventario}`;
+                actualizadas++;
+            }
+        });
+
+        console.log(
+            "CATALOGO → inventario visible actualizado:",
+            actualizadas
+        );
+    },
+
+
+    cargarSiguienteBloque() {
+
+        const contenedor =
+            document.getElementById("productos");
+
+        if (
+            !contenedor ||
+            !this.listaRenderizada?.length ||
+            this.indiceRender >= this.listaRenderizada.length
+        ) {
+            return;
+        }
+
+        const cantidad = Math.max(
+            1,
+            this.capacidadViewport * 2
+        );
+
+        const siguiente =
+            this.listaRenderizada.slice(
+                this.indiceRender,
+                this.indiceRender + cantidad
+            );
+
+        const inicioBloque = performance.now();
+
+        contenedor.insertAdjacentHTML(
+            "beforeend",
+            siguiente
+                .map(producto => this.crearProducto(producto))
+                .join("")
+        );
+
+        this.indiceRender += siguiente.length;
+        this.bloqueRender++;
+
+        console.log(
+            "CATALOGO → siguiente bloque:",
+            siguiente.length,
+            "| construidos:",
+            this.indiceRender,
+            "de",
+            this.listaRenderizada.length,
+            "| render bloque:",
+            Math.round(performance.now() - inicioBloque),
+            "ms"
+        );
+    },
+
+
+    prepararCargaPorScroll() {
+
+        const contenedor =
+            document.getElementById("productos");
+
+        if (!contenedor) return;
+
+        if (this.manejadorScroll) {
+            contenedor.removeEventListener(
+                "scroll",
+                this.manejadorScroll
+            );
+        }
+
+        this.manejadorScroll = () => {
+
+            const cercaDelFinal =
+                contenedor.scrollTop +
+                contenedor.clientHeight >=
+                contenedor.scrollHeight -
+                Math.max(
+                    160,
+                    contenedor.clientHeight
+                );
+
+            /*
+             * Una sola ampliación por avance real del scroll.
+             * Después de insertar tarjetas el navegador puede
+             * emitir nuevos eventos scroll aunque el usuario no
+             * haya avanzado. Sin este control se podían encadenar
+             * todos los bloques hasta construir los 1346 productos.
+             */
+            const scrollAvanzo =
+                contenedor.scrollTop -
+                this.ultimoScrollTopCarga >=
+                this.umbralScrollCarga;
+
+            if (
+                cercaDelFinal &&
+                scrollAvanzo &&
+                !this.cargandoBloque
+            ) {
+                this.cargandoBloque = true;
+                this.ultimoScrollTopCarga =
+                    contenedor.scrollTop;
+
+                this.cargarSiguienteBloque();
+
+                this.cargandoBloque = false;
+            }
+        };
+
+        contenedor.addEventListener(
+            "scroll",
+            this.manejadorScroll,
+            { passive: true }
         );
     },
 
@@ -562,9 +866,9 @@ const catalogo = {
 
 
         const inventario =
-            Number(
-                producto.inventario
-            ) || 0;
+            logicaCatalogo.obtenerInventario(
+                producto.id
+            );
 
 
         const categoria =
@@ -790,9 +1094,9 @@ const catalogo = {
 
 
         const inventario =
-            Number(
-                producto.inventario
-            ) || 0;
+            logicaCatalogo.obtenerInventario(
+                producto.id
+            );
 
 
         const categoria =
@@ -982,7 +1286,7 @@ const catalogo = {
                     ) {
 
                         window.carrito.agregar(
-                            producto,
+                            logicaCatalogo.productoParaCarrito(producto),
                             1
                         );
 
