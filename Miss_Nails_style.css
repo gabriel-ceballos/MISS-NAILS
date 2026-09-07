@@ -758,19 +758,30 @@ img{
 
 .mobile-productos .producto h3,
 .mobile #productos .producto h3{
+    width:100%;
+    min-width:0;
+    height:auto;
+    min-height:0;
+    max-height:none;
+
     margin:0;
+    padding:7px 8px 2px;
 
-    height:22px;
-
-    overflow:hidden;
-
-    font-size:9px;
-
-    line-height:1.2;
-
-    font-weight:600;
+    font-size:var(--mn-estable-card-title-size) !important;
+    line-height:var(--mn-estable-card-line-height);
+    font-weight:700;
+    text-align:left;
 
     color:#222222;
+
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+    display:block;
+
+    overflow-wrap:anywhere;
+    word-break:normal;
+    hyphens:auto;
 }
 
 .mobile-productos .producto__detalle,
@@ -1185,7 +1196,7 @@ img{
 
     left:0;
     right:0;
-    bottom:0;
+    bottom:10%;
 
     z-index:40;
 
@@ -1262,35 +1273,6 @@ img{
    TELÉFONOS MUY PEQUEÑOS
    ========================================================= */
 
-@media (max-width:360px){
-
-    .mobile-header{
-        padding-left:12px;
-        padding-right:12px;
-    }
-
-    .mobile-logo img{
-        width:140px;
-    }
-
-    .mobile-productos.productos,
-    .mobile #productos.productos{
-        gap:6px;
-
-        padding:
-            8px;
-    }
-
-    .mobile-productos .producto h3,
-    .mobile #productos .producto h3{
-        font-size:8px;
-    }
-
-    .mobile-productos .precio,
-    .mobile #productos .precio{
-        font-size:10px;
-    }
-}
 
 /* =========================================================
    LAYOUT DINÁMICO DE ORIENTACIÓN
@@ -1513,42 +1495,6 @@ img{
    que determina la distribución.
    ========================================================= */
 
-@media (max-height:430px){
-
-    .mobile.mn-horizontal{
-        grid-template-columns:
-            150px
-            minmax(0,1fr)
-            46px;
-
-        grid-template-rows:
-            54px
-            46px
-            minmax(0,1fr);
-    }
-
-    .mobile.mn-horizontal .mobile-logo{
-        width:150px;
-        height:54px;
-    }
-
-    .mobile.mn-horizontal .mobile-notificaciones{
-        width:40px;
-        height:40px;
-    }
-
-    .mobile.mn-horizontal .mobile-buscador{
-        height:54px;
-    }
-
-    .mobile.mn-horizontal .mobile-buscador input{
-        height:40px;
-    }
-
-    .mobile.mn-horizontal .mobile-categorias{
-        height:46px;
-    }
-}
 
 
 /* =========================================================
@@ -1559,13 +1505,1617 @@ img{
    Horizontal: 85% aplicación / 15% footer
    ========================================================= */
 
-@media (orientation: landscape){
 
-    #mn-shell{
-        grid-template-rows:
-            minmax(0,85%)
-            minmax(0,15%);
-    }
+/* ============================================================================
+   MISS NAILS — CAPA FINAL DE ESTABILIDAD RESPONSIVE
+   ----------------------------------------------------------------------------
+   Esta capa es deliberadamente autoritativa.
 
+   OBJETIVO:
+   - El navegador NO decide libremente entre 2, 3, 4 o 6 columnas.
+   - La vista vertical conserva una densidad de 4 columnas.
+   - La vista horizontal conserva una densidad de 6 columnas.
+   - La orientación se expresa mediante las clases que ya administra app.js.
+   - No se usan breakpoints numéricos de viewport.
+   - No se usan @media.
+   - No se usa @container.
+   - No se usan cálculos de ancho/alto para decidir la composición.
+
+   COMPOSICIÓN:
+   VERTICAL:
+       encabezado
+       buscador
+       categorías
+       catálogo
+       footer global
+
+   HORIZONTAL:
+       logo | buscador | campanita
+       categorías
+       catálogo
+       footer global
+
+   IMPORTANTE:
+   El footer real vive fuera de #app. La zona interna reservada de .mobile
+   permanece oculta para no competir con el footer global.
+   ============================================================================ */
+
+:root{
+    --mn-estable-header:72px;
+    --mn-estable-search:68px;
+    --mn-estable-categories:58px;
+    --mn-estable-footer:10%;
+    --mn-estable-gap:8px;
+    --mn-estable-card-radius:8px;
+    --mn-estable-card-border:1px solid #E5E5E5;
+    --mn-estable-card-background:#FFFFFF;
+    --mn-estable-catalog-background:#F5F6F8;
+    --mn-estable-search-height:44px;
+    --mn-estable-search-radius:24px;
+    --mn-estable-horizontal-logo:150px;
+    --mn-estable-horizontal-action:46px;
+    --mn-estable-horizontal-row:60px;
+    --mn-estable-horizontal-category:50px;
+    --mn-estable-vertical-columns:4;
+    --mn-estable-horizontal-columns:6;
+    --mn-estable-product-image-ratio:1 / 1;
+    --mn-estable-card-title-size:9px;
+    --mn-estable-card-price-size:14px;
+    --mn-estable-card-line-height:1.15;
 }
 
+/* ============================================================================
+   01 — CONTENEDOR GLOBAL
+   ============================================================================ */
+
+html,
+body{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+}
+
+body{
+    margin:0;
+    padding:0;
+    overflow:hidden;
+}
+
+#mn-shell{
+    width:100%;
+    height:100dvh;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) auto;
+    overflow:hidden;
+}
+
+#app{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    overflow:hidden;
+}
+
+#mn-footer{
+    width:100%;
+    min-width:0;
+    height:auto;
+    min-height:0;
+    max-width:none;
+    overflow:hidden;
+    background:#FFFFFF;
+}
+
+#mn-footer #miss-nails-footer-mobile{
+    width:100%;
+    min-width:0;
+    height:100%;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    position:static;
+}
+
+/* ============================================================================
+   02 — ESTRUCTURA VERTICAL AUTORITATIVA
+   ============================================================================ */
+
+.mobile.mn-vertical{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:
+        var(--mn-estable-header)
+        var(--mn-estable-search)
+        var(--mn-estable-categories)
+        minmax(0,1fr);
+    overflow:hidden;
+}
+
+.mobile.mn-vertical .mobile-header{
+    grid-column:1;
+    grid-row:1;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    overflow:hidden;
+}
+
+.mobile.mn-vertical .mobile-logo{
+    width:auto;
+    min-width:0;
+    max-width:calc(100% - 64px);
+    height:100%;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+}
+
+.mobile.mn-vertical .mobile-logo img{
+    width:auto;
+    max-width:100%;
+    height:auto;
+    max-height:100%;
+    object-fit:contain;
+}
+
+.mobile.mn-vertical .mobile-notificaciones{
+    flex:0 0 auto;
+    position:relative;
+    z-index:5;
+}
+
+.mobile.mn-vertical .mobile-buscador{
+    grid-column:1;
+    grid-row:2;
+    position:static;
+    inset:auto;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+}
+
+.mobile.mn-vertical .mobile-buscador input{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    height:var(--mn-estable-search-height);
+    min-height:0;
+}
+
+.mobile.mn-vertical .mobile-categorias{
+    grid-column:1;
+    grid-row:3;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+
+.mobile.mn-vertical .mobile-parte-catalogo{
+    grid-column:1;
+    grid-row:4;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   03 — ESTRUCTURA HORIZONTAL AUTORITATIVA
+   ============================================================================ */
+
+.mobile.mn-horizontal{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    display:grid;
+    grid-template-columns:
+        var(--mn-estable-horizontal-logo)
+        minmax(0,1fr)
+        var(--mn-estable-horizontal-action);
+    grid-template-rows:
+        var(--mn-estable-horizontal-row)
+        var(--mn-estable-horizontal-category)
+        minmax(0,1fr);
+    overflow:hidden;
+}
+
+.mobile.mn-horizontal .mobile-header{
+    grid-column:1 / -1;
+    grid-row:1;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    display:contents;
+}
+
+.mobile.mn-horizontal .mobile-logo{
+    grid-column:1;
+    grid-row:1;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    overflow:hidden;
+}
+
+.mobile.mn-horizontal .mobile-logo img{
+    width:auto;
+    max-width:100%;
+    height:auto;
+    max-height:100%;
+    object-fit:contain;
+}
+
+.mobile.mn-horizontal .mobile-buscador{
+    grid-column:2;
+    grid-row:1;
+    position:static;
+    inset:auto;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.mobile.mn-horizontal .mobile-buscador input{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    height:var(--mn-estable-search-height);
+    min-height:0;
+}
+
+.mobile.mn-horizontal .mobile-notificaciones{
+    grid-column:3;
+    grid-row:1;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    align-self:stretch;
+    justify-self:stretch;
+    position:relative;
+    z-index:5;
+}
+
+.mobile.mn-horizontal .mobile-categorias{
+    grid-column:1 / -1;
+    grid-row:2;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+
+.mobile.mn-horizontal .mobile-parte-catalogo{
+    grid-column:1 / -1;
+    grid-row:3;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   04 — CATÁLOGO: DENSIDAD VERTICAL FIJA
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos.productos,
+.mobile.mn-vertical #productos.productos{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    display:grid;
+    grid-template-columns:
+        repeat(
+            var(--mn-estable-vertical-columns),
+            minmax(0,1fr)
+        );
+    grid-auto-rows:max-content;
+    align-content:start;
+    align-items:start;
+    justify-items:stretch;
+    gap:var(--mn-estable-gap);
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:10px 12px;
+    background:var(--mn-estable-catalog-background);
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+}
+
+/* ============================================================================
+   05 — CATÁLOGO: DENSIDAD HORIZONTAL FIJA
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-productos.productos,
+.mobile.mn-horizontal #productos.productos{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    display:grid;
+    grid-template-columns:
+        repeat(
+            var(--mn-estable-horizontal-columns),
+            minmax(0,1fr)
+        );
+    grid-auto-rows:max-content;
+    align-content:start;
+    align-items:start;
+    justify-items:stretch;
+    gap:var(--mn-estable-gap);
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:8px 10px;
+    background:var(--mn-estable-catalog-background);
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+}
+
+/* ============================================================================
+   06 — TARJETA BASE
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .producto,
+.mobile.mn-horizontal .mobile-productos .producto,
+.mobile.mn-vertical #productos .producto,
+.mobile.mn-horizontal #productos .producto{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    background:var(--mn-estable-card-background);
+    border:var(--mn-estable-card-border);
+    border-radius:var(--mn-estable-card-radius);
+    overflow:hidden;
+    align-self:start;
+    justify-self:stretch;
+}
+
+.mobile.mn-vertical .mobile-productos .foto,
+.mobile.mn-horizontal .mobile-productos .foto,
+.mobile.mn-vertical #productos .foto,
+.mobile.mn-horizontal #productos .foto{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    aspect-ratio:var(--mn-estable-product-image-ratio);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:#EEEEEE;
+}
+
+.mobile.mn-vertical .mobile-productos .fotoProducto,
+.mobile.mn-horizontal .mobile-productos .fotoProducto,
+.mobile.mn-vertical #productos .fotoProducto,
+.mobile.mn-horizontal #productos .fotoProducto{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    object-fit:cover;
+}
+
+/* ============================================================================
+   07 — CONTENIDO DE TARJETA
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .producto__contenido,
+.mobile.mn-horizontal .mobile-productos .producto__contenido,
+.mobile.mn-vertical #productos .producto__contenido,
+.mobile.mn-horizontal #productos .producto__contenido{
+    width:100%;
+    min-width:0;
+    min-height:0;
+    overflow:hidden;
+}
+
+.mobile.mn-vertical .mobile-productos .producto h3,
+.mobile.mn-horizontal .mobile-productos .producto h3,
+.mobile.mn-vertical #productos .producto h3,
+.mobile.mn-horizontal #productos .producto h3{
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:8px 8px 3px;
+    font-size:var(--mn-estable-card-title-size);
+    line-height:var(--mn-estable-card-line-height);
+    font-weight:700;
+    text-align:left;
+    overflow:visible;
+    display:block;
+}
+
+.mobile.mn-vertical .mobile-productos .precio,
+.mobile.mn-horizontal .mobile-productos .precio,
+.mobile.mn-vertical #productos .precio,
+.mobile.mn-horizontal #productos .precio{
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:3px 8px 8px;
+    font-size:var(--mn-estable-card-price-size);
+    line-height:1.1;
+    font-weight:800;
+    text-align:left;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* ============================================================================
+   08 — BOTÓN DE CARRITO RÁPIDO
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .btnCarritoRapido,
+.mobile.mn-horizontal .mobile-productos .btnCarritoRapido,
+.mobile.mn-vertical #productos .btnCarritoRapido,
+.mobile.mn-horizontal #productos .btnCarritoRapido{
+    position:absolute;
+    right:4px;
+    bottom:4px;
+    width:22px;
+    height:22px;
+    min-width:22px;
+    min-height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:3;
+    border:0;
+    border-radius:50%;
+    background:#FFFFFF;
+}
+
+.mobile.mn-vertical .mobile-productos .btnCarritoRapido svg,
+.mobile.mn-horizontal .mobile-productos .btnCarritoRapido svg,
+.mobile.mn-vertical #productos .btnCarritoRapido svg,
+.mobile.mn-horizontal #productos .btnCarritoRapido svg{
+    width:14px;
+    height:14px;
+    min-width:14px;
+    min-height:14px;
+}
+
+/* ============================================================================
+   09 — CATEGORÍAS ESTABLES
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-categorias,
+.mobile.mn-horizontal .mobile-categorias{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:8px;
+    padding:5px 10px;
+    background:#FFFFFF;
+    border-bottom:1px solid #EEEEEE;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+.mobile.mn-vertical .mobile-categorias::-webkit-scrollbar,
+.mobile.mn-horizontal .mobile-categorias::-webkit-scrollbar{
+    display:none;
+    width:0;
+    height:0;
+}
+
+.mobile.mn-vertical .mobile-categoria,
+.mobile.mn-horizontal .mobile-categoria{
+    flex:0 0 auto;
+    min-width:max-content;
+    height:38px;
+    padding:0 16px;
+    white-space:nowrap;
+}
+
+/* ============================================================================
+   10 — BUSCADOR ESTABLE
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-buscador,
+.mobile.mn-horizontal .mobile-buscador{
+    background:var(--mn-rosa-claro);
+    border-bottom:1px solid #EEEEEE;
+}
+
+.mobile.mn-vertical .mobile-buscador input,
+.mobile.mn-horizontal .mobile-buscador input{
+    box-sizing:border-box;
+    margin:0;
+    padding:0 15px;
+    border-radius:var(--mn-estable-search-radius);
+    min-height:0;
+    outline:none;
+}
+
+.mobile.mn-vertical .mobile-buscador input:focus,
+.mobile.mn-horizontal .mobile-buscador input:focus{
+    outline:none;
+}
+
+/* ============================================================================
+   11 — ENCABEZADO VERTICAL
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-header{
+    background:var(--mn-rosa-claro);
+    border-bottom:1px solid #EEEEEE;
+}
+
+.mobile.mn-vertical .mobile-logo{
+    padding:6px 8px;
+}
+
+.mobile.mn-vertical .mobile-notificaciones{
+    margin-right:8px;
+}
+
+/* ============================================================================
+   12 — ENCABEZADO HORIZONTAL
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-logo{
+    padding:6px 8px;
+    background:var(--mn-rosa-claro);
+}
+
+.mobile.mn-horizontal .mobile-buscador{
+    padding:7px 8px;
+}
+
+.mobile.mn-horizontal .mobile-notificaciones{
+    background:var(--mn-rosa-claro);
+}
+
+/* ============================================================================
+   13 — GARANTÍA DE BÚSQUEDA ENTRE LOGO Y CAMPANA
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-logo,
+.mobile.mn-horizontal .mobile-buscador,
+.mobile.mn-horizontal .mobile-notificaciones{
+    grid-row:1;
+}
+
+.mobile.mn-horizontal .mobile-logo{
+    grid-column:1;
+}
+
+.mobile.mn-horizontal .mobile-buscador{
+    grid-column:2;
+}
+
+.mobile.mn-horizontal .mobile-notificaciones{
+    grid-column:3;
+}
+
+.mobile.mn-horizontal .mobile-buscador input{
+    flex:1 1 auto;
+}
+
+/* ============================================================================
+   14 — ZONA INFERIOR INTERNA
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-parte-inferior,
+.mobile.mn-horizontal .mobile-parte-inferior{
+    display:none;
+    width:0;
+    height:0;
+    min-width:0;
+    min-height:0;
+    max-width:0;
+    max-height:0;
+    overflow:hidden;
+}
+
+.mobile.mn-vertical .mobile-footer-zone,
+.mobile.mn-horizontal .mobile-footer-zone{
+    display:none;
+    width:0;
+    height:0;
+    min-width:0;
+    min-height:0;
+}
+
+/* ============================================================================
+   15 — FOOTER GLOBAL
+   ============================================================================ */
+
+#mn-footer #miss-nails-footer-mobile{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-rows:minmax(0,1fr);
+    align-items:stretch;
+    justify-items:stretch;
+    background:#FFFFFF;
+    border-top:1px solid #EEEEEE;
+    box-shadow:0 -2px 8px rgba(0,0,0,.04);
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-item{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-icono-wrap{
+    flex:0 0 36px;
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#mn-footer #miss-nails-footer-mobile .mn-footer-icono{
+    width:29px;
+    height:29px;
+}
+
+/* ============================================================================
+   16 — CONTENCIÓN DEL SCROLL
+   ============================================================================ */
+
+.mobile.mn-vertical,
+.mobile.mn-horizontal{
+    overscroll-behavior:none;
+    touch-action:manipulation;
+}
+
+.mobile.mn-vertical .mobile-parte-catalogo,
+.mobile.mn-horizontal .mobile-parte-catalogo{
+    overscroll-behavior:contain;
+}
+
+.mobile.mn-vertical .mobile-productos,
+.mobile.mn-horizontal .mobile-productos{
+    overscroll-behavior-y:contain;
+    overscroll-behavior-x:none;
+}
+
+/* ============================================================================
+   17 — ANCHO INTERNO Y MIN-CONTENT
+   ============================================================================ */
+
+.mobile.mn-vertical > *,
+.mobile.mn-horizontal > *{
+    min-width:0;
+}
+
+.mobile.mn-vertical .mobile-header > *,
+.mobile.mn-horizontal .mobile-header > *{
+    min-width:0;
+}
+
+.mobile.mn-vertical .mobile-buscador,
+.mobile.mn-horizontal .mobile-buscador{
+    min-width:0;
+}
+
+.mobile.mn-vertical .mobile-buscador input,
+.mobile.mn-horizontal .mobile-buscador input{
+    min-width:0;
+}
+
+.mobile.mn-vertical .mobile-categorias,
+.mobile.mn-horizontal .mobile-categorias{
+    min-width:0;
+}
+
+.mobile.mn-vertical .mobile-parte-catalogo,
+.mobile.mn-horizontal .mobile-parte-catalogo{
+    min-width:0;
+}
+
+/* ============================================================================
+   18 — IMÁGENES SIN DESBORDE
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos img,
+.mobile.mn-horizontal .mobile-productos img,
+.mobile.mn-vertical #productos img,
+.mobile.mn-horizontal #productos img{
+    display:block;
+    max-width:100%;
+}
+
+.mobile.mn-vertical .mobile-productos .producto-sin-imagen,
+.mobile.mn-horizontal .mobile-productos .producto-sin-imagen,
+.mobile.mn-vertical #productos .producto-sin-imagen,
+.mobile.mn-horizontal #productos .producto-sin-imagen{
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   19 — TEXTO LARGO
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .producto h3,
+.mobile.mn-horizontal .mobile-productos .producto h3,
+.mobile.mn-vertical #productos .producto h3,
+.mobile.mn-horizontal #productos .producto h3{
+    overflow-wrap:anywhere;
+    word-break:normal;
+    hyphens:auto;
+}
+
+/* ============================================================================
+   20 — ESTADOS VACÍOS
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .estado-vacio,
+.mobile.mn-horizontal .mobile-productos .estado-vacio,
+.mobile.mn-vertical #productos .estado-vacio,
+.mobile.mn-horizontal #productos .estado-vacio{
+    grid-column:1 / -1;
+    width:100%;
+    min-width:0;
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+/* ============================================================================
+   21 — DETALLE DE PRODUCTO: CONTENCIÓN
+   ============================================================================ */
+
+.mobile-detalle-producto,
+.mobile-detalle-producto *{
+    min-width:0;
+    box-sizing:border-box;
+}
+
+.mobile-detalle-producto img{
+    max-width:100%;
+}
+
+.mobile-detalle-producto{
+    width:100%;
+    max-width:none;
+    overflow:auto;
+}
+
+/* ============================================================================
+   22 — BOTONES INTERACTIVOS
+   ============================================================================ */
+
+.mobile.mn-vertical button,
+.mobile.mn-horizontal button{
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+}
+
+.mobile.mn-vertical input,
+.mobile.mn-horizontal input{
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+/* ============================================================================
+   23 — NO HEREDAR POSICIONES ANTIGUAS DEL BUSCADOR
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-buscador,
+.mobile.mn-horizontal .mobile-buscador{
+    left:auto;
+    right:auto;
+    top:auto;
+    bottom:auto;
+}
+
+/* ============================================================================
+   24 — NO HEREDAR DIMENSIONES DE ORIENTACIÓN ANTERIORES
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos.productos,
+.mobile.mn-vertical #productos.productos{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.mobile.mn-horizontal .mobile-productos.productos,
+.mobile.mn-horizontal #productos.productos{
+    grid-template-columns:repeat(6,minmax(0,1fr));
+}
+
+/* ============================================================================
+   25 — BLOQUEO DE LA DENSIDAD DEL CATÁLOGO
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos.productos{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.mobile.mn-horizontal .mobile-productos.productos{
+    grid-template-columns:repeat(6,minmax(0,1fr));
+}
+
+.mobile.mn-vertical #productos.productos{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.mobile.mn-horizontal #productos.productos{
+    grid-template-columns:repeat(6,minmax(0,1fr));
+}
+
+/* ============================================================================
+   26 — REGLAS DE CONSISTENCIA DE COLUMNA
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos > .producto{
+    min-width:0;
+    max-width:none;
+    width:100%;
+}
+
+.mobile.mn-horizontal .mobile-productos > .producto{
+    min-width:0;
+    max-width:none;
+    width:100%;
+}
+
+.mobile.mn-vertical #productos > .producto{
+    min-width:0;
+    max-width:none;
+    width:100%;
+}
+
+.mobile.mn-horizontal #productos > .producto{
+    min-width:0;
+    max-width:none;
+    width:100%;
+}
+
+/* ============================================================================
+   27 — FILAS DEL GRID
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos{
+    grid-auto-flow:row;
+    grid-auto-rows:max-content;
+}
+
+.mobile.mn-horizontal .mobile-productos{
+    grid-auto-flow:row;
+    grid-auto-rows:max-content;
+}
+
+.mobile.mn-vertical #productos{
+    grid-auto-flow:row;
+    grid-auto-rows:max-content;
+}
+
+.mobile.mn-horizontal #productos{
+    grid-auto-flow:row;
+    grid-auto-rows:max-content;
+}
+
+/* ============================================================================
+   28 — ALINEACIÓN DE TARJETAS
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos > .producto,
+.mobile.mn-horizontal .mobile-productos > .producto,
+.mobile.mn-vertical #productos > .producto,
+.mobile.mn-horizontal #productos > .producto{
+    align-self:start;
+    justify-self:stretch;
+}
+
+/* ============================================================================
+   29 — CONTENEDORES DE FOTO
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .foto,
+.mobile.mn-horizontal .mobile-productos .foto,
+.mobile.mn-vertical #productos .foto,
+.mobile.mn-horizontal #productos .foto{
+    flex:none;
+}
+
+/* ============================================================================
+   30 — NORMALIZACIÓN DEL CONTENIDO
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .producto__detalle,
+.mobile.mn-horizontal .mobile-productos .producto__detalle,
+.mobile.mn-vertical #productos .producto__detalle,
+.mobile.mn-horizontal #productos .producto__detalle{
+    width:100%;
+    min-width:0;
+    overflow:hidden;
+}
+
+.mobile.mn-vertical .mobile-productos .producto__meta,
+.mobile.mn-horizontal .mobile-productos .producto__meta,
+.mobile.mn-vertical #productos .producto__meta,
+.mobile.mn-horizontal #productos .producto__meta{
+    width:100%;
+    min-width:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   31 — EVITAR CAMBIOS DE ESCALA DEL TEXTO
+   ============================================================================
+   Android/Chrome puede recalcular el tamaño tipográfico cuando la hoja CSS
+   se vuelve a aplicar (por ejemplo, al guardar el archivo). Se desactiva
+   la inflación automática para que guardar CSS no cambie la tipografía.
+   El tamaño definido por cada componente sigue siendo el que manda.
+   ============================================================================ */
+
+html,
+body,
+#mn-shell,
+#app,
+.mobile,
+.mobile-productos,
+#productos,
+.mobile-productos .producto,
+#productos .producto{
+    -webkit-text-size-adjust:none;
+    text-size-adjust:none;
+}
+
+.mobile.mn-vertical .mobile-productos,
+.mobile.mn-horizontal .mobile-productos,
+.mobile.mn-vertical #productos,
+.mobile.mn-horizontal #productos{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+}
+
+/* ============================================================================
+   32 — BORDES Y FONDOS CONSISTENTES
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-parte-catalogo,
+.mobile.mn-horizontal .mobile-parte-catalogo{
+    background:var(--mn-estable-catalog-background);
+}
+
+.mobile.mn-vertical .mobile-productos,
+.mobile.mn-horizontal .mobile-productos{
+    background:var(--mn-estable-catalog-background);
+}
+
+/* ============================================================================
+   33 — RESOLUCIÓN DE CONFLICTOS DEL SHELL
+   ============================================================================ */
+
+#mn-shell{
+    grid-template-rows:minmax(0,1fr) auto;
+}
+
+#app{
+    overflow:hidden;
+}
+
+#mn-footer{
+    overflow:hidden;
+}
+
+/* ============================================================================
+   34 — RESOLUCIÓN DE CONFLICTOS DE ORIENTACIÓN
+   ============================================================================ */
+
+.mobile.mn-vertical{
+    grid-template-columns:minmax(0,1fr);
+}
+
+.mobile.mn-horizontal{
+    grid-template-columns:
+        var(--mn-estable-horizontal-logo)
+        minmax(0,1fr)
+        var(--mn-estable-horizontal-action);
+}
+
+.mobile.mn-horizontal .mobile-header{
+    display:contents;
+}
+
+/* ============================================================================
+   35 — GARANTÍA FINAL DEL BUSCADOR HORIZONTAL
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-buscador{
+    position:static;
+    grid-column:2;
+    grid-row:1;
+    width:100%;
+    min-width:0;
+}
+
+.mobile.mn-horizontal .mobile-buscador input{
+    width:100%;
+    min-width:0;
+}
+
+/* ============================================================================
+   36 — GARANTÍA FINAL DEL LOGO HORIZONTAL
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-logo{
+    position:static;
+    grid-column:1;
+    grid-row:1;
+    min-width:0;
+}
+
+/* ============================================================================
+   37 — GARANTÍA FINAL DE LA CAMPANA HORIZONTAL
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-notificaciones{
+    position:relative;
+    grid-column:3;
+    grid-row:1;
+    min-width:0;
+}
+
+/* ============================================================================
+   38 — GARANTÍA FINAL DE CATEGORÍAS
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-categorias{
+    grid-column:1 / -1;
+    grid-row:2;
+}
+
+.mobile.mn-vertical .mobile-categorias{
+    grid-column:1;
+    grid-row:3;
+}
+
+/* ============================================================================
+   39 — GARANTÍA FINAL DEL CATÁLOGO
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-parte-catalogo{
+    grid-column:1 / -1;
+    grid-row:3;
+}
+
+.mobile.mn-vertical .mobile-parte-catalogo{
+    grid-column:1;
+    grid-row:4;
+}
+
+/* ============================================================================
+   40 — GARANTÍA FINAL DEL SCROLL
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-productos{
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.mobile.mn-vertical .mobile-productos{
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+/* ============================================================================
+   41 — NO USAR ALTURA DEL VIEWPORT EN EL CATÁLOGO
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-productos{
+    max-height:none;
+}
+
+.mobile.mn-vertical .mobile-productos{
+    max-height:none;
+}
+
+/* ============================================================================
+   42 — NO USAR ANCHO DEL VIEWPORT EN TARJETAS
+   ============================================================================ */
+
+.mobile.mn-horizontal .producto,
+.mobile.mn-vertical .producto{
+    max-width:none;
+}
+
+/* ============================================================================
+   43 — ESTABILIDAD DEL HEADER
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-header,
+.mobile.mn-vertical .mobile-header{
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   44 — ESTABILIDAD DEL SEARCH
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-buscador,
+.mobile.mn-vertical .mobile-buscador{
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   45 — ESTABILIDAD DE CATEGORÍAS
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-categorias,
+.mobile.mn-vertical .mobile-categorias{
+    min-height:0;
+    overflow-y:hidden;
+}
+
+/* ============================================================================
+   46 — ESTABILIDAD DEL CONTENEDOR DE PRODUCTOS
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-parte-catalogo,
+.mobile.mn-vertical .mobile-parte-catalogo{
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   47 — ESTABILIDAD DE TARJETAS
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-productos .producto,
+.mobile.mn-vertical .mobile-productos .producto{
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   48 — ESTABILIDAD DE IMÁGENES
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-productos .foto,
+.mobile.mn-vertical .mobile-productos .foto{
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   49 — ESTABILIDAD DEL CONTENIDO
+   ============================================================================ */
+
+.mobile.mn-horizontal .mobile-productos .producto__contenido,
+.mobile.mn-vertical .mobile-productos .producto__contenido{
+    min-height:0;
+    overflow:hidden;
+}
+
+/* ============================================================================
+   50 — REGLAS FINALES DE PRIORIDAD
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos.productos,
+.mobile.mn-vertical #productos.productos{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+}
+
+.mobile.mn-horizontal .mobile-productos.productos,
+.mobile.mn-horizontal #productos.productos{
+    display:grid !important;
+    grid-template-columns:repeat(6,minmax(0,1fr)) !important;
+}
+
+/* ============================================================================
+   51 — FOOTER SIN INTERFERENCIA DEL CATÁLOGO
+   ============================================================================ */
+
+#mn-footer{
+    position:relative;
+    z-index:20;
+}
+
+#app{
+    position:relative;
+    z-index:1;
+}
+
+/* ============================================================================
+   52 — LIMPIEZA DE CLASES DE ESTADO
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-parte-inferior,
+.mobile.mn-horizontal .mobile-parte-inferior{
+    pointer-events:none;
+}
+
+/* ============================================================================
+   53 — FIN DE LA CAPA RESPONSIVE ESTABLE
+   ============================================================================ */
+
+/* ============================================================================
+   27 — NOMBRES DE PRODUCTO: LEGIBILIDAD COMPLETA
+   ----------------------------------------------------------------------------
+   REGLA DE UX:
+   El nombre del producto nunca se recorta por CSS.
+   La tarjeta puede crecer verticalmente para mostrar el nombre completo.
+   ============================================================================ */
+
+.mobile-productos .producto__contenido,
+.mobile #productos .producto__contenido,
+.mobile.mn-vertical .mobile-productos .producto__contenido,
+.mobile.mn-horizontal .mobile-productos .producto__contenido,
+.mobile.mn-vertical #productos .producto__contenido,
+.mobile.mn-horizontal #productos .producto__contenido{
+    width:100%;
+    min-width:0;
+    min-height:0;
+    height:auto;
+    overflow:visible;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:flex-start;
+}
+
+.mobile-productos .producto h3,
+.mobile #productos .producto h3,
+.mobile.mn-vertical .mobile-productos .producto h3,
+.mobile.mn-horizontal .mobile-productos .producto h3,
+.mobile.mn-vertical #productos .producto h3,
+.mobile.mn-horizontal #productos .producto h3{
+    width:100%;
+    min-width:0;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    margin:0;
+    padding:7px 8px 2px;
+
+    font-size:var(--mn-estable-card-title-size);
+    line-height:var(--mn-estable-card-line-height);
+    font-weight:700;
+    text-align:left;
+
+    color:#222222;
+
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+    display:block;
+
+    overflow-wrap:anywhere;
+    word-break:normal;
+    hyphens:auto;
+}
+
+.mobile-productos .precio,
+.mobile #productos .precio,
+.mobile.mn-vertical .mobile-productos .precio,
+.mobile.mn-horizontal .mobile-productos .precio,
+.mobile.mn-vertical #productos .precio,
+.mobile.mn-horizontal #productos .precio{
+    width:100%;
+    min-width:0;
+    height:auto;
+    min-height:0;
+    margin:0;
+    padding:4px 8px 8px;
+
+    font-size:var(--mn-estable-card-price-size);
+    line-height:1.1;
+    font-weight:800;
+    text-align:left;
+
+    white-space:nowrap;
+    overflow:visible;
+    text-overflow:clip;
+}
+
+.mobile-productos .producto,
+.mobile #productos .producto,
+.mobile.mn-vertical .mobile-productos .producto,
+.mobile.mn-horizontal .mobile-productos .producto,
+.mobile.mn-vertical #productos .producto,
+.mobile.mn-horizontal #productos .producto{
+    height:auto;
+    min-height:0;
+    align-self:start;
+}
+
+/* ============================================================================
+   28 — EL CONTENEDOR DEL CATÁLOGO RESPETA EL CRECIMIENTO DE CADA FILA
+   ============================================================================ */
+
+.mobile-productos.productos,
+.mobile #productos.productos,
+.mobile.mn-vertical .mobile-productos.productos,
+.mobile.mn-vertical #productos.productos,
+.mobile.mn-horizontal .mobile-productos.productos,
+.mobile.mn-horizontal #productos.productos{
+    grid-auto-rows:max-content;
+    align-content:start;
+    align-items:start;
+}
+
+/* ============================================================================
+   29 — NUNCA OCULTAR TEXTO DE TARJETA POR REGLAS HEREDADAS
+   ============================================================================ */
+
+.mobile-productos .producto h3::before,
+.mobile-productos .producto h3::after,
+.mobile #productos .producto h3::before,
+.mobile #productos .producto h3::after{
+    content:none;
+}
+
+/* ============================================================================
+   30 — TÍTULO: COMPOSICIÓN COMPACTA, NO TIPOGRAFÍA GIGANTE
+   ----------------------------------------------------------------------------
+   El objetivo no es aumentar el texto.
+   El objetivo es que entre completo y siga siendo identificable.
+   ============================================================================ */
+
+.mobile.mn-vertical .mobile-productos .producto h3,
+.mobile.mn-horizontal .mobile-productos .producto h3,
+.mobile.mn-vertical #productos .producto h3,
+.mobile.mn-horizontal #productos .producto h3{
+    letter-spacing:0;
+    text-transform:none;
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+    max-width:none;
+}
+
+/* ============================================================================
+   31 — REGLAS EXPLÍCITAS CONTRA EL RECORTE EN TARJETAS
+   ============================================================================ */
+
+.mobile-productos .producto,
+.mobile #productos .producto{
+    overflow:hidden;
+}
+
+.mobile-productos .producto__contenido,
+.mobile #productos .producto__contenido{
+    overflow:visible;
+}
+
+.mobile-productos .producto h3,
+.mobile #productos .producto h3{
+    overflow:visible;
+    clip-path:none;
+    mask-image:none;
+    -webkit-mask-image:none;
+}
+
+/* ============================================================================
+   32 — NOMBRES MUY LARGOS: PERMITIR QUE EL TEXTO BAJE DE LÍNEA
+   ============================================================================ */
+
+.mobile-productos .producto h3,
+.mobile #productos .producto h3{
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+/* ============================================================================
+   33 — PRECIO SIEMPRE DESPUÉS DEL NOMBRE
+   ============================================================================ */
+
+.mobile-productos .producto__contenido .precio,
+.mobile #productos .producto__contenido .precio{
+    flex:0 0 auto;
+    order:2;
+}
+
+.mobile-productos .producto__contenido h3,
+.mobile #productos .producto__contenido h3{
+    flex:0 0 auto;
+    order:1;
+}
+
+/* ============================================================================
+   34 — IMAGEN NO DEBE FORZAR LA ALTURA DEL TEXTO
+   ============================================================================ */
+
+.mobile-productos .foto,
+.mobile #productos .foto,
+.mobile.mn-vertical .mobile-productos .foto,
+.mobile.mn-horizontal .mobile-productos .foto,
+.mobile.mn-vertical #productos .foto,
+.mobile.mn-horizontal #productos .foto{
+    flex:0 0 auto;
+}
+
+/* ============================================================================
+   35 — CONSISTENCIA FINAL DE TARJETA
+   ============================================================================ */
+
+.mobile-productos .producto > .producto__contenido,
+.mobile #productos .producto > .producto__contenido,
+.mobile.mn-vertical .mobile-productos .producto > .producto__contenido,
+.mobile.mn-horizontal .mobile-productos .producto > .producto__contenido,
+.mobile.mn-vertical #productos .producto > .producto__contenido,
+.mobile.mn-horizontal #productos .producto > .producto__contenido{
+    box-sizing:border-box;
+}
+
+/* ============================================================================
+   36 — EL NOMBRE ES INFORMACIÓN, NO DECORACIÓN
+   ----------------------------------------------------------------------------
+   REGLA ÚNICA Y AUTORITATIVA DEL TÍTULO DE TARJETA
+
+   El nombre es información obligatoria.
+   No se trunca.
+   No se limita a un número de líneas.
+   La tarjeta crece verticalmente cuando el nombre lo necesita.
+   La tipografía permanece estable aunque cambien las clases
+   de orientación aplicadas por app.js.
+   ============================================================================ */
+
+.mobile-productos .producto h3,
+.mobile #productos .producto h3,
+.mobile.mn-vertical .mobile-productos .producto h3,
+.mobile.mn-horizontal .mobile-productos .producto h3,
+.mobile.mn-vertical #productos .producto h3,
+.mobile.mn-horizontal #productos .producto h3{
+    width:100%;
+    min-width:0;
+    height:auto;
+    min-height:0;
+    max-height:none;
+
+    margin:0;
+    padding:7px 8px 2px;
+
+    font-size:var(--mn-estable-card-title-size) !important;
+    line-height:var(--mn-estable-card-line-height) !important;
+    font-weight:700 !important;
+    text-align:left;
+
+    color:#222222;
+
+    white-space:normal !important;
+    overflow:visible !important;
+    text-overflow:clip;
+    display:block !important;
+
+    overflow-wrap:anywhere;
+    word-break:normal;
+    hyphens:auto;
+
+    letter-spacing:0;
+    text-transform:none;
+}
+
+/* El contenido de la tarjeta nunca vuelve a recortar el nombre. */
+.mobile-productos .producto__contenido,
+.mobile #productos .producto__contenido,
+.mobile.mn-vertical .mobile-productos .producto__contenido,
+.mobile.mn-horizontal .mobile-productos .producto__contenido,
+.mobile.mn-vertical #productos .producto__contenido,
+.mobile.mn-horizontal #productos .producto__contenido{
+    height:auto;
+    min-height:0;
+    overflow:visible;
+}
+
+/* El precio permanece después del nombre y no altera su altura. */
+.mobile-productos .producto__contenido h3,
+.mobile #productos .producto__contenido h3,
+.mobile.mn-vertical .producto__contenido h3,
+.mobile.mn-horizontal .producto__contenido h3{
+    flex:0 0 auto;
+    order:1;
+}
+
+/* ============================================================================
+   36 — EL NOMBRE ES INFORMACIÓN, NO DECORACIÓN
+   ============================================================================ */
+
+.mobile-productos .producto h3,
+.mobile #productos .producto h3,
+.mobile.mn-vertical .mobile-productos .producto h3,
+.mobile.mn-horizontal .mobile-productos .producto h3,
+.mobile.mn-vertical #productos .producto h3,
+.mobile.mn-horizontal #productos .producto h3{
+    text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased;
+}
+
+/* ============================================================================
+   CORRECCIÓN FINAL — TEXTO ESTABLE AL GUARDAR CSS
+   ============================================================================ */
+html,
+body,
+#mn-shell,
+#app,
+.mobile,
+.mobile-productos,
+#productos,
+.mobile-productos .producto,
+#productos .producto,
+.mobile-productos .producto h3,
+#productos .producto h3,
+.mobile-productos .precio,
+#productos .precio,
+.mobile-productos button,
+#productos button,
+.mobile-productos span,
+#productos span{
+    -webkit-text-size-adjust:none !important;
+    text-size-adjust:none !important;
+}
