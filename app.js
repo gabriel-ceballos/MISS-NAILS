@@ -1,3 +1,4 @@
+
 /* =========================================================
    MISS NAILS — CONTROLADOR PRINCIPAL
 
@@ -17,6 +18,332 @@
 (function () {
 
     "use strict";
+
+    /* =========================================================
+       MISS NAILS — LECTURA DEL TIPO DE DISPOSITIVO
+
+       SOLO agrega la identificación del entorno.
+       NO modifica catálogo, inventario, productos, carrito,
+       cuenta, navegación ni la lógica existente.
+       NO utiliza dimensiones del viewport para clasificar.
+       ========================================================= */
+    const entornoDispositivo = {
+
+        leer() {
+            const nav = window.navigator || {};
+            const ua = String(nav.userAgent || "");
+            const uaData = nav.userAgentData || null;
+            const touchPoints = Number(nav.maxTouchPoints || 0);
+
+            const esIPhone = /iPhone|iPod/i.test(ua);
+            const esIPadUA = /iPad/i.test(ua);
+
+            /*
+             * iPadOS puede presentarse ante Safari como Macintosh.
+             * Los puntos táctiles permiten reconocer ese caso.
+             */
+            const esIPadOS =
+                /Macintosh/i.test(ua) &&
+                touchPoints > 1;
+
+            const esAppleTablet =
+                esIPadUA || esIPadOS;
+
+            const esAndroid =
+                /Android/i.test(ua);
+
+            const esAndroidMovil =
+                esAndroid && /Mobile/i.test(ua);
+
+            const esAndroidTablet =
+                esAndroid && !/Mobile/i.test(ua);
+
+            let tipo = "pc";
+            let metodo = "entorno de escritorio";
+
+            /*
+             * Primero resolvemos los casos inequívocos de tablet.
+             * Esto evita convertir una tablet en teléfono por una
+             * señal genérica de "mobile".
+             */
+            if (esAppleTablet) {
+                tipo = "tablet";
+                metodo = "Apple / iPadOS";
+            } else if (esAndroidTablet) {
+                tipo = "tablet";
+                metodo = "Android tablet";
+            } else if (esIPhone) {
+                tipo = "telefono";
+                metodo = "Apple / iPhone";
+            } else if (esAndroidMovil) {
+                tipo = "telefono";
+                metodo = "Android Mobile";
+            } else if (
+                uaData &&
+                typeof uaData.mobile === "boolean" &&
+                uaData.mobile
+            ) {
+                /*
+                 * Solo usamos UA-CH mobile como respaldo.
+                 * Las señales específicas de tablet ya fueron
+                 * evaluadas antes.
+                 */
+                tipo = "telefono";
+                metodo = "User-Agent Client Hints";
+            }
+
+            let plataforma = "desconocida";
+
+            if (
+                uaData &&
+                typeof uaData.platform === "string" &&
+                uaData.platform
+            ) {
+                plataforma = uaData.platform;
+            } else if (/iPhone|iPad|iPod|Macintosh/i.test(ua)) {
+                plataforma = "Apple";
+            } else if (esAndroid) {
+                plataforma = "Android";
+            } else if (/Windows/i.test(ua)) {
+                plataforma = "Windows";
+            } else if (/Mac OS X|Macintosh/i.test(ua)) {
+                plataforma = "macOS";
+            } else if (/Linux/i.test(ua)) {
+                plataforma = "Linux";
+            } else {
+                plataforma = String(
+                    nav.platform || "desconocida"
+                );
+            }
+
+            const viewport = this.leerViewport();
+
+            return {
+                tipo,
+                metodo,
+                plataforma,
+                mobileUA:
+                    uaData &&
+                    typeof uaData.mobile === "boolean"
+                        ? uaData.mobile
+                        : null,
+                userAgentDataDisponible: !!uaData,
+                touchPoints,
+                userAgent: ua,
+                viewport,
+                orientacion:
+                    viewport.ancho >= viewport.alto
+                        ? "horizontal"
+                        : "vertical"
+            };
+        },
+
+        leerViewport() {
+            const vv = window.visualViewport;
+
+            return {
+                ancho: Math.round(
+                    vv ? vv.width : window.innerWidth
+                ),
+                alto: Math.round(
+                    vv ? vv.height : window.innerHeight
+                )
+            };
+        }
+    };
+
+    window.missNailsEntorno =
+        entornoDispositivo.leer();
+
+    console.group(
+        "MISS NAILS → ENTORNO DEL DISPOSITIVO"
+    );
+
+    console.table({
+        dispositivo:
+            window.missNailsEntorno.tipo,
+        metodo:
+            window.missNailsEntorno.metodo,
+        plataforma:
+            window.missNailsEntorno.plataforma,
+        mobileUA:
+            window.missNailsEntorno.mobileUA,
+        uaCH:
+            window.missNailsEntorno
+                .userAgentDataDisponible,
+        touchPoints:
+            window.missNailsEntorno.touchPoints,
+        viewport:
+            `${window.missNailsEntorno.viewport.ancho} × ${window.missNailsEntorno.viewport.alto}`,
+        orientacion:
+            window.missNailsEntorno.orientacion
+    });
+
+    console.log(
+        "MISS NAILS → tipo identificado:",
+        window.missNailsEntorno.tipo
+    );
+
+    console.log(
+        "MISS NAILS → datos del entorno:",
+        window.missNailsEntorno
+    );
+
+    console.groupEnd();
+
+    /* =========================================================
+       ACTUALIZACIÓN DEL ENTORNO AL GIRAR EL DISPOSITIVO
+
+       La identificación se vuelve a leer cuando cambia el viewport
+       o la orientación. No modifica ninguna vista ni lógica de la app.
+       ========================================================= */
+    let firmaEntornoAnterior = JSON.stringify({
+        tipo: window.missNailsEntorno.tipo,
+        orientacion: window.missNailsEntorno.orientacion,
+        ancho: window.missNailsEntorno.viewport.ancho,
+        alto: window.missNailsEntorno.viewport.alto
+    });
+
+    function actualizarEntornoDispositivo() {
+        const nuevo = entornoDispositivo.leer();
+
+        const firmaNueva = JSON.stringify({
+            tipo: nuevo.tipo,
+            orientacion: nuevo.orientacion,
+            ancho: nuevo.viewport.ancho,
+            alto: nuevo.viewport.alto
+        });
+
+        window.missNailsEntorno = nuevo;
+
+        if (firmaNueva === firmaEntornoAnterior) {
+            return;
+        }
+
+        firmaEntornoAnterior = firmaNueva;
+
+        console.group(
+            "MISS NAILS → ENTORNO DEL DISPOSITIVO ACTUALIZADO"
+        );
+
+        console.table({
+            dispositivo: nuevo.tipo,
+            metodo: nuevo.metodo,
+            plataforma: nuevo.plataforma,
+            mobileUA: nuevo.mobileUA,
+            uaCH: nuevo.userAgentDataDisponible,
+            touchPoints: nuevo.touchPoints,
+            viewport: `${nuevo.viewport.ancho} × ${nuevo.viewport.alto}`,
+            orientacion: nuevo.orientacion
+        });
+
+        console.log(
+            "MISS NAILS → tipo identificado:",
+            nuevo.tipo
+        );
+
+        console.log(
+            "MISS NAILS → orientación actual:",
+            nuevo.orientacion
+        );
+
+        console.groupEnd();
+    }
+
+    window.addEventListener(
+        "resize",
+        actualizarEntornoDispositivo,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "orientationchange",
+        actualizarEntornoDispositivo,
+        { passive: true }
+    );
+
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener(
+            "resize",
+            actualizarEntornoDispositivo,
+            { passive: true }
+        );
+    }
+
+    /* =========================================================
+       ERUDA — CONSOLA DE DIAGNÓSTICO
+       Se carga aparte y no participa en la aplicación.
+       ========================================================= */
+    (function cargarEruda() {
+        if (window.eruda) {
+            window.eruda.init();
+            return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/eruda";
+        script.async = true;
+        script.onload = function () {
+            if (window.eruda) {
+                window.eruda.init();
+                console.log("MISS NAILS → Eruda activo");
+
+                /*
+                 * Eruda se carga de forma asíncrona. La detección del
+                 * dispositivo ocurre antes de que Eruda exista, por lo
+                 * que esos mensajes no aparecen en su consola.
+                 *
+                 * Reemitimos SOLO la información del entorno una vez
+                 * que Eruda está activo. No modificamos ninguna lógica
+                 * de catálogo, inventario, productos, carrito, cuenta
+                 * ni navegación.
+                 */
+                if (window.missNailsEntorno) {
+                    console.group(
+                        "MISS NAILS → ENTORNO DEL DISPOSITIVO"
+                    );
+
+                    console.table({
+                        dispositivo:
+                            window.missNailsEntorno.tipo,
+                        metodo:
+                            window.missNailsEntorno.metodo,
+                        plataforma:
+                            window.missNailsEntorno.plataforma,
+                        mobileUA:
+                            window.missNailsEntorno.mobileUA,
+                        uaCH:
+                            window.missNailsEntorno
+                                .userAgentDataDisponible,
+                        touchPoints:
+                            window.missNailsEntorno.touchPoints,
+                        viewport:
+                            `${window.missNailsEntorno.viewport.ancho} × ${window.missNailsEntorno.viewport.alto}`,
+                        orientacion:
+                            window.missNailsEntorno.orientacion
+                    });
+
+                    console.log(
+                        "MISS NAILS → tipo identificado:",
+                        window.missNailsEntorno.tipo
+                    );
+
+                    console.log(
+                        "MISS NAILS → datos del entorno:",
+                        window.missNailsEntorno
+                    );
+
+                    console.groupEnd();
+                }
+            }
+        };
+        script.onerror = function () {
+            console.warn(
+                "MISS NAILS → no fue posible cargar Eruda"
+            );
+        };
+        document.head.appendChild(script);
+    })();
 
 
     const app = {
