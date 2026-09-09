@@ -61,7 +61,7 @@ const catalogo = {
 
     if (
     logicaCatalogo.estadoCatalogo &&
-    logicaCatalogo.restaurarEstado()
+    this.restaurarCatalogoCompleto()
 ) {
 
     this.inicializarEventos();
@@ -86,7 +86,7 @@ const catalogo = {
     logicaCatalogo.iniciarSincronizacion();
 
     console.log(
-        "CATALOGO → vista restaurada"
+        "CATALOGO → vista restaurada y reconstruida desde la lista completa"
     );
 
     return;
@@ -1324,7 +1324,7 @@ const catalogo = {
                 ) {
 
                     if (
-                        logicaCatalogo.restaurarEstado()
+                        this.restaurarCatalogoCompleto()
                     ) {
 
                         logicaCatalogo.vistaActual =
@@ -1344,6 +1344,57 @@ const catalogo = {
         console.log(
             "CATALOGO → historial inicializado"
         );
+    },
+
+
+    // =====================================================
+    // RESTAURAR CATÁLOGO COMPLETO
+    // =====================================================
+
+    restaurarCatalogoCompleto() {
+
+        if (!logicaCatalogo.restaurarEstado()) {
+            return false;
+        }
+
+        const contenedor =
+            document.getElementById("productos");
+
+        if (!contenedor) {
+            return false;
+        }
+
+        /*
+         * IMPORTANTE:
+         *
+         * restaurarEstado() conserva la estructura visual que teníamos
+         * antes de entrar a Detalle/Carrito, pero esa estructura puede
+         * contener únicamente el bloque progresivo que ya había sido
+         * construido (por ejemplo 32, 80, etc.).
+         *
+         * Al regresar NO debemos considerar ese HTML parcial como el
+         * catálogo definitivo. Forzamos una nueva construcción desde
+         * logicaCatalogo.productos, que contiene la lista completa.
+         */
+
+        this.listaRenderizada = [];
+        this.indiceRender = 0;
+        this.bloqueRender = 0;
+        this.capacidadViewport = 0;
+        this.cargandoBloque = false;
+        this.ultimoScrollTopCarga = -1;
+
+        contenedor.scrollTop = 0;
+
+        this.renderizar();
+
+        console.log(
+            "CATALOGO → regreso reconstruido desde lista completa:",
+            logicaCatalogo.obtenerFiltrados().length,
+            "productos filtrados"
+        );
+
+        return true;
     },
 
 
