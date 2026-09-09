@@ -580,10 +580,30 @@ const carrito = {
                     return;
                 }
 
+                const cantidadActual =
+                    Math.max(
+                        0,
+                        Math.floor(
+                            logicaCarrito.numero(
+                                item.cantidad
+                            )
+                        )
+                    );
+
+                /*
+                 * Con una sola pieza, el signo menos ya no debe
+                 * eliminar directamente el producto. La acción
+                 * destructiva siempre pasa por la confirmación.
+                 */
+                if (cantidadActual <= 1) {
+                    this.solicitarEliminacion(id);
+                    return;
+                }
+
                 if (
                     logicaCarrito.cambiarCantidad(
                         id,
-                        item.cantidad - 1
+                        cantidadActual - 1
                     )
                 ) {
                     this.actualizarVistaSinHistorial();
@@ -618,12 +638,263 @@ const carrito = {
             ".mn-cart-delete"
         ).forEach(boton => {
             boton.onclick = () => {
-                logicaCarrito.eliminar(
+                this.solicitarEliminacion(
                     boton.dataset.id
                 );
-
-                this.actualizarVistaSinHistorial();
             };
+        });
+    },
+
+    solicitarEliminacion(id) {
+        const item =
+            logicaCarrito.obtener(id);
+
+        if (!item) {
+            return;
+        }
+
+        const confirmar =
+            this.mostrarModalConfirmacion(
+                item
+            );
+
+        confirmar.then((aceptado) => {
+            if (!aceptado) {
+                return;
+            }
+
+            /*
+             * El estado se modifica ÚNICAMENTE después de
+             * confirmar. Así, cancelar o cerrar el modal nunca
+             * altera el carrito.
+             */
+            if (
+                logicaCarrito.eliminar(id)
+            ) {
+                this.actualizarVistaSinHistorial();
+            }
+        });
+    },
+
+    mostrarModalConfirmacion(item) {
+        return new Promise((resolver) => {
+            const existente =
+                document.getElementById(
+                    "mn-modal-confirmar-eliminacion"
+                );
+
+            if (existente) {
+                try {
+                    if (existente.open) {
+                        existente.close();
+                    }
+                } catch (error) {
+                    console.warn(
+                        "CARRITO → no fue posible cerrar modal anterior:",
+                        error
+                    );
+                }
+
+                existente.remove();
+            }
+
+            const dialog =
+                document.createElement("dialog");
+
+            dialog.id =
+                "mn-modal-confirmar-eliminacion";
+            dialog.setAttribute(
+                "aria-labelledby",
+                "mn-modal-eliminacion-titulo"
+            );
+            dialog.setAttribute(
+                "aria-describedby",
+                "mn-modal-eliminacion-mensaje"
+            );
+
+            const nombre =
+                this.escape(
+                    item.nombre ||
+                    "este producto"
+                );
+
+            dialog.innerHTML = `
+                <div
+                    style="
+                        width:100%;
+                        box-sizing:border-box;
+                        padding:16px 14px 14px;
+                        border-radius:14px;
+                        background:#FFFFFF;
+                        color:#20232A;
+                        box-shadow:0 12px 35px rgba(0,0,0,.18);
+                    ">
+
+                    <h2
+                        id="mn-modal-eliminacion-titulo"
+                        style="
+                            margin:0;
+                            text-align:center;
+                            font-size:16px;
+                            line-height:1.25;
+                            font-weight:700;
+                        ">
+                        ¿Está seguro que desea eliminar este producto?
+                    </h2>
+
+                    <p
+                        id="mn-modal-eliminacion-mensaje"
+                        style="
+                            margin:6px 0 0;
+                            text-align:center;
+                            color:#687083;
+                            font-size:12px;
+                            line-height:1.25;
+                            overflow-wrap:anywhere;
+                        ">
+                        ${nombre}
+                    </p>
+
+                    <div
+                        style="
+                            display:grid;
+                            grid-template-columns:1fr 1fr;
+                            gap:8px;
+                            margin-top:14px;
+                        ">
+
+                        <button
+                            id="mn-modal-eliminacion-cancelar"
+                            type="button"
+                            style="
+                                min-height:38px;
+                                padding:0 10px;
+                                border:1px solid #D9DCE2;
+                                border-radius:10px;
+                                background:#F5F6F8;
+                                color:#30343B;
+                                font-size:13px;
+                                font-weight:600;
+                            ">
+                            Cancelar
+                        </button>
+
+                        <button
+                            id="mn-modal-eliminacion-confirmar"
+                            type="button"
+                            style="
+                                min-height:38px;
+                                padding:0 10px;
+                                border:0;
+                                border-radius:10px;
+                                background:#C93E77;
+                                color:#FFFFFF;
+                                font-size:13px;
+                                font-weight:700;
+                            ">
+                            Sí, eliminar
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+            dialog.style.width = "min(310px, calc(100vw - 40px))";
+            dialog.style.maxWidth = "calc(100vw - 40px)";
+            dialog.style.padding = "0";
+            dialog.style.border = "0";
+            dialog.style.borderRadius = "14px";
+            dialog.style.background = "transparent";
+            dialog.style.overflow = "hidden";
+            dialog.style.margin = "auto";
+            const resolverFinal =
+                (valor) => {
+                    if (dialog.open) {
+                        dialog.close();
+                    }
+
+                    dialog.remove();
+                    resolver(valor);
+                };
+
+            const cancelar =
+                dialog.querySelector(
+                    "#mn-modal-eliminacion-cancelar"
+                );
+
+            const confirmar =
+                dialog.querySelector(
+                    "#mn-modal-eliminacion-confirmar"
+                );
+
+            cancelar.onclick = () =>
+                resolverFinal(false);
+
+            confirmar.onclick = () =>
+                resolverFinal(true);
+
+            dialog.addEventListener(
+                "cancel",
+                (evento) => {
+                    evento.preventDefault();
+                    resolverFinal(false);
+                },
+                { once: true }
+            );
+
+            dialog.addEventListener(
+                "close",
+                () => {
+                    if (document.body.contains(dialog)) {
+                        dialog.remove();
+                    }
+                },
+                { once: true }
+            );
+
+            document.body.appendChild(dialog);
+
+            try {
+                if (
+                    typeof dialog.showModal ===
+                    "function"
+                ) {
+                    dialog.showModal();
+                } else {
+                    /*
+                     * Respaldo para navegadores sin <dialog>.
+                     * Sigue siendo modal visual y bloquea la acción
+                     * hasta que el usuario elija una opción.
+                     */
+                    dialog.setAttribute(
+                        "open",
+                        ""
+                    );
+                    dialog.style.position = "fixed";
+                    dialog.style.top = "50%";
+                    dialog.style.left = "50%";
+                    dialog.style.transform =
+                        "translate(-50%, -50%)";
+                    dialog.style.zIndex = "9999";
+                    dialog.style.margin = "0";
+                    dialog.style.boxShadow =
+                        "0 18px 55px rgba(0,0,0,.22)";
+                }
+            } catch (error) {
+                console.error(
+                    "CARRITO → no fue posible abrir confirmación:",
+                    error
+                );
+                resolverFinal(false);
+                return;
+            }
+
+            if (
+                document.activeElement !== confirmar
+            ) {
+                confirmar.focus();
+            }
         });
     },
 
