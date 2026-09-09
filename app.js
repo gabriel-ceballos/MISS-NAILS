@@ -351,57 +351,6 @@
         vistaActual: null,
 
         /*************************************************
-         * COMPOSICIÓN DEL SHELL
-         *
-         * LOGIN:
-         * - ocupa toda la pantalla
-         * - no muestra footer
-         *
-         * VISTAS AUTENTICADAS:
-         * - muestran footer global
-         *
-         * La regla pertenece al controlador principal.
-         *************************************************/
-        actualizarShell(vista) {
-
-            const shell =
-                document.getElementById("mn-shell");
-
-            const footer =
-                document.getElementById("mn-footer");
-
-            if (!shell) {
-                return;
-            }
-
-            shell.classList.remove(
-                "mn-shell-login",
-                "mn-shell-autenticado"
-            );
-
-            if (vista === "login") {
-
-                shell.classList.add(
-                    "mn-shell-login"
-                );
-
-                if (footer) {
-                    footer.style.display = "none";
-                }
-
-                return;
-            }
-
-            shell.classList.add(
-                "mn-shell-autenticado"
-            );
-
-            if (footer) {
-                footer.style.display = "";
-            }
-        },
-
-        /*************************************************
          * INICIO
          *************************************************/
         async iniciar() {
@@ -442,18 +391,144 @@
                 });
 
 
-            /*
-             * ETAPA DE PRUEBA:
-             * siempre iniciamos visualmente en LOGIN.
-             *
-             * La sesión existente NO se elimina ni se modifica.
-             * Solo se evita que el arranque salte directamente
-             * al catálogo, para poder probar el flujo completo.
-             */
-            sesion.cargar();
+            const usuario =
+                sesion.cargar();
+
+            if (usuario) {
+
+                this.iniciarControlSesion();
+
+                this.ir("catalogo");
+
+                return;
+
+            }
 
             this.ir("login");
 
+        },
+
+
+        /*************************************************
+         * CONTROL DE SESIÓN
+         *
+         * Vigila la sesión mientras Miss Nails está abierta.
+         * Si vence por inactividad o duración máxima, lleva
+         * automáticamente al usuario al LOGIN.
+         *************************************************/
+        iniciarControlSesion() {
+
+            if (this._controlSesionIniciado) {
+                return;
+            }
+
+            this._controlSesionIniciado = true;
+
+            const detener = () => {
+
+                if (this._controlSesionTimer) {
+                    clearInterval(
+                        this._controlSesionTimer
+                    );
+
+                    this._controlSesionTimer = null;
+                }
+
+                this._controlSesionIniciado = false;
+            };
+
+            const comprobar = () => {
+
+                if (this.vistaActual === "login") {
+                    return true;
+                }
+
+                if (!sesion.verificar()) {
+
+                    detener();
+
+                    console.log(
+                        "APP → sesión vencida. Regresando a LOGIN."
+                    );
+
+                    this.ir("login");
+
+                    return false;
+                }
+
+                return true;
+            };
+
+            const registrarActividad = () => {
+
+                if (!comprobar()) {
+                    return;
+                }
+
+                sesion.actividad();
+            };
+
+            const eventos = [
+                "pointerdown",
+                "keydown",
+                "touchstart",
+                "click"
+            ];
+
+            eventos.forEach((evento) => {
+                window.addEventListener(
+                    evento,
+                    registrarActividad,
+                    { passive: true }
+                );
+            });
+
+            /*
+             * Al volver después de bloqueo, suspensión, cambio de pestaña
+             * o segundo plano, se comprueba inmediatamente la sesión.
+             */
+            document.addEventListener(
+                "visibilitychange",
+                () => {
+
+                    if (document.hidden) {
+                        return;
+                    }
+
+                    if (!comprobar()) {
+                        return;
+                    }
+
+                    sesion.actividad();
+                },
+                { passive: true }
+            );
+
+            window.addEventListener(
+                "pageshow",
+                () => {
+
+                    if (!comprobar()) {
+                        return;
+                    }
+
+                    sesion.actividad();
+                },
+                { passive: true }
+            );
+
+            /*
+             * Comprobación frecuente mientras la página permanece activa.
+             * Si el navegador suspende JavaScript durante el bloqueo,
+             * visibilitychange/pageshow comprueban al regresar.
+             */
+            this._controlSesionTimer =
+                setInterval(
+                    comprobar,
+                    15 * 1000
+                );
+
+            comprobar();
         },
 
 
@@ -510,46 +585,6 @@
                 { passive: true }
             );
 
-            /*
-             * IMPORTANTE: el catálogo crea .mobile DESPUÉS de que
-             * arranca app.js. Por eso no basta con ejecutar una sola
-             * lectura inicial del viewport.
-             *
-             * Este observador vuelve a aplicar la orientación cuando
-             * el catálogo, carrito o cuenta reconstruyen su contenido.
-             * No cambia datos ni lógica; solamente garantiza que el
-             * contenedor nuevo reciba mn-vertical/mn-horizontal.
-             */
-            const appContenedor =
-                document.getElementById("app");
-
-            if (appContenedor && !this._orientacionObserver) {
-                this._orientacionObserver =
-                    new MutationObserver(() => {
-                        if (this._orientacionObserverFrame) {
-                            cancelAnimationFrame(
-                                this._orientacionObserverFrame
-                            );
-                        }
-
-                        this._orientacionObserverFrame =
-                            requestAnimationFrame(() => {
-                                this._orientacionObserverFrame = null;
-                                this.actualizarOrientacion(
-                                    this._orientacionRecovery === true
-                                );
-                            });
-                    });
-
-                this._orientacionObserver.observe(
-                    appContenedor,
-                    {
-                        childList: true,
-                        subtree: true
-                    }
-                );
-            }
-
             actualizar();
             this.iniciarRecuperacionOrientacion();
         },
@@ -565,24 +600,12 @@
             /*
              * Android/Chrome puede entregar durante unos cientos de
              * milisegundos un viewport transitorio al desbloquear.
-             * Mantenemos la recuperación durante más tiempo y hacemos
-             * varias lecturas independientes para que la clase final
-             * no quede atrapada en el estado vertical intermedio.
+             * Durante esa ventana usamos la orientación real de
+             * Screen Orientation, no una clasificación del dispositivo.
              */
             this._orientacionRecovery = true;
 
-            const reintentos = [
-                0,
-                50,
-                120,
-                250,
-                450,
-                700,
-                1000,
-                1400,
-                1800,
-                2300
-            ];
+            const reintentos = [0, 50, 120, 250, 450, 700, 1000, 1400];
 
             reintentos.forEach((ms) => {
                 setTimeout(() => {
@@ -595,7 +618,7 @@
                 this.actualizarOrientacion(false);
                 this.sincronizarFooter();
                 this._orientacionRecoveryTimer = null;
-            }, 2600);
+            }, 1700);
         },
 
 
@@ -621,57 +644,25 @@
             }
 
             /*
-             * Durante recuperación usamos primero el estado de pantalla
-             * y, si el navegador no lo expone correctamente, la API de
-             * media-query del navegador como segunda fuente.
-             *
-             * No se usa esto para clasificar el dispositivo; únicamente
-             * para saber si la pantalla está en vertical u horizontal.
+             * En recuperación de bloqueo/desbloqueo, Android ya conoce
+             * la orientación de la pantalla aunque el viewport visual
+             * todavía esté reconstruyéndose. Si está disponible,
+             * preferimos ese dato temporalmente.
              */
-            if (usandoRecovery) {
+            if (
+                usandoRecovery &&
+                window.screen &&
+                window.screen.orientation &&
+                typeof window.screen.orientation.type === "string"
+            ) {
+                const tipo = window.screen.orientation.type;
 
-                if (
-                    window.screen &&
-                    window.screen.orientation &&
-                    typeof window.screen.orientation.type === "string"
-                ) {
-                    const tipo =
-                        window.screen.orientation.type;
-
-                    if (
-                        tipo.indexOf("landscape") === 0
-                    ) {
-                        return {
-                            ancho,
-                            alto,
-                            horizontal: true
-                        };
-                    }
-
-                    if (
-                        tipo.indexOf("portrait") === 0
-                    ) {
-                        return {
-                            ancho,
-                            alto,
-                            horizontal: false
-                        };
-                    }
+                if (tipo.indexOf("landscape") === 0) {
+                    return { ancho, alto, horizontal: true };
                 }
 
-                if (
-                    typeof window.matchMedia === "function"
-                ) {
-                    const horizontal =
-                        window.matchMedia(
-                            "(orientation: landscape)"
-                        ).matches;
-
-                    return {
-                        ancho,
-                        alto,
-                        horizontal
-                    };
+                if (tipo.indexOf("portrait") === 0) {
+                    return { ancho, alto, horizontal: false };
                 }
             }
 
@@ -860,8 +851,12 @@
             this.vistaActual =
                 vista;
 
-            this.actualizarShell(vista);
-
+            if (
+                vista !== "login" &&
+                sesion.usuario
+            ) {
+                this.iniciarControlSesion();
+            }
 
             switch (vista) {
 
