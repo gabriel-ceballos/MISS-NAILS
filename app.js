@@ -839,6 +839,71 @@
 
 
         /*************************************************
+         * SINCRONIZACIÓN ROBUSTA DEL CONTADOR DEL CARRITO
+         *
+         * No modifica sesión, login, catálogo, orientación ni navegación.
+         *
+         * El contador depende de logicaCarrito, no de window.carrito.
+         * Además, logicaCarrito puede haberse inicializado antes de que
+         * el footer exista en el DOM. Por eso se reintenta después de
+         * construir la vista.
+         *
+         * Si otra pestaña modifica localStorage, recargamos primero el
+         * estado del carrito y después actualizamos exclusivamente su
+         * indicador visual.
+         *************************************************/
+        sincronizarContadorCarrito() {
+
+            const actualizar = () => {
+
+                if (
+                    !window.logicaCarrito ||
+                    typeof window.logicaCarrito.actualizarContador !==
+                        "function"
+                ) {
+                    return;
+                }
+
+                try {
+
+                    if (
+                        typeof window.logicaCarrito.cargar ===
+                        "function"
+                    ) {
+                        window.logicaCarrito.cargar();
+                    }
+
+                    window.logicaCarrito.actualizarContador();
+
+                } catch (error) {
+
+                    console.warn(
+                        "CARRITO → no fue posible sincronizar el contador:",
+                        error
+                    );
+
+                }
+            };
+
+            actualizar();
+
+            /*
+             * El footer puede terminar de montarse en el mismo ciclo
+             * de DOMContentLoaded. Estos reintentos cubren ese escenario
+             * sin reconstruir ninguna vista.
+             */
+            [0, 50, 150, 300, 600, 1000].forEach((milisegundos) => {
+
+                setTimeout(
+                    actualizar,
+                    milisegundos
+                );
+
+            });
+        },
+
+
+        /*************************************************
          * NAVEGACIÓN
          *************************************************/
         ir(vista) {
@@ -856,6 +921,12 @@
                 sesion.usuario
             ) {
                 this.iniciarControlSesion();
+
+                /*
+                 * El contador se sincroniza en TODA vista autenticada.
+                 * Esto cubre entrada, recarga y regreso desde carrito/cuenta.
+                 */
+                this.sincronizarContadorCarrito();
             }
 
             switch (vista) {
@@ -983,6 +1054,78 @@
 
     };
 
+
+    /*
+     * =============================================================
+     * CARRITO — SINCRONIZACIÓN POR CICLO DE VIDA Y STORAGE
+     *
+     * Estos eventos no alteran la sesión.
+     * Solo vuelven a leer el carrito y refrescan su contador.
+     * =============================================================
+     */
+
+    window.addEventListener(
+        "storage",
+        (evento) => {
+
+            if (
+                evento.storageArea === window.localStorage &&
+                (
+                    evento.key === "missNailsCarrito" ||
+                    evento.key === null
+                )
+            ) {
+                window.app?.sincronizarContadorCarrito();
+            }
+
+        }
+    );
+
+    window.addEventListener(
+        "pageshow",
+        () => {
+
+            if (
+                window.sesion?.usuario &&
+                window.app
+            ) {
+                window.app.sincronizarContadorCarrito();
+            }
+
+        },
+        { passive: true }
+    );
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if (
+                !document.hidden &&
+                window.sesion?.usuario &&
+                window.app
+            ) {
+                window.app.sincronizarContadorCarrito();
+            }
+
+        },
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "focus",
+        () => {
+
+            if (
+                window.sesion?.usuario &&
+                window.app
+            ) {
+                window.app.sincronizarContadorCarrito();
+            }
+
+        },
+        { passive: true }
+    );
 
     window.app = app;
 
