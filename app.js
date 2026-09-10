@@ -904,6 +904,375 @@
 
 
         /*************************************************
+         * ACTUALIZACIÓN MANUAL POR GESTO
+         *
+         * Solo para teléfono y tablet.
+         * No recarga la página.
+         * Reutiliza la sincronización existente del catálogo.
+         * El indicador visual bloquea la interacción durante
+         * un instante y no muestra ningún mensaje adicional.
+         *************************************************/
+        async actualizarDatosPorGesto() {
+
+            if (this._refreshGestoEnCurso) {
+                return;
+            }
+
+            const tipo =
+                window.missNailsEntorno?.tipo;
+
+            if (
+                tipo !== "telefono" &&
+                tipo !== "tablet"
+            ) {
+                return;
+            }
+
+            if (!window.sesion?.usuario) {
+                return;
+            }
+
+            if (
+                !window.logicaCatalogo ||
+                typeof window.logicaCatalogo.sincronizarProductos !==
+                    "function"
+            ) {
+                return;
+            }
+
+            this._refreshGestoEnCurso = true;
+            this.mostrarIndicadorRefresh();
+
+            const inicio = performance.now();
+            const duracionVisual = 1400;
+
+            {
+
+                const sincronizacion =
+                    Promise.resolve()
+                        .then(() =>
+                            window.logicaCatalogo.sincronizarProductos()
+                        )
+                        .catch((error) => {
+                            console.warn(
+                                "MISS NAILS → actualización manual sin completar:",
+                                error
+                            );
+                        })
+                        .finally(() => {
+                            this._refreshGestoEnCurso = false;
+                        });
+
+                /*
+                 * El indicador permanece visible alrededor de 1.4 s.
+                 * La consulta de datos continúa en segundo plano si
+                 * el servidor tarda más; no se recarga la página.
+                 */
+                await new Promise((resolver) =>
+                    setTimeout(resolver, duracionVisual)
+                );
+
+                const transcurrido =
+                    performance.now() - inicio;
+
+                console.log(
+                    "MISS NAILS → indicador de actualización ocultado en",
+                    Math.round(transcurrido),
+                    "ms"
+                );
+
+                this.ocultarIndicadorRefresh();
+
+                /*
+                 * No esperamos la respuesta del servidor para retirar
+                 * el bloqueo visual. Si la API tarda más, la actualización
+                 * continúa en segundo plano y los datos se aplican cuando
+                 * la respuesta llega.
+                 */
+            }
+        },
+
+
+        mostrarIndicadorRefresh() {
+
+            let indicador =
+                document.getElementById(
+                    "mn-refresh-indicador"
+                );
+
+            if (!indicador) {
+
+                indicador =
+                    document.createElement("div");
+
+                indicador.id =
+                    "mn-refresh-indicador";
+
+                indicador.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                indicador.innerHTML =
+                    '<span class="mn-refresh-spinner"></span>';
+
+                document.body.appendChild(
+                    indicador
+                );
+            }
+
+            indicador.classList.add(
+                "activo"
+            );
+        },
+
+
+        ocultarIndicadorRefresh() {
+
+            const indicador =
+                document.getElementById(
+                    "mn-refresh-indicador"
+                );
+
+            if (!indicador) {
+                return;
+            }
+
+            indicador.classList.remove(
+                "activo"
+            );
+        },
+
+
+        inicializarRefreshPorGesto() {
+
+            if (this._refreshGestoInicializado) {
+                return;
+            }
+
+            this._refreshGestoInicializado = true;
+
+            let inicioY = 0;
+            let contenedorScroll = null;
+            let gestoActivo = false;
+            let refrescarAlSoltar = false;
+
+            const esDispositivoPermitido = () => {
+
+                const tipo =
+                    window.missNailsEntorno?.tipo;
+
+                return (
+                    tipo === "telefono" ||
+                    tipo === "tablet"
+                );
+            };
+
+            const buscarContenedorScroll =
+                (elemento) => {
+
+                    let actual = elemento;
+
+                    while (
+                        actual &&
+                        actual !== document.body &&
+                        actual !== document.documentElement
+                    ) {
+
+                        if (
+                            actual instanceof HTMLElement
+                        ) {
+
+                            const estilo =
+                                window.getComputedStyle(
+                                    actual
+                                );
+
+                            const desplazable =
+                                actual.scrollHeight >
+                                actual.clientHeight;
+
+                            const overflowVertical =
+                                estilo.overflowY === "auto" ||
+                                estilo.overflowY === "scroll";
+
+                            if (
+                                desplazable &&
+                                overflowVertical
+                            ) {
+                                return actual;
+                            }
+                        }
+
+                        actual =
+                            actual.parentElement;
+                    }
+
+                    return null;
+                };
+
+            const gestoNoPermitido =
+                (elemento) => {
+
+                    if (!(elemento instanceof Element)) {
+                        return true;
+                    }
+
+                    if (
+                        elemento.closest(
+                            "input, textarea, select, button, a, [contenteditable=\"true\"]"
+                        )
+                    ) {
+                        return true;
+                    }
+
+                    if (
+                        elemento.closest(
+                            ".mobile-categorias"
+                        )
+                    ) {
+                        return true;
+                    }
+
+                    return false;
+                };
+
+            window.addEventListener(
+                "touchstart",
+                (evento) => {
+
+                    if (!esDispositivoPermitido()) {
+                        return;
+                    }
+
+                    if (!window.sesion?.usuario) {
+                        return;
+                    }
+
+                    if (
+                        this._refreshGestoEnCurso
+                    ) {
+                        return;
+                    }
+
+                    const toque =
+                        evento.touches?.[0];
+
+                    if (!toque) {
+                        return;
+                    }
+
+                    if (
+                        gestoNoPermitido(
+                            evento.target
+                        )
+                    ) {
+                        return;
+                    }
+
+                    const contenedor =
+                        buscarContenedorScroll(
+                            evento.target
+                        );
+
+                    if (!contenedor) {
+                        return;
+                    }
+
+                    if (
+                        contenedor.scrollTop > 0
+                    ) {
+                        return;
+                    }
+
+                    inicioY = toque.clientY;
+                    contenedorScroll = contenedor;
+                    gestoActivo = true;
+                    refrescarAlSoltar = false;
+                },
+                { passive: true }
+            );
+
+            window.addEventListener(
+                "touchmove",
+                (evento) => {
+
+                    if (
+                        !gestoActivo ||
+                        !contenedorScroll ||
+                        this._refreshGestoEnCurso
+                    ) {
+                        return;
+                    }
+
+                    const toque =
+                        evento.touches?.[0];
+
+                    if (!toque) {
+                        return;
+                    }
+
+                    const desplazamiento =
+                        toque.clientY - inicioY;
+
+                    if (
+                        desplazamiento <= 0 ||
+                        contenedorScroll.scrollTop > 0
+                    ) {
+                        return;
+                    }
+
+                    if (desplazamiento >= 60) {
+                        refrescarAlSoltar = true;
+
+                        /*
+                         * Evita que el navegador ejecute su propio
+                         * pull-to-refresh una vez que Miss Nails
+                         * reconoció el gesto.
+                         */
+                        evento.preventDefault();
+                    }
+                },
+                { passive: false }
+            );
+
+            window.addEventListener(
+                "touchend",
+                () => {
+
+                    if (!gestoActivo) {
+                        return;
+                    }
+
+                    const ejecutar =
+                        refrescarAlSoltar;
+
+                    inicioY = 0;
+                    contenedorScroll = null;
+                    gestoActivo = false;
+                    refrescarAlSoltar = false;
+
+                    if (ejecutar) {
+                        this.actualizarDatosPorGesto();
+                    }
+                },
+                { passive: true }
+            );
+
+            window.addEventListener(
+                "touchcancel",
+                () => {
+                    inicioY = 0;
+                    contenedorScroll = null;
+                    gestoActivo = false;
+                    refrescarAlSoltar = false;
+                },
+                { passive: true }
+            );
+        },
+
+
+        /*************************************************
          * NAVEGACIÓN
          *************************************************/
         ir(vista) {
@@ -1128,6 +1497,10 @@
     );
 
     window.app = app;
+
+    /* Inicializa una sola vez el gesto de actualización para
+     * teléfono/tablet. No modifica ninguna vista. */
+    window.app.inicializarRefreshPorGesto();
 
 
     /* =====================================================

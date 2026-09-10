@@ -3244,3 +3244,47 @@ body,
     font-size:14px;
     color:#666666;
 }
+
+/* =========================================================
+   MISS NAILS — INDICADOR DE ACTUALIZACIÓN POR GESTO
+
+   Solo aparece durante la actualización manual.
+   No contiene texto y bloquea temporalmente la interacción.
+   ========================================================= */
+
+#mn-refresh-indicador{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(255,255,255,.18);
+    pointer-events:auto;
+    touch-action:none;
+}
+
+#mn-refresh-indicador.activo{
+    display:flex;
+}
+
+#mn-refresh-indicador .mn-refresh-spinner{
+    width:30px;
+    height:30px;
+
+    border:3px solid rgba(201,62,119,.18);
+    border-top-color:#C93E77;
+    border-radius:50%;
+
+    animation:
+        mn-refresh-giro .70s linear infinite;
+}
+
+@keyframes mn-refresh-giro{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
