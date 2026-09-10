@@ -683,6 +683,110 @@ const catalogo = {
     },
 
 
+    sincronizarLayoutTrasOrientacion() {
+
+        const contenedor =
+            document.getElementById("productos");
+
+        if (
+            !contenedor ||
+            !this.listaRenderizada?.length
+        ) {
+            return;
+        }
+
+        /*
+         * La clase de orientación ya fue aplicada por app.js.
+         * Esta lectura fuerza a Chrome a resolver la nueva geometría
+         * antes de medir el área real de scroll.
+         */
+        void contenedor.offsetHeight;
+
+        const alturaDisponible =
+            contenedor.clientHeight;
+
+        const tarjeta =
+            contenedor.querySelector(".producto");
+
+        if (
+            alturaDisponible <= 0 ||
+            !tarjeta
+        ) {
+            return;
+        }
+
+        const estilo =
+            getComputedStyle(tarjeta);
+
+        const alturaTarjeta =
+            tarjeta.getBoundingClientRect().height +
+            parseFloat(estilo?.marginBottom || 0);
+
+        const columnas = Math.max(
+            1,
+            getComputedStyle(contenedor)
+                .gridTemplateColumns
+                .split(" ")
+                .filter(Boolean)
+                .length
+        );
+
+        const filasVisibles = Math.max(
+            1,
+            Math.ceil(
+                alturaDisponible /
+                Math.max(1, alturaTarjeta)
+            )
+        );
+
+        const capacidad =
+            filasVisibles * columnas;
+
+        this.capacidadViewport = capacidad;
+
+        /*
+         * Si el bloque existente quedó corto para el nuevo viewport,
+         * ampliamos una sola vez usando la misma carga progresiva ya
+         * existente. No reiniciamos el catálogo ni modificamos su posición.
+         */
+        const cantidadObjetivo = Math.min(
+            this.listaRenderizada.length,
+            capacidad * 2
+        );
+
+        if (
+            this.indiceRender < cantidadObjetivo &&
+            !this.cargandoBloque
+        ) {
+            this.cargandoBloque = true;
+            this.cargarSiguienteBloque();
+            this.cargandoBloque = false;
+        }
+
+        this.ultimoScrollTopCarga =
+            contenedor.scrollTop;
+
+        this.prepararCargaPorScroll();
+
+        /* Lectura final para cerrar la composición del nuevo scroll. */
+        void contenedor.scrollHeight;
+
+        console.log(
+            "CATALOGO → layout sincronizado tras orientación:",
+            "capacidad",
+            capacidad,
+            "| construidos",
+            this.indiceRender,
+            "de",
+            this.listaRenderizada.length,
+            "| scroll",
+            contenedor.clientHeight,
+            "→",
+            contenedor.scrollHeight
+        );
+    },
+
+
     actualizarInventarioVisible() {
 
         const contenedor =

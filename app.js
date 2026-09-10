@@ -617,6 +617,7 @@
                 this._orientacionRecovery = false;
                 this.actualizarOrientacion(false);
                 this.sincronizarFooter();
+                this.sincronizarCatalogoTrasOrientacion();
                 this._orientacionRecoveryTimer = null;
             }, 1700);
         },
@@ -731,6 +732,44 @@
                     ? "HORIZONTAL"
                     : "VERTICAL"
             );
+        },
+
+        /*************************************************
+         * SINCRONIZAR CATÁLOGO DESPUÉS DE ORIENTACIÓN
+         *
+         * Solo se ejecuta al terminar la recuperación de orientación.
+         * No consulta datos ni reconstruye la vista completa.
+         * El catálogo recalcula su capacidad real y conserva el
+         * contenido/posición existentes.
+         *************************************************/
+        sincronizarCatalogoTrasOrientacion() {
+
+            if (this.vistaActual !== "catalogo") {
+                return;
+            }
+
+            if (
+                !window.catalogo ||
+                typeof window.catalogo.sincronizarLayoutTrasOrientacion !==
+                    "function"
+            ) {
+                return;
+            }
+
+            const sincronizar = () => {
+                if (this.vistaActual !== "catalogo") {
+                    return;
+                }
+
+                window.catalogo.sincronizarLayoutTrasOrientacion();
+            };
+
+            if (typeof window.requestAnimationFrame === "function") {
+                window.requestAnimationFrame(sincronizar);
+                return;
+            }
+
+            sincronizar();
         },
 
         /*************************************************
@@ -1273,6 +1312,56 @@
 
 
         /*************************************************
+         * COMPOSICIÓN DEL SHELL POR VISTA
+         *
+         * LOGIN:
+         * - ocupa toda la pantalla
+         * - no muestra footer
+         *
+         * VISTAS AUTENTICADAS:
+         * - muestran footer
+         *************************************************/
+        actualizarShell(vista) {
+
+            const shell =
+                document.getElementById("mn-shell");
+
+            const footer =
+                document.getElementById("mn-footer");
+
+            if (!shell) {
+                return;
+            }
+
+            shell.classList.remove(
+                "mn-shell-login",
+                "mn-shell-autenticado"
+            );
+
+            if (vista === "login") {
+
+                shell.classList.add(
+                    "mn-shell-login"
+                );
+
+                if (footer) {
+                    footer.style.display = "none";
+                }
+
+                return;
+            }
+
+            shell.classList.add(
+                "mn-shell-autenticado"
+            );
+
+            if (footer) {
+                footer.style.display = "";
+            }
+        },
+
+
+        /*************************************************
          * NAVEGACIÓN
          *************************************************/
         ir(vista) {
@@ -1284,6 +1373,8 @@
 
             this.vistaActual =
                 vista;
+
+            this.actualizarShell(vista);
 
             if (
                 vista !== "login" &&
