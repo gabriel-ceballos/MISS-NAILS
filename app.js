@@ -366,6 +366,57 @@
             this.inicializarOrientacion();
 
             /*
+             * RETORNO DE MICROSOFT
+             *
+             * Solo procesamos Microsoft cuando realmente existe
+             * un código o error devuelto en la URL.
+             */
+            const parametrosMicrosoft =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const tieneRetornoMicrosoft =
+                parametrosMicrosoft.has("code") ||
+                parametrosMicrosoft.has("error");
+
+            if (
+                tieneRetornoMicrosoft &&
+                window.auth &&
+                typeof window.auth.procesarMicrosoftRedirect ===
+                    "function"
+            ) {
+
+                const microsoft =
+                    await window.auth.procesarMicrosoftRedirect();
+
+                if (microsoft?.ok) {
+
+                    sesion.guardar(
+                        microsoft.datos
+                    );
+
+                    this.iniciarControlSesion();
+                    this.ir("catalogo");
+
+                    return;
+                }
+
+                if (microsoft && !microsoft.ok) {
+
+                    console.warn(
+                        "APP → acceso Microsoft:",
+                        microsoft.mensaje
+                    );
+
+                    window._missNailsAuthMensaje =
+                        microsoft.mensaje ||
+                        "No fue posible iniciar sesión con Microsoft.";
+                }
+            }
+
+
+            /*
              * PING EN SEGUNDO PLANO
              *
              * No bloqueamos la entrada al catálogo/login esperando
