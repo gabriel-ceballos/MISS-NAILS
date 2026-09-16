@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MISS NAILS — Administración</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<main class="shell">
+<header><div><span>MISS NAILS</span><h1>Administración</h1></div><button id="btnCerrar" class="secondary hidden">Cerrar sesión</button></header>
+
+<section id="login" class="card">
+<h2>Acceso administrativo</h2>
+<p>Este acceso está separado de la aplicación de clientes.</p>
+<div id="googleButton"></div>
+<div id="loginMsg"></div>
+</section>
+
+<section id="panel" class="hidden">
+<div class="card toolbar"><div><h2>Clientes</h2><small id="identidad"></small></div><button id="recargar" class="secondary">Recargar</button></div>
+<div id="msg"></div>
+<div class="card tableWrap">
+<table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Activo</th><th>Estado</th><th>Acciones</th></tr></thead>
+<tbody id="clientes"></tbody></table>
+</div>
+</section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>
