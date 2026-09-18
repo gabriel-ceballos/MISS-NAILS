@@ -276,6 +276,11 @@ $("clientes").addEventListener(
           "missNailsSesion"
         );
 
+        localStorage.setItem(
+          "missNailsResetLogin",
+          "1"
+        );
+
         /*
          * Elimina cualquier estado temporal de
          * una autenticación Microsoft pendiente.

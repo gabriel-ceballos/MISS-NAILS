@@ -33,6 +33,12 @@ window.login = {
 
         }
 
+        const resetLogin =
+            localStorage.getItem("missNailsResetLogin") === "1";
+
+        if (resetLogin) {
+            localStorage.removeItem("missNailsResetLogin");
+        }
 
         app.innerHTML = `
 
@@ -53,14 +59,16 @@ window.login = {
                     <div class="formulario">
 
                         <input
-                            type="email"
-                            id="correo"
-                            placeholder="Correo">
+                        type="email"
+                        id="correo"
+                        placeholder="Correo"
+                        autocomplete="${resetLogin ? "off" : "email"}">
 
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Contraseña">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Contraseña"
+                        autocomplete="${resetLogin ? "new-password" : "current-password"}">
 
                         <button
                             id="btnIngresar"
@@ -137,6 +145,26 @@ window.login = {
 
             correo.focus();
 
+        }
+
+
+        if (resetLogin) {
+
+            const correo =
+                document.getElementById("correo");
+
+            const password =
+                document.getElementById("password");
+
+            if (correo) correo.value = "";
+            if (password) password.value = "";
+
+            setTimeout(() => {
+
+                if (correo) correo.value = "";
+                if (password) password.value = "";
+
+            }, 300);
         }
 
     },
