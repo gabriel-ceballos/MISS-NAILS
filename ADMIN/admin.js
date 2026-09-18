@@ -245,7 +245,7 @@ $("clientes").addEventListener(
        NO modifica FederatedSubject.
        NO modifica Activo.
 
-       Después lleva nuevamente al LOGIN.
+       Mantiene al administrador en la misma página.
        ===================================================== */
 
     if (tipo === "login") {
@@ -266,24 +266,26 @@ $("clientes").addEventListener(
         return;
       }
 
-try {
-  localStorage.removeItem(
-    "missNailsSesion"
-  );
+      try {
 
-  localStorage.setItem(
-    "missNailsResetLogin",
-    "1"
-  );
+        localStorage.removeItem(
+          "missNailsSesion"
+        );
 
-  sessionStorage.removeItem(
-    "missNailsMicrosoftAuth"
-  );
+        localStorage.setItem(
+          "missNailsResetLogin",
+          "1"
+        );
 
-} catch (e) {
-  $("msg").textContent =
-    "No fue posible restablecer el login: " + e.message;
-}
+        sessionStorage.removeItem(
+          "missNailsMicrosoftAuth"
+        );
+
+      } catch (e) {
+
+        $("msg").textContent =
+          "No fue posible restablecer el login: " + e.message;
+      }
 
       return;
     }
