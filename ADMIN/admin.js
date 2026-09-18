@@ -266,48 +266,24 @@ $("clientes").addEventListener(
         return;
       }
 
-      try {
+try {
+  localStorage.removeItem(
+    "missNailsSesion"
+  );
 
-        /*
-         * Mismo origen que MISS NAILS:
-         * el ADMIN puede limpiar la sesión de la aplicación.
-         */
-        localStorage.removeItem(
-          "missNailsSesion"
-        );
+  localStorage.setItem(
+    "missNailsResetLogin",
+    "1"
+  );
 
-        localStorage.setItem(
-          "missNailsResetLogin",
-          "1"
-        );
+  sessionStorage.removeItem(
+    "missNailsMicrosoftAuth"
+  );
 
-        /*
-         * Elimina cualquier estado temporal de
-         * una autenticación Microsoft pendiente.
-         */
-        sessionStorage.removeItem(
-          "missNailsMicrosoftAuth"
-        );
-
-        /*
-         * Regresa a MISS NAILS.
-         *
-         * Como ya no existe missNailsSesion,
-         * app.js llevará la aplicación al LOGIN.
-         *
-         * El usuario podrá volver a autenticarse
-         * mediante Google o Microsoft.
-         */
-        window.location.assign(
-          MISS_NAILS_APP_URL
-        );
-
-      } catch (e) {
-
-        $("msg").textContent =
-          "No fue posible restablecer el login: " +
-          e.message;
-      }
+} catch (e) {
+  $("msg").textContent =
+    "No fue posible restablecer el login: " + e.message;
+}
 
       return;
     }
