@@ -33,12 +33,6 @@ window.login = {
 
         }
 
-        const resetLogin =
-            localStorage.getItem("missNailsResetLogin") === "1";
-
-        if (resetLogin) {
-            localStorage.removeItem("missNailsResetLogin");
-        }
 
         app.innerHTML = `
 
@@ -59,16 +53,14 @@ window.login = {
                     <div class="formulario">
 
                         <input
-                        type="email"
-                        id="correo"
-                        placeholder="Correo"
-                        autocomplete="${resetLogin ? "off" : "email"}">
+                            type="email"
+                            id="correo"
+                            placeholder="Correo">
 
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Contraseña"
-                        autocomplete="${resetLogin ? "new-password" : "current-password"}">
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Contraseña">
 
                         <button
                             id="btnIngresar"
@@ -145,26 +137,6 @@ window.login = {
 
             correo.focus();
 
-        }
-
-
-        if (resetLogin) {
-
-            const correo =
-                document.getElementById("correo");
-
-            const password =
-                document.getElementById("password");
-
-            if (correo) correo.value = "";
-            if (password) password.value = "";
-
-            setTimeout(() => {
-
-                if (correo) correo.value = "";
-                if (password) password.value = "";
-
-            }, 300);
         }
 
     },
@@ -575,8 +547,7 @@ window.login = {
             const mensaje =
                 document.getElementById(
                     "mensajeSistema"
-                );
-
+            );
 
             if (mensaje) {
 
@@ -731,11 +702,175 @@ window.login = {
      * ACTIVAR CUENTA
      *************************************************/
 
-    activarCuenta() {
+    async activarCuenta() {
 
-        console.log(
-            "LOGIN → activarCuenta()"
-        );
+        const boton =
+            document.getElementById(
+                "btnActivar"
+            );
+
+        const correo =
+            document.getElementById(
+                "correoActivacion"
+            );
+
+        const password =
+            document.getElementById(
+                "passwordActivacion"
+            );
+
+        const confirmar =
+            document.getElementById(
+                "confirmarActivacion"
+            );
+
+        const mensaje =
+            document.getElementById(
+                "mensajeSistema"
+            );
+
+
+        if (
+            !boton ||
+            !correo ||
+            !password ||
+            !confirmar
+        ) {
+
+            return;
+
+        }
+
+
+        const correoValor =
+            correo.value.trim();
+
+        const passwordValor =
+            password.value;
+
+        const confirmarValor =
+            confirmar.value;
+
+
+        if (!correoValor) {
+
+            if (mensaje) {
+                mensaje.textContent =
+                    "Ingresa tu correo.";
+            }
+
+            correo.focus();
+
+            return;
+
+        }
+
+
+        if (!passwordValor) {
+
+            if (mensaje) {
+                mensaje.textContent =
+                    "Crea una contraseña.";
+            }
+
+            password.focus();
+
+            return;
+
+        }
+
+
+        if (passwordValor !== confirmarValor) {
+
+            if (mensaje) {
+                mensaje.textContent =
+                    "Las contraseñas no coinciden.";
+            }
+
+            confirmar.focus();
+
+            return;
+
+        }
+
+
+        boton.disabled = true;
+
+        boton.textContent =
+            "Activando...";
+
+
+        try {
+
+            const respuesta =
+                await api(
+                    "activarCuenta",
+                    {
+                        correo: correoValor,
+                        password: passwordValor
+                    }
+                );
+
+
+            console.log(
+                "ACTIVAR CUENTA →",
+                respuesta
+            );
+
+
+            if (
+                respuesta &&
+                respuesta.ok
+            ) {
+
+                this.mostrar();
+
+                const mensajeLogin =
+                    document.getElementById(
+                        "mensajeSistema"
+                    );
+
+                if (mensajeLogin) {
+
+                    mensajeLogin.textContent =
+                        "Cuenta activada. Ahora ingresa con tu correo y contraseña.";
+
+                }
+
+                return;
+
+            }
+
+
+            if (mensaje) {
+
+                mensaje.textContent =
+                    respuesta?.mensaje ||
+                    "No fue posible activar la cuenta.";
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "ACTIVAR CUENTA ERROR →",
+                error
+            );
+
+            if (mensaje) {
+
+                mensaje.textContent =
+                    "Ocurrió un error al activar la cuenta.";
+
+            }
+
+        }
+
+
+        boton.disabled = false;
+
+        boton.textContent =
+            "Activar Cuenta";
 
     }
 
