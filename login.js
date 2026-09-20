@@ -10,7 +10,7 @@ window.login = {
      * MOSTRAR LOGIN
      *************************************************/
 
-    mostrar() {
+    mostrar(opciones = {}) {
 
         console.log(
             "LOGIN → mostrar"
@@ -33,6 +33,12 @@ window.login = {
 
         }
 
+        const resetLogin =
+            localStorage.getItem("missNailsResetLogin") === "1";
+
+        if (resetLogin) {
+            localStorage.removeItem("missNailsResetLogin");
+        }
 
         app.innerHTML = `
 
@@ -53,14 +59,16 @@ window.login = {
                     <div class="formulario">
 
                         <input
-                            type="email"
-                            id="correo"
-                            placeholder="Correo">
+                        type="email"
+                        id="correo"
+                        placeholder="Correo"
+                        autocomplete="${resetLogin ? "off" : "email"}">
 
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Contraseña">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Contraseña"
+                        autocomplete="${resetLogin ? "new-password" : "current-password"}">
 
                         <button
                             id="btnIngresar"
@@ -114,7 +122,7 @@ window.login = {
         `;
 
 
-        this.inicializar();
+        this.inicializar(opciones);
 
 
         if (window._missNailsAuthMensaje) {
@@ -139,6 +147,26 @@ window.login = {
 
         }
 
+
+        if (resetLogin) {
+
+            const correo =
+                document.getElementById("correo");
+
+            const password =
+                document.getElementById("password");
+
+            if (correo) correo.value = "";
+            if (password) password.value = "";
+
+            setTimeout(() => {
+
+                if (correo) correo.value = "";
+                if (password) password.value = "";
+
+            }, 300);
+        }
+
     },
 
 
@@ -146,7 +174,7 @@ window.login = {
      * EVENTOS
      *************************************************/
 
-    inicializar() {
+    inicializar(opciones = {}) {
 
         const boton =
             document.getElementById(
@@ -240,7 +268,23 @@ window.login = {
         );
 
 
-        this.inicializarGoogle();
+        if (opciones.deferGoogle) {
+
+            requestAnimationFrame(() => {
+
+                requestAnimationFrame(() => {
+
+                    this.inicializarGoogle();
+
+                });
+
+            });
+
+        } else {
+
+            this.inicializarGoogle();
+
+        }
 
     },
 
@@ -547,7 +591,8 @@ window.login = {
             const mensaje =
                 document.getElementById(
                     "mensajeSistema"
-            );
+                );
+
 
             if (mensaje) {
 
@@ -729,7 +774,6 @@ window.login = {
                 "mensajeSistema"
             );
 
-
         if (
             !boton ||
             !correo ||
@@ -741,7 +785,6 @@ window.login = {
 
         }
 
-
         const correoValor =
             correo.value.trim();
 
@@ -750,7 +793,6 @@ window.login = {
 
         const confirmarValor =
             confirmar.value;
-
 
         if (!correoValor) {
 
@@ -765,7 +807,6 @@ window.login = {
 
         }
 
-
         if (!passwordValor) {
 
             if (mensaje) {
@@ -778,7 +819,6 @@ window.login = {
             return;
 
         }
-
 
         if (passwordValor !== confirmarValor) {
 
@@ -793,12 +833,10 @@ window.login = {
 
         }
 
-
         boton.disabled = true;
 
         boton.textContent =
             "Activando...";
-
 
         try {
 
@@ -811,19 +849,26 @@ window.login = {
                     }
                 );
 
-
             console.log(
                 "ACTIVAR CUENTA →",
                 respuesta
             );
-
 
             if (
                 respuesta &&
                 respuesta.ok
             ) {
 
-                this.mostrar();
+                /*
+                 * La activación ya quedó guardada.
+                 * Primero dejamos que el nuevo login se pinte
+                 * y estabilice su layout; después inicializamos
+                 * Google. Esto evita que ambas operaciones compitan
+                 * durante la transición desde Activar Cuenta.
+                 */
+                this.mostrar({
+                    deferGoogle: true
+                });
 
                 const mensajeLogin =
                     document.getElementById(
@@ -840,7 +885,6 @@ window.login = {
                 return;
 
             }
-
 
             if (mensaje) {
 
@@ -865,7 +909,6 @@ window.login = {
             }
 
         }
-
 
         boton.disabled = false;
 
