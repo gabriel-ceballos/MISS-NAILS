@@ -294,8 +294,11 @@ $("clientes").addEventListener(
     /* =====================================================
        RESET CUENTA
 
-       ESTE ES EL RESET TOTAL EXISTENTE.
-       NO SE MODIFICA.
+       RESET TOTAL DE LA CUENTA.
+
+       1. El servidor elimina los datos de activación.
+       2. Se cierra la sesión actual de MISS NAILS.
+       3. Se mantiene ADMIN abierto.
        ===================================================== */
 
     if (tipo === "cuenta") {
@@ -304,6 +307,8 @@ $("clientes").addEventListener(
         "La cuenta quedará en AUTORIZADO — NO ACTIVADO." +
         "\n\n" +
         "Se eliminarán los datos de activación." +
+        "\n\n" +
+        "También se cerrará la sesión actual de MISS NAILS." +
         "\n\n" +
         "¿Continuar?";
 
@@ -328,6 +333,31 @@ $("clientes").addEventListener(
             correo
           }
         );
+
+
+        /* =================================================
+           CIERRE DE SESIÓN DEL CLIENTE
+
+           EXACTAMENTE LA MISMA MECÁNICA DE RESET LOGIN.
+
+           IMPORTANTE:
+           Esto se ejecuta SOLO después de que el servidor
+           confirmó correctamente el RESET CUENTA.
+           ================================================= */
+
+        localStorage.removeItem(
+          "missNailsSesion"
+        );
+
+        localStorage.setItem(
+          "missNailsResetLogin",
+          "1"
+        );
+
+        sessionStorage.removeItem(
+          "missNailsMicrosoftAuth"
+        );
+
 
         $("msg").textContent =
           "Cuenta restablecida correctamente.";
