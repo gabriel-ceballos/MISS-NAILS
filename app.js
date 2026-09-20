@@ -1575,22 +1575,94 @@
      * =============================================================
      */
 
-    window.addEventListener(
-        "storage",
-        (evento) => {
+window.addEventListener(
+    "storage",
+    (evento) => {
 
-            if (
-                evento.storageArea === window.localStorage &&
-                (
-                    evento.key === "missNailsCarrito" ||
-                    evento.key === null
-                )
-            ) {
-                window.app?.sincronizarContadorCarrito();
+        if (
+            evento.storageArea !== window.localStorage
+        ) {
+            return;
+        }
+
+
+        /* =================================================
+           SESIÓN
+
+           Cuando ADMIN elimina missNailsSesion desde otra
+           pestaña/ventana, el cliente recibe este evento.
+
+           Se cierra la sesión en memoria y se manda
+           inmediatamente al LOGIN.
+
+           Esto aplica tanto para:
+           - Reset login
+           - Reset cuenta
+           ================================================= */
+
+        if (
+            evento.key === "missNailsSesion" &&
+            evento.newValue === null
+        ) {
+
+            console.log(
+                "APP → sesión cerrada desde otra ventana."
+            );
+
+            if (window.sesion) {
+
+                window.sesion.cerrar();
+
             }
 
+            if (window.app) {
+
+                if (
+                    window.app._controlSesionTimer
+                ) {
+
+                    clearInterval(
+                        window.app._controlSesionTimer
+                    );
+
+                    window.app._controlSesionTimer =
+                        null;
+                }
+
+                window.app._controlSesionIniciado =
+                    false;
+
+                if (
+                    window.app.vistaActual !== "login"
+                ) {
+
+                    window.app.ir(
+                        "login"
+                    );
+                }
+            }
+
+            return;
         }
-    );
+
+
+        /* =================================================
+           CARRITO
+
+           Se conserva exactamente la función existente.
+           ================================================= */
+
+        if (
+            evento.key === "missNailsCarrito" ||
+            evento.key === null
+        ) {
+
+            window.app?.sincronizarContadorCarrito();
+
+        }
+
+    }
+);
 
     window.addEventListener(
         "pageshow",
