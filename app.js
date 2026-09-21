@@ -488,6 +488,11 @@
                 this._controlSesionIniciado = false;
             };
 
+            /*
+             * PRIMER NIVEL: comprobación local.
+             * Se conserva exactamente la lógica existente de tiempos
+             * e inactividad.
+             */
             const comprobar = () => {
 
                 if (this.vistaActual === "login") {
@@ -508,6 +513,63 @@
                 }
 
                 return true;
+            };
+
+            /*
+             * SEGUNDO NIVEL: comprobación central.
+             * Solo se consulta al servidor en los puntos de control
+             * importantes; NO se hace una petición por cada clic.
+             * Un fallo temporal de red NO cierra la sesión.
+             */
+            const comprobarCentral = async () => {
+
+                if (!comprobar()) {
+                    return false;
+                }
+
+                if (
+                    !sesion ||
+                    typeof sesion.verificarRemota !== "function"
+                ) {
+                    return true;
+                }
+
+                if (this._comprobacionSesionRemota) {
+                    return await this._comprobacionSesionRemota;
+                }
+
+                this._comprobacionSesionRemota =
+                    sesion.verificarRemota();
+
+                try {
+
+                    const resultado =
+                        await this._comprobacionSesionRemota;
+
+                    if (resultado === false) {
+
+                        detener();
+
+                        console.log(
+                            "APP → sesión revocada centralmente. Regresando a LOGIN."
+                        );
+
+                        this.ir("login");
+
+                        return false;
+                    }
+
+                    /*
+                     * resultado === true: sesión central válida.
+                     * resultado === null: fallo temporal de comunicación;
+                     * se conserva la sesión local y se volverá a comprobar.
+                     */
+                    return true;
+
+                } finally {
+
+                    this._comprobacionSesionRemota = null;
+                }
             };
 
             const registrarActividad = () => {
@@ -536,7 +598,8 @@
 
             /*
              * Al volver después de bloqueo, suspensión, cambio de pestaña
-             * o segundo plano, se comprueba inmediatamente la sesión.
+             * o segundo plano, se comprueba localmente y después contra
+             * la revocación central.
              */
             document.addEventListener(
                 "visibilitychange",
@@ -546,11 +609,15 @@
                         return;
                     }
 
-                    if (!comprobar()) {
-                        return;
-                    }
+                    comprobarCentral().then((valida) => {
 
-                    sesion.actividad();
+                        if (!valida) {
+                            return;
+                        }
+
+                        sesion.actividad();
+                    });
+
                 },
                 { passive: true }
             );
@@ -559,27 +626,35 @@
                 "pageshow",
                 () => {
 
-                    if (!comprobar()) {
-                        return;
-                    }
+                    comprobarCentral().then((valida) => {
 
-                    sesion.actividad();
+                        if (!valida) {
+                            return;
+                        }
+
+                        sesion.actividad();
+                    });
+
                 },
                 { passive: true }
             );
 
             /*
              * Comprobación frecuente mientras la página permanece activa.
+             * Aquí se consulta la sesión central.
+             *
              * Si el navegador suspende JavaScript durante el bloqueo,
              * visibilitychange/pageshow comprueban al regresar.
              */
             this._controlSesionTimer =
                 setInterval(
-                    comprobar,
+                    () => {
+                        comprobarCentral();
+                    },
                     15 * 1000
                 );
 
-            comprobar();
+            comprobarCentral();
         },
 
 

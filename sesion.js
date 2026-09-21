@@ -291,6 +291,104 @@ window.sesion = {
     },
 
 
+    /*
+     * COMPROBACIÓN CENTRAL
+     *
+     * Consulta al servidor si esta sesión fue revocada desde ADMIN.
+     *
+     * Devuelve:
+     *   true  = sesión válida en el servidor
+     *   false = sesión revocada / inválida
+     *   null  = no fue posible comprobar por un problema temporal
+     *           de comunicación; no se cierra la sesión local.
+     */
+    async verificarRemota() {
+
+        if (!this.usuario) {
+            return false;
+        }
+
+        try {
+
+            const guardado =
+                localStorage.getItem(
+                    this.CLAVE
+                );
+
+            if (!guardado) {
+                return false;
+            }
+
+            const datos =
+                JSON.parse(guardado);
+
+            const inicioSesion =
+                Number(
+                    datos.inicioSesion
+                );
+
+            const correo =
+                String(
+                    datos.usuario?.correo ||
+                    this.usuario?.correo ||
+                    ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                !correo ||
+                !Number.isFinite(inicioSesion)
+            ) {
+                return false;
+            }
+
+            if (
+                typeof window.api !== "function"
+            ) {
+                return null;
+            }
+
+            const respuesta =
+                await window.api(
+                    "verificarSesion",
+                    {
+                        correo,
+                        inicioSesion
+                    }
+                );
+
+            if (
+                respuesta &&
+                respuesta.revocada === true
+            ) {
+                return false;
+            }
+
+            if (
+                respuesta &&
+                respuesta.ok === true
+            ) {
+                return true;
+            }
+
+            /*
+             * Un error de red/API no se interpreta como una revocación.
+             */
+            return null;
+
+        } catch (error) {
+
+            console.warn(
+                "SESION → no fue posible comprobar la sesión central:",
+                error
+            );
+
+            return null;
+        }
+    },
+
+
     actividad() {
 
         if (!this.usuario) {

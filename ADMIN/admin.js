@@ -237,13 +237,18 @@ $("clientes").addEventListener(
     /* =====================================================
        RESET LOGIN
 
-       SOLO elimina la sesión local de MISS NAILS.
+       REVOCACIÓN CENTRALIZADA.
 
-       NO modifica CLIENTES.
-       NO modifica PasswordHash.
-       NO modifica Proveedor.
-       NO modifica FederatedSubject.
-       NO modifica Activo.
+       NO modifica:
+       - PasswordHash
+       - Proveedor
+       - FederatedSubject
+       - Activo
+       - activación de la cuenta
+
+       Solo registra la fecha de revocación en CLIENTES.
+       El cliente de cualquier dispositivo la detectará y
+       regresará al LOGIN.
 
        Mantiene al administrador en la misma página.
        ===================================================== */
@@ -255,7 +260,7 @@ $("clientes").addEventListener(
           correo +
           "\n\n" +
           "Se cerrará la sesión de MISS NAILS para " +
-          "simular un nuevo inicio de sesión." +
+          "este cliente en todos los dispositivos." +
           "\n\n" +
           "La cuenta y su activación no serán modificadas." +
           "\n\n" +
@@ -266,25 +271,25 @@ $("clientes").addEventListener(
         return;
       }
 
+      $("msg").textContent =
+        "Revocando sesión en todos los dispositivos...";
+
       try {
 
-        localStorage.removeItem(
-          "missNailsSesion"
+        await api(
+          "resetLogin",
+          {
+            correo
+          }
         );
 
-        localStorage.setItem(
-          "missNailsResetLogin",
-          "1"
-        );
-
-        sessionStorage.removeItem(
-          "missNailsMicrosoftAuth"
-        );
+        $("msg").textContent =
+          "Sesión revocada en todos los dispositivos.";
 
       } catch (e) {
 
         $("msg").textContent =
-          "No fue posible restablecer el login: " + e.message;
+          e.message;
       }
 
       return;
@@ -297,7 +302,7 @@ $("clientes").addEventListener(
        RESET TOTAL DE LA CUENTA.
 
        1. El servidor elimina los datos de activación.
-       2. Se cierra la sesión actual de MISS NAILS.
+       2. El servidor revoca la sesión en todos los dispositivos.
        3. Se mantiene ADMIN abierto.
        ===================================================== */
 
@@ -308,7 +313,7 @@ $("clientes").addEventListener(
         "\n\n" +
         "Se eliminarán los datos de activación." +
         "\n\n" +
-        "También se cerrará la sesión actual de MISS NAILS." +
+        "También se cerrará la sesión de MISS NAILS en todos los dispositivos." +
         "\n\n" +
         "¿Continuar?";
 
@@ -333,31 +338,6 @@ $("clientes").addEventListener(
             correo
           }
         );
-
-
-        /* =================================================
-           CIERRE DE SESIÓN DEL CLIENTE
-
-           EXACTAMENTE LA MISMA MECÁNICA DE RESET LOGIN.
-
-           IMPORTANTE:
-           Esto se ejecuta SOLO después de que el servidor
-           confirmó correctamente el RESET CUENTA.
-           ================================================= */
-
-        localStorage.removeItem(
-          "missNailsSesion"
-        );
-
-        localStorage.setItem(
-          "missNailsResetLogin",
-          "1"
-        );
-
-        sessionStorage.removeItem(
-          "missNailsMicrosoftAuth"
-        );
-
 
         $("msg").textContent =
           "Cuenta restablecida correctamente.";
