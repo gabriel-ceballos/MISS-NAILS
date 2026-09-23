@@ -787,7 +787,7 @@ const catalogo = {
     },
 
 
-    actualizarInventarioVisible() {
+    actualizarDatosVisibles() {
 
         const contenedor =
             document.getElementById("productos");
@@ -803,6 +803,11 @@ const catalogo = {
 
             const id = tarjeta.dataset.id;
 
+            const producto =
+                logicaCatalogo.obtenerProducto(id);
+
+            if (!producto) return;
+
             const inventario =
                 logicaCatalogo.obtenerInventario(id);
 
@@ -812,14 +817,108 @@ const catalogo = {
             if (meta) {
                 meta.textContent =
                     `Disponible: ${inventario}`;
-                actualizadas++;
             }
+
+            const precioElemento =
+                tarjeta.querySelector(".precio");
+
+            if (precioElemento) {
+
+                let precio = producto.precio;
+
+                if (typeof precio === "string") {
+                    precio = precio
+                        .replace(/\$/g, "")
+                        .replace(/\s/g, "")
+                        .replace(",", ".");
+                }
+
+                precio = Number(precio) || 0;
+                precioElemento.textContent =
+                    `$${precio.toFixed(2)}`;
+            }
+
+            actualizadas++;
         });
 
         console.log(
-            "CATALOGO → inventario visible actualizado:",
+            "CATALOGO → datos visibles actualizados:",
             actualizadas
         );
+    },
+
+
+    actualizarDetalleVisible() {
+
+        const productoId =
+            history.state?.productoId;
+
+        if (productoId == null) return;
+
+        const producto =
+            logicaCatalogo.obtenerProducto(productoId);
+
+        const precioElemento =
+            document.querySelector(".mobile-detalle-precio");
+
+        const inventarioElemento =
+            document.querySelector(".mobile-detalle-inventario");
+
+        const boton =
+            document.getElementById("btnAgregarDetalle");
+
+        if (!producto) {
+
+            if (inventarioElemento) {
+                inventarioElemento.textContent =
+                    "Disponible: 0";
+            }
+
+            if (boton) {
+                boton.disabled = true;
+                boton.setAttribute("aria-disabled", "true");
+            }
+
+            return;
+        }
+
+        const inventario =
+            logicaCatalogo.obtenerInventario(producto.id);
+
+        let precio = producto.precio;
+
+        if (typeof precio === "string") {
+            precio = precio
+                .replace(/\$/g, "")
+                .replace(/\s/g, "")
+                .replace(",", ".");
+        }
+
+        precio = Number(precio) || 0;
+
+        if (precioElemento) {
+            precioElemento.textContent =
+                `$${precio.toFixed(2)}`;
+        }
+
+        if (inventarioElemento) {
+            inventarioElemento.textContent =
+                `Disponible: ${inventario}`;
+        }
+
+        if (boton) {
+            boton.disabled = inventario <= 0;
+            boton.setAttribute(
+                "aria-disabled",
+                inventario <= 0 ? "true" : "false"
+            );
+        }
+    },
+
+
+    /* Compatibilidad con llamadas existentes. */
+    actualizarInventarioVisible() {
+        this.actualizarDatosVisibles();
     },
 
 

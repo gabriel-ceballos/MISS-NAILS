@@ -158,10 +158,15 @@ try {
         const inicioSincronizacion = performance.now();
 
         console.log(
-            "CATALOGO → INICIO SINCRONIZACIÓN INVENTARIO"
+            "CATALOGO → INICIO SINCRONIZACIÓN"
         );
 
         try {
+
+            const productosAnteriores =
+                Array.isArray(this.productos)
+                    ? this.productos
+                    : [];
 
             const respuesta =
                 await api("productos");
@@ -183,50 +188,83 @@ try {
                     ? respuesta.datos
                     : [];
 
-            // Actualizar únicamente el estado separado de inventario.
-            this.actualizarInventario(nuevosProductos);
-
-            // Mantener el catálogo actualizado sin cambiar su estructura.
-            this.productos = nuevosProductos;
-
-
             /*
-             * Si estamos viendo el detalle,
-             * actualizamos los datos internos
-             * pero no destruimos el detalle.
+             * El backend sigue siendo la fuente de verdad.
+             * Conservamos el inventario separado porque otras piezas
+             * del catálogo ya dependen de él.
              */
+            this.actualizarInventario(nuevosProductos);
+            this.productos = nuevosProductos;
 
             if (
                 this.vistaActual === "detalle"
             ) {
 
+                if (
+                    typeof window.catalogo?.actualizarDetalleVisible ===
+                        "function"
+                ) {
+                    window.catalogo.actualizarDetalleVisible();
+                }
+
                 console.log(
-                    "CATALOGO → inventario actualizado durante detalle:",
+                    "CATALOGO → datos sincronizados durante detalle:",
                     nuevosProductos.length
                 );
 
                 return;
             }
 
+            if (
+                this.vistaActual !== "catalogo" ||
+                typeof window.catalogo?.actualizarDatosVisibles !==
+                    "function"
+            ) {
+                return;
+            }
 
             /*
-             * Si estamos viendo el catálogo, NO reconstruimos
-             * la vista completa. El catálogo progresivo conserva
-             * las tarjetas ya construidas y sólo actualizamos
-             * el inventario visible.
+             * Si un producto entra o sale del resultado del backend,
+             * la composición visible cambió. En ese único caso
+             * reconstruimos el catálogo.
+             *
+             * Esto corrige el caso importante que existía antes:
+             * un producto que pasa a inventario 0 desaparecía del
+             * backend, pero su tarjeta podía permanecer en pantalla.
              */
+            const listaAnterior =
+                this.obtenerFiltradosDesde(productosAnteriores);
 
-            if (
-                this.vistaActual === "catalogo" &&
-                typeof window.catalogo?.actualizarInventarioVisible ===
-                "function"
-            ) {
+            const listaNueva =
+                this.obtenerFiltrados();
 
-                window.catalogo.actualizarInventarioVisible();
+            const mismaComposicion =
+                this.mismaListaPorId(
+                    listaAnterior,
+                    listaNueva
+                );
+
+            if (!mismaComposicion) {
+
+                console.log(
+                    "CATALOGO → cambió la composición disponible; reconstruyendo vista"
+                );
+
+                window.catalogo.listaRenderizada = [];
+                window.catalogo.renderizar();
+
+            } else {
+
+                /*
+                 * La composición no cambió: actualizamos únicamente
+                 * los datos dinámicos de las tarjetas ya visibles
+                 * (precio e inventario), sin destruir la carga progresiva.
+                 */
+                window.catalogo.actualizarDatosVisibles();
             }
 
             console.log(
-                "CATALOGO → inventario sincronizado sin reconstruir catálogo:",
+                "CATALOGO → sincronización completada:",
                 nuevosProductos.length,
                 "| tiempo total:",
                 Math.round(
@@ -249,6 +287,76 @@ try {
                 "ms"
             );
         }
+    },
+
+
+    obtenerFiltradosDesde(productos) {
+
+        let lista = Array.isArray(productos)
+            ? [...productos]
+            : [];
+
+        if (this.filtroCategoria) {
+            lista = lista.filter(producto => {
+                const categoria =
+                    String(producto?.categoria || "")
+                        .trim()
+                        .toUpperCase();
+
+                return categoria === this.filtroCategoria;
+            });
+        }
+
+        if (this.textoBusqueda) {
+            lista = lista.filter(producto => {
+                const nombre =
+                    String(producto?.nombre || "").toLowerCase();
+                const sku =
+                    String(producto?.sku || "").toLowerCase();
+                const codigo =
+                    String(producto?.codigo || "").toLowerCase();
+
+                return (
+                    nombre.includes(this.textoBusqueda) ||
+                    sku.includes(this.textoBusqueda) ||
+                    codigo.includes(this.textoBusqueda)
+                );
+            });
+        }
+
+        return lista;
+    },
+
+
+    mismaListaPorId(anterior, nueva) {
+
+        if (
+            !Array.isArray(anterior) ||
+            !Array.isArray(nueva) ||
+            anterior.length !== nueva.length
+        ) {
+            return false;
+        }
+
+        return anterior.every((producto, indice) => {
+
+            const siguiente = nueva[indice];
+
+            return (
+                String(producto?.id ?? "") ===
+                    String(siguiente?.id ?? "") &&
+                String(producto?.nombre ?? "") ===
+                    String(siguiente?.nombre ?? "") &&
+                String(producto?.sku ?? "") ===
+                    String(siguiente?.sku ?? "") &&
+                String(producto?.categoria ?? "") ===
+                    String(siguiente?.categoria ?? "") &&
+                String(producto?.codigo ?? "") ===
+                    String(siguiente?.codigo ?? "") &&
+                String(producto?.imagen ?? "") ===
+                    String(siguiente?.imagen ?? "")
+            );
+        });
     },
 
 
@@ -355,90 +463,7 @@ try {
 
     obtenerFiltrados() {
 
-        let lista = [
-            ...this.productos
-        ];
-
-
-        // -----------------------------
-        // CATEGORÍA
-        // -----------------------------
-
-        if (this.filtroCategoria) {
-
-            lista =
-                lista.filter(
-                    producto => {
-
-                        const categoria =
-                            String(
-                                producto.categoria || ""
-                            )
-                            .trim()
-                            .toUpperCase();
-
-                        return (
-                            categoria ===
-                            this.filtroCategoria
-                        );
-                    }
-                );
-        }
-
-
-        // -----------------------------
-        // BÚSQUEDA
-        // -----------------------------
-
-        if (this.textoBusqueda) {
-
-            lista =
-                lista.filter(
-                    producto => {
-
-                        const nombre =
-                            String(
-                                producto.nombre || ""
-                            )
-                            .toLowerCase();
-
-                        const sku =
-                            String(
-                                producto.sku || ""
-                            )
-                            .toLowerCase();
-
-                        const codigo =
-                            String(
-                                producto.codigo || ""
-                            )
-                            .toLowerCase();
-
-
-                        return (
-
-                            nombre.includes(
-                                this.textoBusqueda
-                            )
-
-                            ||
-
-                            sku.includes(
-                                this.textoBusqueda
-                            )
-
-                            ||
-
-                            codigo.includes(
-                                this.textoBusqueda
-                            )
-                        );
-                    }
-                );
-        }
-
-
-        return lista;
+        return this.obtenerFiltradosDesde(this.productos);
     },
 
 
