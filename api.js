@@ -27,14 +27,13 @@ async function api(accion, datos = {}) {
         );
 
 
-        const respuesta =
-            await fetch(
-                API_URL,
-                {
-                    method: "POST",
-                    body
-                }
-            );
+const respuesta = await fetch(API_URL, {
+    method: "POST",
+    body,
+    credentials: "include"
+});
+
+
 
         console.log(
             "API →",
