@@ -15,6 +15,244 @@ const logicaCarrito = {
 
     items: [],
 
+    /* =========================================================
+       CARRITO CENTRAL — BACKEND
+       CARRITOS es la fuente de verdad.
+       localStorage queda como caché local de compatibilidad.
+       ========================================================= */
+
+    CLAVE_BACKEND_CLIENTE: "missNailsCarritoBackendCliente",
+    _ultimaSincronizacionBackend: 0,
+    _sincronizacionBackendEnCurso: null,
+    _versionOperacionBackend: 0,
+
+    obtenerIdClienteLocal() {
+        return String(
+            window.sesion?.usuario?.idCliente ??
+            window.sesion?.usuario?.id_cliente ??
+            ""
+        ).trim();
+    },
+
+    normalizarItemsBackend(items) {
+        if (!Array.isArray(items)) {
+            return [];
+        }
+
+        return items
+            .filter(item =>
+                item &&
+                item.id !== undefined &&
+                item.id !== null
+            )
+            .map(item => ({
+                id: item.id,
+                sku: item.sku ?? "",
+                codigo: item.codigo ?? "",
+                nombre:
+                    item.nombre || "Producto sin nombre",
+                precio: this.numero(item.precio),
+                imagen: item.imagen || "",
+                categoria: item.categoria || "",
+                inventario: this.inventario(item),
+                cantidad: Math.max(
+                    1,
+                    Math.floor(this.numero(item.cantidad))
+                )
+            }));
+    },
+
+    async sincronizarConBackend() {
+        if (typeof window.api !== "function") {
+            return null;
+        }
+
+        if (
+            Date.now() - this._ultimaSincronizacionBackend <
+            3000
+        ) {
+            return null;
+        }
+
+        if (this._sincronizacionBackendEnCurso) {
+            return this._sincronizacionBackendEnCurso;
+        }
+
+        const version = this._versionOperacionBackend;
+        const itemsLocales = this.items.map(item => ({ ...item }));
+        const idCliente = this.obtenerIdClienteLocal();
+
+        this._sincronizacionBackendEnCurso = (async () => {
+            try {
+                let respuesta = await window.api(
+                    "obtenerCarrito",
+                    {}
+                );
+
+                this._ultimaSincronizacionBackend = Date.now();
+
+                if (!respuesta?.ok) {
+                    console.warn(
+                        "CARRITO → backend:",
+                        respuesta?.mensaje || "No fue posible sincronizar."
+                    );
+                    return respuesta;
+                }
+
+                if (version !== this._versionOperacionBackend) {
+                    return respuesta;
+                }
+
+                let itemsServidor =
+                    this.normalizarItemsBackend(
+                        respuesta.datos?.items
+                    );
+
+                const marca = String(
+                    localStorage.getItem(
+                        this.CLAVE_BACKEND_CLIENTE
+                    ) || ""
+                ).trim();
+
+                /*
+                 * Primera entrada al backend: conserva el carrito local
+                 * existente solamente si CARRITOS todavía está vacío.
+                 */
+                if (
+                    itemsServidor.length === 0 &&
+                    itemsLocales.length > 0 &&
+                    !marca &&
+                    idCliente
+                ) {
+                    for (const item of itemsLocales) {
+                        const migracion = await window.api(
+                            "agregarAlCarrito",
+                            {
+                                id: item.id,
+                                cantidad: Math.max(
+                                    1,
+                                    Math.floor(
+                                        this.numero(item.cantidad)
+                                    )
+                                )
+                            }
+                        );
+
+                        if (!migracion?.ok) {
+                            console.warn(
+                                "CARRITO → migración rechazada:",
+                                migracion?.mensaje || ""
+                            );
+                            return migracion;
+                        }
+                    }
+
+                    respuesta = await window.api(
+                        "obtenerCarrito",
+                        {}
+                    );
+
+                    if (!respuesta?.ok) {
+                        return respuesta;
+                    }
+
+                    itemsServidor =
+                        this.normalizarItemsBackend(
+                            respuesta.datos?.items
+                        );
+                }
+
+                if (version !== this._versionOperacionBackend) {
+                    return respuesta;
+                }
+
+                this.items = itemsServidor;
+
+                if (idCliente) {
+                    localStorage.setItem(
+                        this.CLAVE_BACKEND_CLIENTE,
+                        idCliente
+                    );
+                }
+
+                this.guardar();
+
+                console.log(
+                    "CARRITO → sincronizado:",
+                    this.items.length,
+                    "productos"
+                );
+
+                return respuesta;
+
+            } catch (error) {
+                console.warn(
+                    "CARRITO → error backend:",
+                    error
+                );
+                return {
+                    ok: false,
+                    mensaje:
+                        error.message ||
+                        "Error de sincronización."
+                };
+
+            } finally {
+                this._sincronizacionBackendEnCurso = null;
+            }
+        })();
+
+        return this._sincronizacionBackendEnCurso;
+    },
+
+    sincronizarOperacionBackend(accion, datos) {
+        if (typeof window.api !== "function") {
+            return;
+        }
+
+        const version = ++this._versionOperacionBackend;
+
+        window.api(accion, datos)
+            .then(respuesta => {
+                if (!respuesta?.ok) {
+                    console.warn(
+                        "CARRITO → operación backend rechazada:",
+                        accion,
+                        respuesta?.mensaje || ""
+                    );
+                    this._ultimaSincronizacionBackend = 0;
+                    this.sincronizarConBackend();
+                    return;
+                }
+
+                if (version !== this._versionOperacionBackend) {
+                    return;
+                }
+
+                this.items = this.normalizarItemsBackend(
+                    respuesta.datos?.items
+                );
+
+                const idCliente = this.obtenerIdClienteLocal();
+
+                if (idCliente) {
+                    localStorage.setItem(
+                        this.CLAVE_BACKEND_CLIENTE,
+                        idCliente
+                    );
+                }
+
+                this.guardar();
+            })
+            .catch(error => {
+                console.warn(
+                    "CARRITO → error en operación backend:",
+                    accion,
+                    error
+                );
+            });
+    },
+
     inicializar() {
         this.cargar();
         this.sincronizarConCatalogo();
@@ -95,6 +333,7 @@ const logicaCarrito = {
             if (!guardado) {
                 this.items = [];
                 this.actualizarContador();
+                this.sincronizarConBackend();
                 return this.items;
             }
 
@@ -143,6 +382,7 @@ const logicaCarrito = {
                     : [];
 
             this.actualizarContador();
+            this.sincronizarConBackend();
 
             return this.items;
 
@@ -154,6 +394,7 @@ const logicaCarrito = {
 
             this.items = [];
             this.actualizarContador();
+            this.sincronizarConBackend();
 
             return this.items;
         }
@@ -272,6 +513,14 @@ const logicaCarrito = {
 
         this.guardar();
 
+        this.sincronizarOperacionBackend(
+            "agregarAlCarrito",
+            {
+                id: normalizado.id,
+                cantidad: incremento
+            }
+        );
+
         console.log(
             "CARRITO → agregado:",
             normalizado.nombre,
@@ -347,6 +596,14 @@ const logicaCarrito = {
 
         this.guardar();
 
+        this.sincronizarOperacionBackend(
+            "cambiarCantidadCarrito",
+            {
+                id,
+                cantidad: nueva
+            }
+        );
+
         return true;
     },
 
@@ -362,6 +619,11 @@ const logicaCarrito = {
         if (this.items.length !== antes) {
             this.guardar();
 
+            this.sincronizarOperacionBackend(
+                "eliminarDelCarrito",
+                { id }
+            );
+
             console.log(
                 "CARRITO → eliminado:",
                 id
@@ -376,6 +638,11 @@ const logicaCarrito = {
     limpiar() {
         this.items = [];
         this.guardar();
+
+        this.sincronizarOperacionBackend(
+            "vaciarCarrito",
+            {}
+        );
     },
 
     totalUnidades() {
